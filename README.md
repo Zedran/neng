@@ -27,7 +27,8 @@ func main() {
     fmt.Println(gen.Noun())
 
     // <adjective> <noun> of the <noun>
-    fmt.Println(gen.Phrase("%a %n of the %n"))
+    phrase, _ := gen.Phrase("%a %n of the %n")
+    fmt.Println(phrase)
 }
 ```
 
