@@ -2,7 +2,7 @@
 
 ## Introduction
 
-neng is a Golang package that can generate random names from nouns and adjectives according to user-specified pattern. It is powered by a diverse collection of almost 29000 nouns and over 11000 adjectives compiled from [WordNet Lexical Database]((https://wordnet.princeton.edu)). Inspired by Terraria's world name generator, neng is designed to be simple yet versatile name making tool for other projects.
+neng is a Golang package that can generate random names from nouns and adjectives according to user-specified pattern. It is powered by a diverse collection of almost 29000 nouns and over 11000 adjectives compiled from [WordNet Lexical Database](https://wordnet.princeton.edu). Inspired by Terraria's world name generator, neng is designed to be simple yet versatile name making tool for other projects.
 
 ## Sample use
 
