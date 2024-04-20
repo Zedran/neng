@@ -49,23 +49,23 @@ func gerund(verb string) string {
 }
 
 /* Returns Past Participle form of a verb. */
-func pastParticiple(verb string, irregular map[string][]string) string {
-	line, isIrregular := irregular[verb]
-	if isIrregular {
-		return line[1]		
+func pastParticiple(verb string, verbsIrr [][]string) string {
+	stemIndex := findIrregular(verb, verbsIrr)
+	if stemIndex < 0 {
+		return pastSimpleRegular(verb)
 	}
-
-	return pastSimpleRegular(verb)
+	
+	return strings.Replace(verb, verbsIrr[stemIndex][0], verbsIrr[stemIndex][2], 1)
 }
 
 /* Returns Past Simple form of a verb. */
-func pastSimple(verb string, irregular map[string][]string) string {
-	line, isIrregular := irregular[verb]
-	if isIrregular {
-		return line[0]		
+func pastSimple(verb string, verbsIrr [][]string) string {
+	stemIndex := findIrregular(verb, verbsIrr)
+	if stemIndex < 0 {
+		return pastSimpleRegular(verb)
 	}
-
-	return pastSimpleRegular(verb)
+	
+	return strings.Replace(verb, verbsIrr[stemIndex][0], verbsIrr[stemIndex][1], 1)
 }
 
 /* Returns Present Simple form of a verb. */

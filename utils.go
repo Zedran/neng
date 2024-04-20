@@ -34,6 +34,20 @@ func getSequence(s string) string {
 	return seq.String()
 }
 
+/*
+	For irregular verbs, returns index of a verb (or index of its stem verb) in verbsIrr.
+	For regular verbs, returns -1.
+*/
+func findIrregular(verb string, verbsIrr [][]string) int {
+	for i, iv := range verbsIrr {
+		if strings.Contains(verb, iv[0]) {
+			return i
+		}
+	}
+
+	return -1
+}
+
 /* Returns true if r is a vowel. */
 func isVowel(r rune) bool {
 	return strings.ContainsRune("aeiou", r)

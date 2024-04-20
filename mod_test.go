@@ -35,16 +35,18 @@ func TestGerund(t *testing.T) {
 */
 func TestPastParticiple(t *testing.T) {
 	cases := map[string]string{
-		"be"    : "been"     ,
-		"do"    : "done"     ,
-		"freeze": "frozen"   ,
-		"panic" : "panicked" ,
+		"be"     : "been"     ,
+		"do"     : "done"     ,
+		"forgive": "forgiven" ,
+		"freeze" : "frozen"   ,
+		"panic"  : "panicked" ,
 	}
 
-	irregular := map[string][]string{
-		"be"    : {"was"  , "been"},
-		"do"    : {"did"  , "done"},
-		"freeze": {"froze", "frozen"},
+	irregular := [][]string{
+		{"be"    , "was"  , "been"  },
+		{"do"    , "did"  , "done"  },
+		{"freeze", "froze", "frozen"},
+		{"give"  , "gave" , "given" },
 	}
 
 	for input, expected := range cases {
@@ -62,16 +64,18 @@ func TestPastParticiple(t *testing.T) {
 */
 func TestPastSimple(t *testing.T) {
 	cases := map[string]string{
-		"be"    : "was"     ,
-		"do"    : "did"     ,
-		"freeze": "froze"   ,
-		"panic" : "panicked",
+		"be"     : "was"     ,
+		"do"     : "did"     ,
+		"forgive": "forgave" ,
+		"freeze" : "froze"   ,
+		"panic"  : "panicked",
 	}
 
-	irregular := map[string][]string{
-		"be"    : {"was"  , "been"},
-		"do"    : {"did"  , "done"},
-		"freeze": {"froze", "frozen"},
+	irregular := [][]string{
+		{"be"    , "was"  , "been"  },
+		{"do"    , "did"  , "done"  },
+		{"freeze", "froze", "frozen"},
+		{"give"  , "gave" , "given" },
 	}
 
 	for input, expected := range cases {
