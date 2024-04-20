@@ -87,6 +87,7 @@ func TestPastSimple(t *testing.T) {
 /* Tests presentSimple function. Fails if improper Present Simple form of a verb is returned. */
 func TestPresentSimple(t *testing.T) {
 	cases := map[string]string{
+		"be"     : "is"       ,
 		"dismiss": "dismisses",
 		"dodge"  : "dodges"   ,
 		"learn"  : "learns"   ,

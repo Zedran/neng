@@ -70,6 +70,10 @@ func pastSimple(verb string, irregular map[string][]string) string {
 
 /* Returns Present Simple form of a verb. */
 func presentSimple(verb string) string {
+	if verb == "be" {
+		return "is"
+	}
+
 	if strings.HasSuffix(verb, "y") {
 		return verb[:len(verb) - 1] + "ies"
 	} else if endsWithAny(verb, []string{"ch", "s", "sh", "x"}) {
