@@ -5,8 +5,10 @@ This script extracts words from a WordNet database file
 and formats them for use with neng.
 '''
 
-from re  import findall
-from sys import exit
+from argparse import ArgumentParser
+from os.path  import exists
+from re       import findall
+from sys      import exit
 
 
 RES_DIR        = "res"
@@ -16,6 +18,24 @@ LICENSE_OFFSET = 29
 WORDS_COLUMN   =  4
 
 FILES          = ("data.adj", "data.noun")
+
+
+parser = ArgumentParser(
+    prog="build_res.py",
+    description="This script formats WordNet files for neng. Run in neng's root directory."
+)
+
+parser.add_argument(
+    "-f", "--force", 
+    action="store_true", 
+    help="""\
+    Overwrite a resource file if it exists. \
+    This script uses 'set' builtin to filter out duplicate elements. Their order is lost in the process. \
+    Locking overwrites allows the script to build new files without messing up those already committed to the repository.
+    """
+)
+
+args = parser.parse_args()
 
 
 def filter_apostrophes(lines: [str]) -> [str]:
@@ -144,7 +164,13 @@ def write_file(path: str, lines: [str]):
 
 if __name__ == "__main__":
     for file in FILES:
-        lines = load_file(f"{ORIG_DIR}/{file}")
+        path = f"{ORIG_DIR}/{file}"
+        
+        if exists(path) and not args.force:
+            print(f"{path:<25} exists, skipping.")
+            continue
+
+        lines = load_file(path)
 
         lines = strip_license(lines)
         lines = filter_metadata(lines)
