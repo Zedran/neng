@@ -47,22 +47,22 @@ func gerund(verb string) string {
 
 /* Returns Past Participle form of a verb. */
 func pastParticiple(verb string, verbsIrr [][]string) string {
-	stemIndex := findIrregular(verb, verbsIrr)
-	if stemIndex < 0 {
+	verbLine := findIrregular(verb, verbsIrr)
+	if verbLine == nil {
 		return pastSimpleRegular(verb)
 	}
 	
-	return strings.Replace(verb, verbsIrr[stemIndex][0], verbsIrr[stemIndex][2], 1)
+	return strings.Replace(verb, verbLine[0], verbLine[2], 1)
 }
 
 /* Returns Past Simple form of a verb. */
 func pastSimple(verb string, verbsIrr [][]string) string {
-	stemIndex := findIrregular(verb, verbsIrr)
-	if stemIndex < 0 {
+	verbLine := findIrregular(verb, verbsIrr)
+	if verbLine == nil {
 		return pastSimpleRegular(verb)
 	}
 	
-	return strings.Replace(verb, verbsIrr[stemIndex][0], verbsIrr[stemIndex][1], 1)
+	return strings.Replace(verb, verbLine[0], verbLine[1], 1)
 }
 
 /* Returns Present Simple form of a verb. */

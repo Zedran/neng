@@ -43,10 +43,11 @@ func TestPastParticiple(t *testing.T) {
 	}
 
 	irregular := [][]string{
-		{"be"    , "was"  , "been"  },
-		{"do"    , "did"  , "done"  },
-		{"freeze", "froze", "frozen"},
-		{"give"  , "gave" , "given" },
+		{"be"     , "was"    , "been"    },
+		{"do"     , "did"    , "done"    },
+		{"forgive", "forgave", "forgiven"},
+		{"freeze" , "froze"  , "frozen"  },
+		{"give"   , "gave"   , "given"   },
 	}
 
 	for input, expected := range cases {
@@ -72,10 +73,11 @@ func TestPastSimple(t *testing.T) {
 	}
 
 	irregular := [][]string{
-		{"be"    , "was"  , "been"  },
-		{"do"    , "did"  , "done"  },
-		{"freeze", "froze", "frozen"},
-		{"give"  , "gave" , "given" },
+		{"be"     , "was"    , "been"    },
+		{"do"     , "did"    , "done"    },
+		{"forgive", "forgave", "forgiven"},
+		{"freeze" , "froze"  , "frozen"  },
+		{"give"   , "gave"   , "given"   },
 	}
 
 	for input, expected := range cases {

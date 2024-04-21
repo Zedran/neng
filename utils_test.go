@@ -2,7 +2,7 @@ package neng
 
 import "testing"
 
-/* Tests whether findIrregular returns a correct index. */
+/* Tests whether findIrregular returns a correct verb line. */
 func TestFindIrregular(t *testing.T) {
 	type testCase struct {
 		input             string
@@ -10,26 +10,34 @@ func TestFindIrregular(t *testing.T) {
 		expectedStemIndex int
 	}
 
-	cases := map[string]int{ // irregular stem verbs:
-		"be"     :  0,       // be
-		"do"     :  1,       // do
-		"freeze" :  2,       // freeze
-		"forgive":  3,       // give
-		"panic"  : -1,       // regular verb
+	cases := []string{
+		"be"     ,
+		"do"     ,
+		"freeze" ,
+		"forgive",
 	}
 
 	irregular := [][]string{
 		{"be"     , "was"    , "been"    },
 		{"do"     , "did"    , "done"    },
+		{"forgive", "forgave", "forgiven"},
 		{"freeze" , "froze"  , "frozen"  },
 		{"give"   , "gave"   , "given"   },
 	}
 
-	for input, expected := range cases {
+	for _, input := range cases {
 		output := findIrregular(input, irregular)
 
-		if output != expected {
-			t.Errorf("Failed for '%s': expected '%d', got '%d'", input, expected, output)
+		if output == nil {
+			t.Errorf("Failed for '%s': nil returned", input)
+		} else if output[0] != input {
+			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, input, output)
 		}
+	}
+
+	regularVerb := "panic"
+
+	if output := findIrregular(regularVerb, irregular); output != nil {
+		t.Errorf("Failed for '%s': nil not returned", regularVerb)
 	}
 }
