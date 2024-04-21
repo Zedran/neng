@@ -6,11 +6,8 @@ import "strings"
 type Mod uint16
 
 const (
-	// Do not modify a word
-	MOD_NONE            Mod = iota
-
 	// Create gerund form of a verb (-ing)
-	MOD_GERUND
+	MOD_GERUND         Mod = iota
 
 	// Add Present Simple suffix to a verb (-s, -es)
 	MOD_PRESENT_SIMPLE
