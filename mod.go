@@ -3,7 +3,7 @@ package neng
 import "strings"
 
 // Modification parameter for a generated word
-type Mod uint16
+type Mod uint8
 
 const (
 	// Add Past Simple suffix to a verb or substitute its irregular form
