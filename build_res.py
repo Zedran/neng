@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-'''
+"""
 This script extracts words from a WordNet database file
 and formats them for use with neng.
-'''
+"""
 
 from argparse import ArgumentParser
 from os.path  import exists
@@ -39,9 +39,8 @@ args = parser.parse_args()
 
 
 def compare_verb_lists():
-    '''
-    Lists irregular verbs that are missing from the 'verb' file.
-    '''
+    """Lists irregular verbs that are missing from the 'verb' file."""
+
     with open(f"{RES_DIR}/verb", mode='r') as vf, open(f"{RES_DIR}/verb.irr", mode='r') as ivf:
         verbs   = [v.strip('\n').strip('\r') for v  in vf.readlines() ]
         verbirr = [ln.split(',')[0]          for ln in ivf.readlines()]
@@ -52,7 +51,7 @@ def compare_verb_lists():
 
 
 def filter_apostrophes(lines: [str]) -> [str]:
-    '''Removes words containing apostrophes.'''
+    """Removes words containing apostrophes."""
 
     filtered = []
     for ln in lines:
@@ -63,7 +62,7 @@ def filter_apostrophes(lines: [str]) -> [str]:
 
 
 def filter_compound_words(lines: [str]) -> [str]:
-    '''Removes compound words as they are mostly an adjective-noun pair.'''
+    """Removes compound words as they are mostly an adjective-noun pair."""
 
     filtered = []
     for ln in lines:
@@ -74,13 +73,13 @@ def filter_compound_words(lines: [str]) -> [str]:
 
 
 def filter_duplicates(lines: [str]) -> [str]:
-    '''Removes duplicates, does not preserve order of elements.'''
+    """Removes duplicates, does not preserve order of elements."""
     
     return list(set(lines))
 
 
 def filter_metadata(lines: [str]) -> [str]:
-    '''Gets a list of words in the fifth column of a file, discarding all other information.'''
+    """Gets a list of words in the fifth column of a file, discarding all other information."""
 
     filtered = []
     for ln in lines:
@@ -92,10 +91,10 @@ def filter_metadata(lines: [str]) -> [str]:
 
 
 def filter_multiword_entries(lines: [str]) -> [str]:
-    '''
+    """
     Removes multi-word entries. Not all of them are suited for use
     in the generator and it is difficult to assess them automatically.
-    '''
+    """
 
     filtered = []
     for ln in lines:
@@ -106,7 +105,7 @@ def filter_multiword_entries(lines: [str]) -> [str]:
 
 
 def filter_parentheses(lines: [str]) -> [str]:
-    '''Removes parentheses and their contents.'''
+    """Removes parentheses and content inside of them."""
 
     filtered = []
 
@@ -121,7 +120,7 @@ def filter_parentheses(lines: [str]) -> [str]:
 
 
 def filter_proper_nouns(lines: [str]) -> [str]:
-    '''Removes all proper nouns and adjectives derived from them.'''
+    """Removes all proper nouns and adjectives derived from them."""
 
     filtered = []
     for ln in lines:
@@ -132,7 +131,7 @@ def filter_proper_nouns(lines: [str]) -> [str]:
 
 
 def filter_single_letter_words(lines: [str]) -> [str]:
-    '''Removes single-letter words and empty lines.'''
+    """Removes single-letter words and empty lines."""
 
     filtered = []
     for ln in lines:
@@ -143,7 +142,7 @@ def filter_single_letter_words(lines: [str]) -> [str]:
 
 
 def filter_numbers(lines: [str]) -> [str]:
-    '''Removes words that contain numbers.'''
+    """Removes words that contain numbers."""
 
     filtered = []
     for ln in lines:
@@ -154,7 +153,7 @@ def filter_numbers(lines: [str]) -> [str]:
 
 
 def load_file(path: str) -> [str]:
-    '''Loads lines from the file at path.'''
+    """Loads lines from the file at path."""
 
     try:
         with open(path, mode='r') as f:
@@ -165,12 +164,14 @@ def load_file(path: str) -> [str]:
 
 
 def strip_license(lines: [str]) -> str:
-    '''Removes license at the beginning of a file.'''
+    """Removes license at the beginning of a file."""
 
     return lines[LICENSE_OFFSET:]
 
 
 def write_file(path: str, lines: [str]):
+    """Writes lines to the file at path."""
+
     with open(path, mode='w') as f:
         f.writelines([ln + '\n' for ln in lines])
 
