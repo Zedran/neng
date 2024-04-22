@@ -100,9 +100,9 @@ func pastSimpleRegular(verb string) string {
 			if verb[len(verb) - 1] == 'c' {
 				return verb + "ked"
 			}
+			// Double any other letter
+			return verb + string(verb[len(verb) - 1]) + "ed"
 		}
-		// Double any other letter
-		return verb + string(verb[len(verb) - 1]) + "ed"
 	}
 
 	return verb + "ed"

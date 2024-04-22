@@ -113,12 +113,15 @@ func TestPresentSimple(t *testing.T) {
 /* Tests pastSimpleRegular function. Fails if improper Past Simple form of a regular verb is returned. */
 func TestPastSimpleRegular(t *testing.T) {
 	cases := map[string]string{
-		"agree" : "agreed"  ,
-		"care"  : "cared"   ,
-		"carry" : "carried" ,
-		"panic" : "panicked",
-		"stop"  : "stopped" ,
-		"vex"   : "vexed"   ,
+		"agree"     : "agreed"      ,
+		"care"      : "cared"       ,
+		"carry"     : "carried"     ,
+		"commission": "commissioned",
+		"covenant"  : "covenanted"  ,
+		"ford"      : "forded"      ,
+		"panic"     : "panicked"    ,
+		"stop"      : "stopped"     ,
+		"vex"       : "vexed"       ,
 	}
 
 	for input, expected := range cases {
