@@ -67,8 +67,11 @@ func pastSimple(verb string, verbsIrr [][]string) string {
 
 /* Returns Present Simple form of a verb. */
 func presentSimple(verb string) string {
-	if verb == "be" {
+	switch verb {
+	case "be":
 		return "is"
+	case "have":
+		return "has"
 	}
 
 	if strings.HasSuffix(verb, "y") {

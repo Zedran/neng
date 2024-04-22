@@ -96,6 +96,7 @@ func TestPresentSimple(t *testing.T) {
 		"be"     : "is"       ,
 		"dismiss": "dismisses",
 		"dodge"  : "dodges"   ,
+		"have"   : "has"      ,
 		"learn"  : "learns"   ,
 		"study"  : "studies"  ,
 	}
