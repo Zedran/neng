@@ -38,7 +38,7 @@ func main() {
 
     // <noun> <Simple Past + verb> a <adjective> <noun>
     transf, _ := gen.Phrase("%n %2v a %a %n")
-    fmt.Println(phrase)
+    fmt.Println(transf)
 
     // A single, transformed verb
     mv, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
