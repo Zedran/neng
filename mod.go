@@ -86,6 +86,9 @@ func presentSimple(verb string) string {
 /* Appends Past Simple suffix to a regular verb. */
 func pastSimpleRegular(verb string) string {
 	if isVowel([]rune(verb)[len(verb) - 1]) {
+		if strings.HasSuffix(verb, "o") {
+			return verb + "ed"
+		}
 		return verb + "d"
 	}
 

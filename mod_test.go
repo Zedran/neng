@@ -121,6 +121,7 @@ func TestPastSimpleRegular(t *testing.T) {
 		"ford"      : "forded"      ,
 		"panic"     : "panicked"    ,
 		"stop"      : "stopped"     ,
+		"torpedo"   : "torpedoed"   ,
 		"vex"       : "vexed"       ,
 	}
 
