@@ -50,6 +50,25 @@ func isVowel(r rune) bool {
 	return strings.ContainsRune("aeiou", r)
 }
 
+/*
+	Calls loadWords to read lines from efs, splits those lines into a slices of verb forms
+	and returns [lines][forms]string.
+*/
+func loadIrregularVerbs(path string) ([][]string, error) {
+	lines, err := loadWords(path)
+	if err != nil {
+		return nil, err
+	}
+
+	verbsIrr := make([][]string, len(lines), len(lines))
+
+	for i, ln := range lines {
+		verbsIrr[i] = strings.Split(ln, ",")
+	}
+
+	return verbsIrr, nil
+}
+
 /* Loads a word list from path. Returns error if the file is not found. */
 func loadWords(path string) ([]string, error) {
 	stream, err := efs.ReadFile(path)

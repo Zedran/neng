@@ -17,7 +17,7 @@ ORIG_DIR       = RES_DIR + "/wordnet"
 LICENSE_OFFSET = 29
 WORDS_COLUMN   =  4
 
-FILES          = ("data.adj", "data.noun")
+FILES          = ("data.adj", "data.noun", "data.verb")
 
 
 parser = ArgumentParser(
@@ -36,6 +36,19 @@ parser.add_argument(
 )
 
 args = parser.parse_args()
+
+
+def compare_verb_lists():
+    '''
+    Lists irregular verbs that are missing from the 'verb' file.
+    '''
+    with open(f"{RES_DIR}/verb", mode='r') as vf, open(f"{RES_DIR}/verb.irr", mode='r') as ivf:
+        verbs   = [v.strip('\n').strip('\r') for v  in vf.readlines() ]
+        verbirr = [ln.split(',')[0]          for ln in ivf.readlines()]
+    
+        for iv in verbirr:
+            if not iv in verbs:
+                print(f"'{iv}' missing from main verb list")    
 
 
 def filter_apostrophes(lines: [str]) -> [str]:
@@ -185,3 +198,5 @@ if __name__ == "__main__":
         lines = filter_apostrophes(lines)
 
         write_file(f"{RES_DIR}/{file.split('.')[1]}", lines)
+
+    compare_verb_lists()
