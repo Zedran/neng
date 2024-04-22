@@ -10,6 +10,7 @@ func TestGerund(t *testing.T) {
 		"care"  : "caring"   ,
 		"carry" : "carrying" ,
 		"do"    : "doing"    ,
+		"dye"   : "dyeing"   ,
 		"freeze": "freezing" ,
 		"go"    : "going"    ,
 		"hold"  : "holding"  ,
@@ -17,6 +18,8 @@ func TestGerund(t *testing.T) {
 		"sit"   : "sitting"  ,
 		"stop"  : "stopping" ,
 		"take"  : "taking"   ,
+		"tie"   : "tying"    ,
+		"value" : "valuing"  ,
 		"vex"   : "vexing"   ,
 	}
 

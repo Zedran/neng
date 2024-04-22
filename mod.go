@@ -25,11 +25,20 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 	
-	if strings.HasSuffix(verb, "e") && !isVowel([]rune(verb)[len(verb) - 2]) {
-		// Remove final 'e' if previous letter is consonant
-		return verb[:len(verb) - 1] + "ing"
+	if strings.HasSuffix(verb, "e") {
+		if !isVowel([]rune(verb)[len(verb) - 2]) && verb[len(verb) - 2] != 'y' {
+			// Remove final 'e' if previous letter is consonant other than 'y'
+			return verb[:len(verb) - 1] + "ing"
+		}
+
+		switch verb[len(verb) - 2] {
+		case 'u': // ue
+			return verb[:len(verb) - 1] + "ing"
+		case 'i': // ie
+			return verb[:len(verb) - 2] + "ying"
+		}
 	}
-	
+
 	if !endsWithAny(verb, []string{"h", "w", "x", "y"}) {
 		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
 		if getSequence(verb[len(verb) - 3:]) == "cvc" {
