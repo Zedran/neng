@@ -21,14 +21,32 @@ func main() {
     gen, _ := neng.NewGenerator()
 
     // A single adjective
-    fmt.Println(gen.Adjective())
+    adj, _ := gen.Adjective()
+    fmt.Println(adj)
 
     // A single noun
-    fmt.Println(gen.Noun())
+    n,   _ := gen.Noun()
+    fmt.Println(n)
+
+    // A single verb
+    v,   _ := gen.Verb()
+    fmt.Println(v)
 
     // <adjective> <noun> of the <noun>
     phrase, _ := gen.Phrase("%a %n of the %n")
     fmt.Println(phrase)
+
+    // <noun> <Simple Past + verb> a <adjective> <noun>
+    transf, _ := gen.Phrase("%n %2v a %a %n")
+    fmt.Println(phrase)
+
+    // A single, transformed verb
+    mv, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
+    fmt.Println(mv)
+
+    // Transform an arbitrary word
+    w,  _ := gen.Transform("stash", neng.MOD_GERUND)
+    fmt.Println(w)
 }
 ```
 
@@ -37,18 +55,38 @@ func main() {
 ```text
 bituminous
 carnosaur
+share
 revolutionary conversation of the bacon
+serenade perplexed a stray superbug
+calmed
+stashing
 ```
 
 ## Phrase pattern commands
 
 Escape character: `%`
 
-| Command | Description          |
-|:-------:|:---------------------|
-| `%%`    | Inserts `%` sign     |
-| `%a`    | Inserts an adjective |
-| `%n`    | Inserts a noun       |
+### Insertion
+
+| Symbol | Description                |
+|:------:|:---------------------------|
+| `%%`   | Inserts `%` sign           |
+| `%a`   | Inserts a random adjective |
+| `%n`   | Inserts a random noun      |
+| `%v`   | Inserts a random verb      |
+
+### Transformation
+
+Currently, no compatibility checks have been implemented. It is legal to transform any word with any modifier, it is also possible to assign more than one modifier of the same type to a word.
+
+| Symbol | Compatible with       | Package constant    | Description                |
+|:------:|:---------------------:|:--------------------|:---------------------------|
+| `%2`   | verb                  | MOD_PAST_SIMPLE     | Past Simple (2nd form)     |
+| `%3`   | verb                  | MOD_PAST_PARTICIPLE | Past Participle (3rd form) |
+| `%N`   | verb                  | MOD_PRESENT_SIMPLE  | Present Simple (now)       |
+| `%g`   | verb                  | MOD_GERUND          | Gerund                     |          
+
+Symbols are used to specify transformation parameters for words within a phrase. Package constants are designed to work with "single-word" methods.
 
 ## Attributions
 

@@ -6,7 +6,8 @@ import "testing"
 func TestGetPhrase(t *testing.T) {
 	gen := Generator{
 		adjectives: []string{"revocable"},
-		nouns     : []string{"snowfall"},
+		nouns     : []string{"snowfall" },
+		verbs     : []string{"stash"    },
 	}
 
 	cases := map[string]string{
@@ -14,6 +15,12 @@ func TestGetPhrase(t *testing.T) {
 		"%a %n of %n"   : "revocable snowfall of snowfall",
 		"a n"           : "a n"                           ,
 		"%%a"           : "%a"                            ,
+		"a %2v %n"      : "a stashed snowfall"            ,
+		"%gv"           : "stashing"                      ,
+		"%Nv"           : "stashes"                       ,
+		"%3v"           : "stashed"                       ,
+		"%nn"           : "snowfalln"                     ,
+		"%%"            : "%"                             ,
 	}
 
 	for input, expected := range cases {
