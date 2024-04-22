@@ -6,17 +6,17 @@ import "strings"
 type Mod uint16
 
 const (
-	// Create gerund form of a verb (-ing)
-	MOD_GERUND         Mod = iota
+	// Add Past Simple suffix to a verb or substitute its irregular form
+	MOD_PAST_SIMPLE     Mod = iota
+
+	// Add Past Simple suffix to a regular verb or substitute Past Participle form to an irregular one
+	MOD_PAST_PARTICIPLE
 
 	// Add Present Simple suffix to a verb (-s, -es)
 	MOD_PRESENT_SIMPLE
 
-	// Add Past Simple suffix to a verb or substitute its irregular form
-	MOD_PAST_SIMPLE
-
-	// Add Past Simple suffix to a regular verb or substitute Past Participle form to an irregular one
-	MOD_PAST_PARTICIPLE
+	// Create gerund form of a verb (-ing)
+	MOD_GERUND
 )
 
 /* Returns gerund form of a verb. */
