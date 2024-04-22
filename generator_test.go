@@ -3,7 +3,7 @@ package neng
 import "testing"
 
 /* Tests whether Generator.Phrase correctly parses syntax and generates phrases. */
-func TestGetPhrase(t *testing.T) {
+func TestPhrase(t *testing.T) {
 	gen := Generator{
 		adjectives: []string{"revocable"},
 		nouns     : []string{"snowfall" },
