@@ -90,6 +90,8 @@ Currently, no compatibility checks have been implemented. It is legal to transfo
 
 Symbols are used to specify transformation parameters for words within a phrase. Package constants are designed to work with "single-word" methods.
 
+Some verbs are not correctly transformed into their past forms and gerund. Predicting when to double the final consonant has proven difficult.
+
 ## Attributions
 
 Refer to [NOTICE.md](./NOTICE.md).
