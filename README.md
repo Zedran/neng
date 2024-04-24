@@ -66,16 +66,16 @@ stashing
 
 ## Phrase pattern commands
 
-Escape character: `%`
+**Escape character**: `%`
 
 ### Insertion
 
 | Symbol | Description                |
 |:------:|:---------------------------|
-| `%%`   | Inserts `%` sign           |
-| `%a`   | Inserts a random adjective |
-| `%n`   | Inserts a random noun      |
-| `%v`   | Inserts a random verb      |
+| `%`    | Inserts `%` sign           |
+| `a`    | Inserts a random adjective |
+| `n`    | Inserts a random noun      |
+| `v`    | Inserts a random verb      |
 
 ### Transformation
 
@@ -83,13 +83,13 @@ Currently, no compatibility checks have been implemented. It is legal to transfo
 
 | Symbol | Compatible with       | Package constant      | Description                |
 |:------:|:---------------------:|:----------------------|:---------------------------|
-| `%2`   | verb                  | `MOD_PAST_SIMPLE`     | Past Simple (2nd form)     |
-| `%3`   | verb                  | `MOD_PAST_PARTICIPLE` | Past Participle (3rd form) |
-| `%N`   | verb                  | `MOD_PRESENT_SIMPLE`  | Present Simple (now)       |
-| `%g`   | verb                  | `MOD_GERUND`          | Gerund                     |
-| `%l`   | any                   | `MOD_CASE_LOWER`      | lower case                 |
-| `%t`   | any                   | `MOD_CASE_TITLE`      | Title Case                 |
-| `%u`   | any                   | `MOD_CASE_UPPER`      | UPPER CASE                 |
+| `2`    | verb                  | `MOD_PAST_SIMPLE`     | Past Simple (2nd form)     |
+| `3`    | verb                  | `MOD_PAST_PARTICIPLE` | Past Participle (3rd form) |
+| `N`    | verb                  | `MOD_PRESENT_SIMPLE`  | Present Simple (now)       |
+| `g`    | verb                  | `MOD_GERUND`          | Gerund                     |
+| `l`    | any                   | `MOD_CASE_LOWER`      | lower case                 |
+| `t`    | any                   | `MOD_CASE_TITLE`      | Title Case                 |
+| `u`    | any                   | `MOD_CASE_UPPER`      | UPPER CASE                 |
 
 Symbols are used to specify transformation parameters for words within a phrase. Package constants are designed to work with "single-word" methods.
 
