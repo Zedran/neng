@@ -17,6 +17,15 @@ const (
 
 	// Create gerund form of a verb (-ing)
 	MOD_GERUND
+
+	// Transform a word to lower case
+	MOD_CASE_LOWER
+
+	// Transform a word to Title Case
+	MOD_CASE_TITLE
+
+	// Transform a word to UPPER CASE
+	MOD_CASE_UPPER
 )
 
 /* Returns gerund form of a verb. */

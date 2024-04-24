@@ -9,6 +9,8 @@ type Generator struct {
 	verbs      []string
 
 	verbsIrr   [][]string
+
+	caser      *caser
 }
 
 /*
@@ -21,11 +23,13 @@ func (gen *Generator) Adjective(mods ...Mod) (string, error) {
 }
 
 /*
-   Transform a word according to specified mods. Not all mods are compatible with every 
+   Transforms a word according to specified mods. Not all mods are compatible with every 
    part of speech. Compatibility is not checked. Returns error if undefined Mod value 
    is passed, e.g. (Mod(123), where maximum defined Mod value is 3).
 */
 func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
+	var caseTransformation func(string) string
+
 	for _, m := range mods {
 		switch m {
 		case MOD_GERUND:
@@ -36,9 +40,19 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 			word = pastSimple(word, gen.verbsIrr)
 		case MOD_PAST_PARTICIPLE:
 			word = pastParticiple(word, gen.verbsIrr)
+		case MOD_CASE_LOWER:
+			caseTransformation = gen.caser.toLower
+		case MOD_CASE_TITLE:
+			caseTransformation = gen.caser.toTitle
+		case MOD_CASE_UPPER:
+			caseTransformation = gen.caser.toUpper
 		default:
 			return "", errUndefinedMod
 		}
+	}
+
+	if caseTransformation != nil {
+		word = caseTransformation(word)
 	}
 
 	return word, nil
@@ -126,8 +140,17 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			case 'g':
 				mods = append(mods, MOD_GERUND)
 				continue
+			case 'l':
+				mods = append(mods, MOD_CASE_LOWER)
+				continue
 			case 'n':
 				word, err = gen.Noun(mods...)
+			case 't':
+				mods = append(mods, MOD_CASE_TITLE)
+				continue
+			case 'u':
+				mods = append(mods, MOD_CASE_UPPER)
+				continue
 			case 'v':
 				word, err = gen.Verb(mods...)
 			default:
@@ -192,5 +215,6 @@ func NewGenerator() (*Generator, error) {
 		nouns     :  n,
 		verbs     :  v,
 		verbsIrr  : iv,
+		caser     : newCaser(),
 	}, nil
 }

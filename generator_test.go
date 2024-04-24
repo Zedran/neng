@@ -8,6 +8,7 @@ func TestPhrase(t *testing.T) {
 		adjectives: []string{"revocable"},
 		nouns     : []string{"snowfall" },
 		verbs     : []string{"stash"    },
+		caser     : newCaser()           ,
 	}
 
 	cases := map[string]string{
@@ -21,6 +22,9 @@ func TestPhrase(t *testing.T) {
 		"%3v"           : "stashed"                       ,
 		"%nn"           : "snowfalln"                     ,
 		"%%"            : "%"                             ,
+		"%tNv"          : "Stashes"                       ,
+		"%ta %un of %ln": "Revocable SNOWFALL of snowfall",
+		"%ttua"         : "REVOCABLE"                     ,
 	}
 
 	for input, expected := range cases {
