@@ -2,6 +2,33 @@ package neng
 
 import "testing"
 
+/* Tests getSequence function. */
+func TestGetSequence(t *testing.T) {
+	cases := map[string]string{
+		"agree":      "vccvv",
+		"care":       "cvcv",
+		"carry":      "cvccv",
+		"commission": "cvccvccvvc",
+		"covenant":   "cvcvcvcc",
+		"decoy":      "cvcvc",
+		"ford":       "cvcc",
+		"panic":      "cvcvc",
+		"stop":       "ccvc",
+		"study":      "ccvcv",
+		"torpedo":    "cvccvcv",
+		"vex":        "cvc",
+		"":           "",
+	}
+
+	for input, expected := range cases {
+		output := getSequence(input)
+
+		if output != expected {
+			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
+		}
+	}
+}
+
 /* Tests whether findIrregular returns a correct verb line. */
 func TestFindIrregular(t *testing.T) {
 	cases := []string{

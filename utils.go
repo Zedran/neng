@@ -16,15 +16,18 @@ func endsWithAny(s string, suf []string) bool {
 	return false
 }
 
-/* Returns a representation of vowel-consonant sequence in a word ('word' == 'cvcc'). Required for gerund and Past Simple formation. */
+/* Returns a representation of vowel-consonant sequence in s ('word' == 'cvcc'). */
 func getSequence(s string) string {
 	var (
-		seq strings.Builder
-		sr  = []rune(s)
+		seq    strings.Builder
+		vowels string = "aeiou"
 	)
 
-	for i := range s {
-		if isVowel(sr[i]) {
+	for i, c := range s {
+		if i == len(s)-1 && c == 'y' && !strings.ContainsRune(vowels, rune(s[i-1])) {
+			// A special case of final 'y' following a consonant
+			seq.WriteByte('v')
+		} else if strings.ContainsRune(vowels, c) {
 			seq.WriteByte('v')
 		} else {
 			seq.WriteByte('c')
