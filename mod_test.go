@@ -5,22 +5,22 @@ import "testing"
 /* Tests gerund function. Fails if improper gerund form of a verb is returned. */
 func TestGerund(t *testing.T) {
 	cases := map[string]string{
-		"agree" : "agreeing" ,
-		"be"    : "being"    ,
-		"care"  : "caring"   ,
-		"carry" : "carrying" ,
-		"do"    : "doing"    ,
-		"dye"   : "dyeing"   ,
-		"freeze": "freezing" ,
-		"go"    : "going"    ,
-		"hold"  : "holding"  ,
-		"panic" : "panicking",
-		"sit"   : "sitting"  ,
-		"stop"  : "stopping" ,
-		"take"  : "taking"   ,
-		"tie"   : "tying"    ,
-		"value" : "valuing"  ,
-		"vex"   : "vexing"   ,
+		"agree":  "agreeing",
+		"be":     "being",
+		"care":   "caring",
+		"carry":  "carrying",
+		"do":     "doing",
+		"dye":    "dyeing",
+		"freeze": "freezing",
+		"go":     "going",
+		"hold":   "holding",
+		"panic":  "panicking",
+		"sit":    "sitting",
+		"stop":   "stopping",
+		"take":   "taking",
+		"tie":    "tying",
+		"value":  "valuing",
+		"vex":    "vexing",
 	}
 
 	for input, expected := range cases {
@@ -33,24 +33,24 @@ func TestGerund(t *testing.T) {
 }
 
 /*
-	Tests pastParticiple function. Fails if improper Past Participle form of a verb is returned.
-	Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
+Tests pastParticiple function. Fails if improper Past Participle form of a verb is returned.
+Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
 */
 func TestPastParticiple(t *testing.T) {
 	cases := map[string]string{
-		"be"     : "been"     ,
-		"do"     : "done"     ,
-		"forgive": "forgiven" ,
-		"freeze" : "frozen"   ,
-		"panic"  : "panicked" ,
+		"be":      "been",
+		"do":      "done",
+		"forgive": "forgiven",
+		"freeze":  "frozen",
+		"panic":   "panicked",
 	}
 
 	irregular := [][]string{
-		{"be"     , "was"    , "been"    },
-		{"do"     , "did"    , "done"    },
+		{"be", "was", "been"},
+		{"do", "did", "done"},
 		{"forgive", "forgave", "forgiven"},
-		{"freeze" , "froze"  , "frozen"  },
-		{"give"   , "gave"   , "given"   },
+		{"freeze", "froze", "frozen"},
+		{"give", "gave", "given"},
 	}
 
 	for input, expected := range cases {
@@ -63,24 +63,24 @@ func TestPastParticiple(t *testing.T) {
 }
 
 /*
-	Tests pastSimple function. Fails if improper Past Simple form of a verb is returned.
-	Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
+Tests pastSimple function. Fails if improper Past Simple form of a verb is returned.
+Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
 */
 func TestPastSimple(t *testing.T) {
 	cases := map[string]string{
-		"be"     : "was"     ,
-		"do"     : "did"     ,
-		"forgive": "forgave" ,
-		"freeze" : "froze"   ,
-		"panic"  : "panicked",
+		"be":      "was",
+		"do":      "did",
+		"forgive": "forgave",
+		"freeze":  "froze",
+		"panic":   "panicked",
 	}
 
 	irregular := [][]string{
-		{"be"     , "was"    , "been"    },
-		{"do"     , "did"    , "done"    },
+		{"be", "was", "been"},
+		{"do", "did", "done"},
 		{"forgive", "forgave", "forgiven"},
-		{"freeze" , "froze"  , "frozen"  },
-		{"give"   , "gave"   , "given"   },
+		{"freeze", "froze", "frozen"},
+		{"give", "gave", "given"},
 	}
 
 	for input, expected := range cases {
@@ -92,16 +92,15 @@ func TestPastSimple(t *testing.T) {
 	}
 }
 
-
 /* Tests presentSimple function. Fails if improper Present Simple form of a verb is returned. */
 func TestPresentSimple(t *testing.T) {
 	cases := map[string]string{
-		"be"     : "is"       ,
+		"be":      "is",
 		"dismiss": "dismisses",
-		"dodge"  : "dodges"   ,
-		"have"   : "has"      ,
-		"learn"  : "learns"   ,
-		"study"  : "studies"  ,
+		"dodge":   "dodges",
+		"have":    "has",
+		"learn":   "learns",
+		"study":   "studies",
 	}
 
 	for input, expected := range cases {
@@ -116,16 +115,16 @@ func TestPresentSimple(t *testing.T) {
 /* Tests pastSimpleRegular function. Fails if improper Past Simple form of a regular verb is returned. */
 func TestPastSimpleRegular(t *testing.T) {
 	cases := map[string]string{
-		"agree"     : "agreed"      ,
-		"care"      : "cared"       ,
-		"carry"     : "carried"     ,
+		"agree":      "agreed",
+		"care":       "cared",
+		"carry":      "carried",
 		"commission": "commissioned",
-		"covenant"  : "covenanted"  ,
-		"ford"      : "forded"      ,
-		"panic"     : "panicked"    ,
-		"stop"      : "stopped"     ,
-		"torpedo"   : "torpedoed"   ,
-		"vex"       : "vexed"       ,
+		"covenant":   "covenanted",
+		"ford":       "forded",
+		"panic":      "panicked",
+		"stop":       "stopped",
+		"torpedo":    "torpedoed",
+		"vex":        "vexed",
 	}
 
 	for input, expected := range cases {

@@ -20,7 +20,7 @@ func endsWithAny(s string, suf []string) bool {
 func getSequence(s string) string {
 	var (
 		seq strings.Builder
-		sr = []rune(s)
+		sr  = []rune(s)
 	)
 
 	for i := range s {
@@ -51,8 +51,8 @@ func isVowel(r rune) bool {
 }
 
 /*
-	Calls loadWords to read lines from efs, splits those lines into a slices of verb forms
-	and returns [lines][forms]string.
+Calls loadWords to read lines from efs, splits those lines into a slices of verb forms
+and returns [lines][forms]string.
 */
 func loadIrregularVerbs(path string) ([][]string, error) {
 	lines, err := loadWords(path)

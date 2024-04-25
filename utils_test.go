@@ -11,18 +11,18 @@ func TestFindIrregular(t *testing.T) {
 	}
 
 	cases := []string{
-		"be"     ,
-		"do"     ,
-		"freeze" ,
+		"be",
+		"do",
+		"freeze",
 		"forgive",
 	}
 
 	irregular := [][]string{
-		{"be"     , "was"    , "been"    },
-		{"do"     , "did"    , "done"    },
+		{"be", "was", "been"},
+		{"do", "did", "done"},
 		{"forgive", "forgave", "forgiven"},
-		{"freeze" , "froze"  , "frozen"  },
-		{"give"   , "gave"   , "given"   },
+		{"freeze", "froze", "frozen"},
+		{"give", "gave", "given"},
 	}
 
 	for _, input := range cases {

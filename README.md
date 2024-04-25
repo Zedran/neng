@@ -27,18 +27,18 @@ func main() {
     fmt.Println(adj)
 
     // A single noun
-    n,   _ := gen.Noun()
+    n, _ := gen.Noun()
     fmt.Println(n)
 
     // A single verb
-    v,   _ := gen.Verb()
+    v, _ := gen.Verb()
     fmt.Println(v)
 
     // <adjective> <noun> of the <noun>
     phrase, _ := gen.Phrase("%a %n of the %n")
     fmt.Println(phrase)
 
-    // <noun> <Simple Past + verb> a <adjective> <noun>
+    // <title case + noun> <Simple Past + verb> a <upper case + adjective> <upper case + noun>
     transf, _ := gen.Phrase("%tn %2v a %ua %un")
     fmt.Println(transf)
 
@@ -47,7 +47,7 @@ func main() {
     fmt.Println(mv)
 
     // Transform an arbitrary word
-    w,  _ := gen.Transform("STASH", neng.MOD_GERUND, neng.MOD_CASE_LOWER)
+    w, _ := gen.Transform("STASH", neng.MOD_GERUND, neng.MOD_CASE_LOWER)
     fmt.Println(w)
 }
 ```

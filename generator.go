@@ -7,25 +7,23 @@ type Generator struct {
 	adjectives []string
 	nouns      []string
 	verbs      []string
-
 	verbsIrr   [][]string
-
 	caser      *caser
 }
 
 /*
-	Generates a single random adjective and transforms it according to mods.
-	Returns error if undefined Mod value is passed, e.g. (Mod(123), where
-	maximum defined Mod value is 3).
+Generates a single random adjective and transforms it according to mods.
+Returns error if undefined Mod value is passed, e.g. (Mod(123), where
+maximum defined Mod value is 3).
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.adjectives), mods...)
 }
 
 /*
-   Transforms a word according to specified mods. Not all mods are compatible with every 
-   part of speech. Compatibility is not checked. Returns error if undefined Mod value 
-   is passed, e.g. (Mod(123), where maximum defined Mod value is 3).
+Transforms a word according to specified mods. Not all mods are compatible with every
+part of speech. Compatibility is not checked. Returns error if undefined Mod value
+is passed, e.g. (Mod(123), where maximum defined Mod value is 3).
 */
 func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 	var caseTransformation func(string) string
@@ -59,9 +57,9 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 }
 
 /*
-	Generates a single random noun and transforms it according to mods.
-	Returns error if undefined Mod value is passed, e.g. (Mod(123), where
-	maximum defined Mod value is 3).
+Generates a single random noun and transforms it according to mods.
+Returns error if undefined Mod value is passed, e.g. (Mod(123), where
+maximum defined Mod value is 3).
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.nouns), mods...)
@@ -71,6 +69,7 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 Generates a phrase given the pattern.
 
 Syntax:
+
 	Insertion:
 		%% - inserts '%' sign
 		%a - inserts a random adjective
@@ -87,15 +86,16 @@ Syntax:
 		%u - transform a word to UPPER CASE
 
 Error is returned if:
-	* provided pattern is empty
-	* character other than the above is escaped with a '%' sign
-	* a single '%' ends the pattern
+  - provided pattern is empty
+  - character other than the above is escaped with a '%' sign
+  - a single '%' ends the pattern
 
 Error is not returned if:
-	* incompatible modifier is assigned to the word
-	* duplicate modifier is assigned to the same word
+  - incompatible modifier is assigned to the word
+  - duplicate modifier is assigned to the same word
 
 Example phrase:
+
 	"%tn %2v a %ua %un" may produce "Serenade perplexed a STRAY SUPERBUG"
 */
 func (gen *Generator) Phrase(pattern string) (string, error) {
@@ -104,19 +104,19 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 	}
 
 	var (
-		err     error
+		err error
 
 		// If true, the next character is interpreted as syntax character
 		escaped bool
-		
+
 		// Container for modifiers for the current word
-		mods    []Mod
+		mods []Mod
 
 		// Built phrase
-		phrase  strings.Builder
+		phrase strings.Builder
 
 		// Out of scope container for the generated word
-		word    string
+		word string
 	)
 
 	for i, c := range pattern {
@@ -165,12 +165,12 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 
 			escaped = false
 		} else if c == '%' {
-			if i == len(pattern) - 1 {
+			if i == len(pattern)-1 {
 				return "", errEscapedStrTerm
 			}
 
 			escaped = true
-			mods    = make([]Mod, 0)
+			mods = make([]Mod, 0)
 		} else {
 			phrase.WriteRune(c)
 		}
@@ -180,9 +180,9 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 }
 
 /*
-	Generates a single random verb and transforms it according to mods.
-	Returns error if undefined Mod value is passed, e.g. (Mod(123), where
-	maximum defined Mod value is 3).
+Generates a single random verb and transforms it according to mods.
+Returns error if undefined Mod value is passed, e.g. (Mod(123), where
+maximum defined Mod value is 3).
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.verbs), mods...)
@@ -211,10 +211,10 @@ func NewGenerator() (*Generator, error) {
 	}
 
 	return &Generator{
-		adjectives:  a,
-		nouns     :  n,
-		verbs     :  v,
-		verbsIrr  : iv,
-		caser     : newCaser(),
+		adjectives: a,
+		nouns:      n,
+		verbs:      v,
+		verbsIrr:   iv,
+		caser:      newCaser(),
 	}, nil
 }
