@@ -173,15 +173,16 @@ def write_file(path: str, lines: [str]):
     """Writes lines to the file at path."""
 
     with open(path, mode='w') as f:
-        f.writelines([ln + '\n' for ln in lines])
+        f.writelines('\n'.join(lines))
 
 
 if __name__ == "__main__":
     for file in FILES:
-        path = f"{ORIG_DIR}/{file}"
+        path     = f"{ORIG_DIR}/{file}"
+        new_path = f"{RES_DIR}/{file.split('.')[1]}"
         
-        if exists(path) and not args.force:
-            print(f"{path:<25} exists, skipping.")
+        if exists(new_path) and not args.force:
+            print(f"{new_path:<10} exists, skipping.")
             continue
 
         lines = load_file(path)
@@ -198,6 +199,6 @@ if __name__ == "__main__":
         lines = filter_numbers(lines)
         lines = filter_apostrophes(lines)
 
-        write_file(f"{RES_DIR}/{file.split('.')[1]}", lines)
+        write_file(new_path, lines)
 
     compare_verb_lists()
