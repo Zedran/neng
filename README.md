@@ -1,6 +1,7 @@
 # neng, Non-Extravagant Name Generator
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/Zedran/neng.svg)](https://pkg.go.dev/github.com/Zedran/neng)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Zedran/neng)](https://goreportcard.com/report/github.com/Zedran/neng)
 
 ## Introduction
 
