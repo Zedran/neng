@@ -4,12 +4,6 @@ import "testing"
 
 /* Tests whether findIrregular returns a correct verb line. */
 func TestFindIrregular(t *testing.T) {
-	type testCase struct {
-		input             string
-		expectedBool      bool
-		expectedStemIndex int
-	}
-
 	cases := []string{
 		"be",
 		"do",
