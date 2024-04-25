@@ -60,7 +60,7 @@ func loadIrregularVerbs(path string) ([][]string, error) {
 		return nil, err
 	}
 
-	verbsIrr := make([][]string, len(lines), len(lines))
+	verbsIrr := make([][]string, len(lines))
 
 	for i, ln := range lines {
 		verbsIrr[i] = strings.Split(ln, ",")
