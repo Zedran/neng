@@ -23,46 +23,25 @@ import (
 func main() {
     gen, _ := neng.NewGenerator()
 
-    // A single adjective
-    adj, _ := gen.Adjective()
-    fmt.Println(adj)
-
-    // A single noun
-    n, _ := gen.Noun()
-    fmt.Println(n)
-
-    // A single verb
-    v, _ := gen.Verb()
-    fmt.Println(v)
-
-    // <adjective> <noun> of the <noun>
-    phrase, _ := gen.Phrase("%a %n of the %n")
-    fmt.Println(phrase)
-
-    // <title case + noun> <Simple Past + verb> a <upper case + adjective> <upper case + noun>
-    transf, _ := gen.Phrase("%tn %2v a %ua %un")
-    fmt.Println(transf)
+    // <title case + noun> <Simple Present + verb> a <upper case + adjective> <upper case + noun>
+    phrase, _ := gen.Phrase("%tn %Nv a %ua %un")
 
     // A single, transformed verb
-    mv, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
-    fmt.Println(mv)
+    verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 
-    // Transform an arbitrary word
-    w, _ := gen.Transform("STASH", neng.MOD_GERUND, neng.MOD_CASE_LOWER)
-    fmt.Println(w)
+    // Transforming an arbitrary word
+    word, _ := gen.Transform("STASH", neng.MOD_GERUND, neng.MOD_CASE_LOWER)
+
+    fmt.Printf("Phrase -> %s\nVerb   -> %s\nWord   -> %s\n", phrase, verb, word)
 }
 ```
 
 ### Output
 
 ```text
-bituminous
-carnosaur
-share
-revolutionary conversation of the bacon
-Serenade perplexed a STRAY SUPERBUG
-calmed
-stashing
+Phrase -> share
+Verb   -> Serenade perplexes a STRAY SUPERBUG
+Word   -> stashing
 ```
 
 ## Phrase pattern commands
