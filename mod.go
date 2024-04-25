@@ -50,7 +50,7 @@ func gerund(verb string) string {
 
 	if !endsWithAny(verb, []string{"h", "w", "x", "y"}) {
 		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
-		if getSequence(verb[len(verb)-3:]) == "cvc" {
+		if len(verb) >= 3 && getSequence(verb[len(verb)-3:]) == "cvc" {
 			// If final letter is 'c', add 'k'
 			if verb[len(verb)-1] == 'c' {
 				return verb + "king"
@@ -116,7 +116,7 @@ func pastSimpleRegular(verb string) string {
 
 	if !endsWithAny(verb, []string{"h", "w", "x"}) {
 		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
-		if getSequence(verb[len(verb)-3:]) == "cvc" {
+		if len(verb) >= 3 && getSequence(verb[len(verb)-3:]) == "cvc" {
 			// If final letter is 'c', add 'k'
 			if verb[len(verb)-1] == 'c' {
 				return verb + "ked"
