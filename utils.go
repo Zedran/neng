@@ -48,11 +48,6 @@ func findIrregular(verb string, verbsIrr [][]string) []string {
 	return nil
 }
 
-/* Returns true if r is a vowel. */
-func isVowel(r rune) bool {
-	return strings.ContainsRune("aeiou", r)
-}
-
 /*
 Calls loadWords to read lines from efs, splits those lines into a slices of verb forms
 and returns [lines][forms]string.

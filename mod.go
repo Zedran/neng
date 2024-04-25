@@ -34,8 +34,10 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
+	seq := getSequence(verb)
+
 	if strings.HasSuffix(verb, "e") {
-		if !isVowel([]rune(verb)[len(verb)-2]) && verb[len(verb)-2] != 'y' {
+		if seq[len(seq)-2] == 'c' && verb[len(verb)-2] != 'y' {
 			// Remove final 'e' if previous letter is consonant other than 'y'
 			return verb[:len(verb)-1] + "ing"
 		}
@@ -50,7 +52,7 @@ func gerund(verb string) string {
 
 	if !endsWithAny(verb, []string{"h", "w", "x", "y"}) {
 		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
-		if len(verb) >= 3 && getSequence(verb[len(verb)-3:]) == "cvc" {
+		if len(verb) >= 3 && seq[len(seq)-3:] == "cvc" {
 			// If final letter is 'c', add 'k'
 			if strings.HasSuffix(verb, "c") {
 				return verb + "king"
@@ -103,20 +105,22 @@ func presentSimple(verb string) string {
 
 /* Appends Past Simple suffix to a regular verb. */
 func pastSimpleRegular(verb string) string {
-	if isVowel([]rune(verb)[len(verb)-1]) {
+	if strings.HasSuffix(verb, "y") {
+		return verb[:len(verb)-1] + "ied"
+	}
+
+	seq := getSequence(verb)
+
+	if seq[len(seq)-1] == 'v' {
 		if strings.HasSuffix(verb, "o") {
 			return verb + "ed"
 		}
 		return verb + "d"
 	}
 
-	if strings.HasSuffix(verb, "y") {
-		return verb[:len(verb)-1] + "ied"
-	}
-
 	if !endsWithAny(verb, []string{"h", "w", "x"}) {
 		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
-		if len(verb) >= 3 && getSequence(verb[len(verb)-3:]) == "cvc" {
+		if len(verb) >= 3 && seq[len(seq)-3:] == "cvc" {
 			// If final letter is 'c', add 'k'
 			if strings.HasSuffix(verb, "c") {
 				return verb + "ked"
