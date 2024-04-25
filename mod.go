@@ -52,7 +52,7 @@ func gerund(verb string) string {
 		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
 		if len(verb) >= 3 && getSequence(verb[len(verb)-3:]) == "cvc" {
 			// If final letter is 'c', add 'k'
-			if verb[len(verb)-1] == 'c' {
+			if strings.HasSuffix(verb, "c") {
 				return verb + "king"
 			}
 			// Double any other letter
@@ -118,7 +118,7 @@ func pastSimpleRegular(verb string) string {
 		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
 		if len(verb) >= 3 && getSequence(verb[len(verb)-3:]) == "cvc" {
 			// If final letter is 'c', add 'k'
-			if verb[len(verb)-1] == 'c' {
+			if strings.HasSuffix(verb, "c") {
 				return verb + "ked"
 			}
 			// Double any other letter
