@@ -7,6 +7,7 @@ func TestGerund(t *testing.T) {
 	cases := map[string]string{
 		"agree":  "agreeing",
 		"be":     "being",
+		"buzz":   "buzzing",
 		"care":   "caring",
 		"carry":  "carrying",
 		"do":     "doing",
@@ -96,9 +97,12 @@ func TestPastSimple(t *testing.T) {
 func TestPresentSimple(t *testing.T) {
 	cases := map[string]string{
 		"be":      "is",
+		"buzz":    "buzzes",
 		"dismiss": "dismisses",
 		"dodge":   "dodges",
+		"go":      "goes",
 		"have":    "has",
+		"honey":   "honeys",
 		"learn":   "learns",
 		"study":   "studies",
 	}
@@ -116,6 +120,7 @@ func TestPresentSimple(t *testing.T) {
 func TestPastSimpleRegular(t *testing.T) {
 	cases := map[string]string{
 		"agree":      "agreed",
+		"buzz":       "buzzed",
 		"care":       "cared",
 		"carry":      "carried",
 		"commission": "commissioned",

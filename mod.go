@@ -94,9 +94,13 @@ func presentSimple(verb string) string {
 		return "has"
 	}
 
-	if strings.HasSuffix(verb, "y") {
+	seq := getSequence(verb)
+
+	if strings.HasSuffix(verb, "o") && strings.HasSuffix(seq, "cv") {
+		return verb + "es"
+	} else if strings.HasSuffix(verb, "y") && strings.HasSuffix(seq, "v") {
 		return verb[:len(verb)-1] + "ies"
-	} else if endsWithAny(verb, []string{"ch", "s", "sh", "x"}) {
+	} else if endsWithAny(verb, []string{"ch", "s", "sh", "x", "z"}) {
 		return verb + "es"
 	}
 
