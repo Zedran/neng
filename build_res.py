@@ -173,7 +173,7 @@ def write_file(path: str, lines: [str]):
     """Writes lines to the file at path."""
 
     with open(path, mode='w') as f:
-        f.writelines('\n'.join(lines))
+        f.write('\n'.join(lines))
 
 
 if __name__ == "__main__":
