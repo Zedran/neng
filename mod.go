@@ -34,9 +34,8 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
-	if containsString([]string{"overrun", "quit", "recommit", "underrun"}, verb) {
-		// Seemingly singular exceptions
-		return verb + string(verb[len(verb)-1]) + "ing"
+	if verb == "quit" {
+		return "quitting"
 	}
 
 	wi := getWordInfo(verb)
@@ -63,7 +62,15 @@ func gerund(verb string) string {
 				return verb + "king"
 			}
 
-			if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "on"}) {
+			if containsString([]string{
+				"abet", "beget", "beset", "curvet", "forget", "inset", "offset", "overrun",
+				"recommit", "regret", "reset", "sublet", "typeset", "underrun", "upset",
+			}, verb) {
+				// Seemingly singular exceptions to the rules below
+				return verb + string(verb[len(verb)-1]) + "ing"
+			}
+
+			if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "et", "on", "or"}) {
 				return verb + "ing"
 			}
 
@@ -123,11 +130,6 @@ func presentSimple(verb string) string {
 
 /* Appends Past Simple suffix to a regular verb. */
 func pastSimpleRegular(verb string) string {
-	if containsString([]string{"recommit"}, verb) {
-		// Seemingly singular exceptions
-		return verb + string(verb[len(verb)-1]) + "ed"
-	}
-
 	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "y") {
@@ -152,7 +154,12 @@ func pastSimpleRegular(verb string) string {
 				return verb + "ked"
 			}
 
-			if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "on"}) {
+			if containsString([]string{"abet", "curvet", "recommit", "regret"}, verb) {
+				// Seemingly singular exceptions to the rules below
+				return verb + string(verb[len(verb)-1]) + "ed"
+			}
+
+			if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "et", "on", "or"}) {
 				return verb + "ed"
 			}
 
