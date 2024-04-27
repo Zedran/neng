@@ -30,14 +30,19 @@ const (
 
 /* Returns gerund form of a verb. */
 func gerund(verb string) string {
-	if len(verb) == 2 {
+	if len(verb) <= 2 {
 		return verb + "ing"
 	}
 
-	seq := getSequence(verb)
+	if containsString([]string{"overrun", "quit", "recommit", "underrun"}, verb) {
+		// Seemingly singular exceptions
+		return verb + string(verb[len(verb)-1]) + "ing"
+	}
+
+	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "e") {
-		if seq[len(seq)-2] == 'c' && verb[len(verb)-2] != 'y' {
+		if wi.sequence[len(wi.sequence)-2] == 'c' && verb[len(verb)-2] != 'y' {
 			// Remove final 'e' if previous letter is consonant other than 'y'
 			return verb[:len(verb)-1] + "ing"
 		}
@@ -51,12 +56,21 @@ func gerund(verb string) string {
 	}
 
 	if !endsWithAny(verb, []string{"h", "w", "x", "y"}) {
-		if strings.HasSuffix(seq, "cvc") {
+		if strings.HasSuffix(wi.sequence, "cvc") {
 			// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
 			if strings.HasSuffix(verb, "c") {
 				// If final letter is 'c', add 'k' instead
 				return verb + "king"
 			}
+
+			if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "on"}) {
+				return verb + "ing"
+			}
+
+			if wi.sylCount > 2 {
+				return verb + "ing"
+			}
+
 			// Double any other letter
 			return verb + string(verb[len(verb)-1]) + "ing"
 		}
@@ -109,13 +123,21 @@ func presentSimple(verb string) string {
 
 /* Appends Past Simple suffix to a regular verb. */
 func pastSimpleRegular(verb string) string {
-	if strings.HasSuffix(verb, "y") {
-		return verb[:len(verb)-1] + "ied"
+	if containsString([]string{"recommit"}, verb) {
+		// Seemingly singular exceptions
+		return verb + string(verb[len(verb)-1]) + "ed"
 	}
 
-	seq := getSequence(verb)
+	wi := getWordInfo(verb)
 
-	if strings.HasSuffix(seq, "v") {
+	if strings.HasSuffix(verb, "y") {
+		if strings.HasSuffix(wi.sequence, "v") {
+			return verb[:len(verb)-1] + "ied"
+		}
+		return verb + "ed"
+	}
+
+	if strings.HasSuffix(wi.sequence, "v") {
 		if strings.HasSuffix(verb, "o") {
 			return verb + "ed"
 		}
@@ -123,12 +145,22 @@ func pastSimpleRegular(verb string) string {
 	}
 
 	if !endsWithAny(verb, []string{"h", "w", "x"}) {
-		if strings.HasSuffix(seq, "cvc") {
+		if strings.HasSuffix(wi.sequence, "cvc") {
 			// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
 			if strings.HasSuffix(verb, "c") {
 				// If final letter is 'c', add 'k' instead
 				return verb + "ked"
 			}
+
+			if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "on"}) {
+				return verb + "ed"
+			}
+
+			if wi.sylCount > 2 {
+				// Do not double if the word is more than 2 syllables long
+				return verb + "ed"
+			}
+
 			// Double any other letter
 			return verb + string(verb[len(verb)-1]) + "ed"
 		}

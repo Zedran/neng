@@ -5,6 +5,61 @@ import (
 	"strings"
 )
 
+/* Returns true if s is in sl. */
+func containsString(sl []string, s string) bool {
+	for _, e := range sl {
+		if e == s {
+			return true
+		}
+	}
+
+	return false
+}
+
+/*
+Returns number of syllables in s given consonant-vowel sequence seq.
+Accuracy of this function is uncertain, especially for borrowed words (cafe).
+*/
+func countSyllables(s, seq string) int {
+	if len(s) == 0 {
+		return 0
+	}
+
+	var (
+		prevVowel bool
+		count     int
+	)
+
+	for _, sc := range seq {
+		switch sc {
+		case 'v':
+			if !prevVowel {
+				// Diphthongs and long vowels are part of one syllable
+				prevVowel = true
+				count++
+			}
+		default:
+			prevVowel = false
+		}
+	}
+
+	if count > 1 && endsWithAny(s, []string{"eat", "eate", "iate", "uate"}) {
+		// When apparent diphthongs are in fact individual vowels and belong to separate syllables
+		count++
+	}
+
+	if strings.HasSuffix(s, "e") && strings.HasSuffix(seq, "cv") {
+		// A final 'e' preceeded by a consonant (silent 'e') does not constitute the next syllable
+		count--
+	}
+
+	if count == 0 {
+		return 1
+	}
+
+	return count
+}
+
 /* Returns true if s ends with any element of suf slice. */
 func endsWithAny(s string, suf []string) bool {
 	for _, suffix := range suf {
