@@ -17,7 +17,8 @@ ORIG_DIR       = RES_DIR + "/wordnet"
 LICENSE_OFFSET = 29
 WORDS_COLUMN   =  4
 
-FILES          = ("data.adj", "data.noun", "data.verb")
+SOURCE_FILES   = ("data.adj", "data.noun", "data.verb")
+VERB_IRR_FILE  = "verb.irr"
 
 
 parser = ArgumentParser(
@@ -25,29 +26,22 @@ parser = ArgumentParser(
     description="This script formats WordNet files for neng. Run in neng's root directory."
 )
 
-parser.add_argument(
-    "-f", "--force", 
-    action="store_true", 
-    help="""\
-    Overwrite a resource file if it exists. \
-    This script uses 'set' builtin to filter out duplicate elements. Their order is lost in the process. \
-    Locking overwrites allows the script to build new files without messing up those already committed to the repository.
-    """
-)
+parser.add_argument("-f", "--force", action="store_true", help="Overwrite a resource file if it exists.")
 
 args = parser.parse_args()
 
 
-def compare_verb_lists():
-    """Lists irregular verbs that are missing from the 'verb' file."""
+def append_missing_verbirr(lines: [str]) -> [str]:
+    """Append irregular verbs that are missing from the source verb file to the processed list."""
 
-    with open(f"{RES_DIR}/verb", mode='r') as vf, open(f"{RES_DIR}/verb.irr", mode='r') as ivf:
-        verbs   = [v.strip('\n').strip('\r') for v  in vf.readlines() ]
-        verbirr = [ln.split(',')[0]          for ln in ivf.readlines()]
-    
+    with open(f"{RES_DIR}/{VERB_IRR_FILE}", mode='r') as ivf:
+        verbirr = [ln.split(',')[0] for ln in ivf.readlines()]
+
         for iv in verbirr:
-            if not iv in verbs:
-                print(f"'{iv}' missing from main verb list")    
+            if not iv in lines:
+                lines.append(iv)   
+
+    return lines
 
 
 def filter_apostrophes(lines: [str]) -> [str]:
@@ -170,14 +164,16 @@ def strip_license(lines: [str]) -> str:
 
 
 def write_file(path: str, lines: [str]):
-    """Writes lines to the file at path."""
+    """Sorts lines alphabetically and writes them to the file at path."""
+
+    lines.sort()
 
     with open(path, mode='w') as f:
         f.write('\n'.join(lines))
 
 
 if __name__ == "__main__":
-    for file in FILES:
+    for file in SOURCE_FILES:
         path     = f"{ORIG_DIR}/{file}"
         new_path = f"{RES_DIR}/{file.split('.')[1]}"
         
@@ -199,6 +195,7 @@ if __name__ == "__main__":
         lines = filter_numbers(lines)
         lines = filter_apostrophes(lines)
 
-        write_file(new_path, lines)
+        if file == "data.verb":
+            append_missing_verbirr(lines)
 
-    compare_verb_lists()
+        write_file(new_path, lines)

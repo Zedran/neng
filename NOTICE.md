@@ -66,9 +66,5 @@ Source files underwent automated formatting with `build_res.py` script. Below is
 8. Remove compound words
 9. Remove words containing numbers
 10. Remove words containing apostrophes
-
-The following verbs were appended to `res/verb`:
-
-```text
-beseech, chide, jailbreak, quit, reave, shut, slay, split, weep, wreak
-```
+11. Append missing irregular verbs (found in `res/verb.irr`) to the verb list
+12. Sort word lists alphabetically
