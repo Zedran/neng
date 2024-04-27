@@ -34,8 +34,8 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
-	if verb == "quit" {
-		return "quitting"
+	if verb == "quit" || verb == "sic" {
+		return verb + string(verb[len(verb)-1]) + "ing"
 	}
 
 	wi := getWordInfo(verb)
@@ -130,6 +130,10 @@ func presentSimple(verb string) string {
 
 /* Appends past tense suffix to a regular verb. */
 func pastRegular(verb string) string {
+	if verb == "sic" {
+		return verb + string(verb[len(verb)-1]) + "ed"
+	}
+
 	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "y") {
