@@ -5,10 +5,11 @@ This script extracts words from a WordNet database file
 and formats them for use with neng.
 """
 
-from argparse import ArgumentParser
-from os.path  import exists
-from re       import findall
-from sys      import exit
+from argparse         import ArgumentParser
+from better_profanity import profanity
+from os.path          import exists
+from re               import findall
+from sys              import exit
 
 
 RES_DIR        = "res"
@@ -23,10 +24,12 @@ VERB_IRR_FILE  = "verb.irr"
 
 parser = ArgumentParser(
     prog="build_res.py",
-    description="This script formats WordNet files for neng. Run in neng's root directory."
+    description="This script formats WordNet files for neng. Run in neng's root directory.."
 )
 
 parser.add_argument("-f", "--force", action="store_true", help="Overwrite a resource file if it exists.")
+parser.add_argument("-g", "--generate-filters", action="store_true", help="Generate mature language filters instead of resource files.")
+parser.add_argument("-m", "--filter-mature", action="store_true", help="Generate resource files, filtering it against filter files.")
 
 args = parser.parse_args()
 
@@ -70,6 +73,17 @@ def filter_duplicates(lines: [str]) -> [str]:
     """Removes duplicates, does not preserve order of elements."""
     
     return list(set(lines))
+
+
+def censor_lines(lines: [str], censored: [str]) -> [str]:
+    """Returns lines filtered against censored list."""
+
+    filtered = []
+    for ln in lines:
+        if ln not in censored:
+            filtered.append(ln)
+    
+    return filtered
 
 
 def filter_metadata(lines: [str]) -> [str]:
@@ -146,15 +160,51 @@ def filter_numbers(lines: [str]) -> [str]:
     return filtered
 
 
+def get_mature_language(lines: [str]) -> [str]:
+    """Returns mature language found in lines."""
+
+    censored = []
+    for ln in lines:
+        if profanity.contains_profanity(ln):
+            censored.append(ln)
+
+    return censored
+
+
 def load_file(path: str) -> [str]:
     """Loads lines from the file at path."""
 
     try:
         with open(path, mode='r') as f:
-            return f.readlines()
+            return [ln.strip('\r').strip('\n') for ln in f.readlines()]
     except FileNotFoundError:
         print(f"{path} does not exist")
         exit(1)
+
+
+def load_filter_file(path: str) -> [str]:
+    """
+    Attempts to load filter at path. If it does not exist, attempts to load automatically generated filter file ('path.auto').
+    If filter is found, its content is returned. Otherwise, the scripts terminates with a message.
+    """
+
+    lines = []
+    
+    try:
+        f = open(path, mode='r')
+        print(f"found {path}. Applying.")
+    except FileNotFoundError:
+        try:
+            f = open(f"{path}.auto", mode='r')
+            print(f"found {path}.auto. Applying.")
+        except FileNotFoundError:
+            print(f"Filter '{path}' not found. Was it generated?")
+            exit(1)
+
+    lines = [ln.strip('\r').strip('\n') for ln in f.readlines()]
+    f.close()
+
+    return lines
 
 
 def strip_license(lines: [str]) -> str:
@@ -196,6 +246,19 @@ if __name__ == "__main__":
         lines = filter_apostrophes(lines)
 
         if file == "data.verb":
-            append_missing_verbirr(lines)
+            lines = append_missing_verbirr(lines)
 
-        write_file(new_path, lines)
+        if args.generate_filters:
+            censored = get_mature_language(lines)
+
+            fname = f"{new_path}.filter.auto"
+            write_file(fname, censored)
+
+            print(f"'{fname}' generated. Review and rename it '{fname.strip(".auto")}' or leave it as is and run the script again with '-m' to apply it.")
+        elif args.filter_mature:
+            censored = load_filter_file(f"{new_path}.filter")
+            lines    = censor_lines(lines, censored)
+
+            write_file(new_path, lines)
+        else:
+            write_file(new_path, lines)
