@@ -169,7 +169,7 @@ func TestPastSimpleRegular(t *testing.T) {
 	}
 
 	for input, expected := range cases {
-		output := pastSimpleRegular(input)
+		output := pastRegular(input)
 
 		if output != expected {
 			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)

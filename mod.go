@@ -90,7 +90,7 @@ func gerund(verb string) string {
 func pastParticiple(verb string, verbsIrr [][]string) string {
 	verbLine := findIrregular(verb, verbsIrr)
 	if verbLine == nil {
-		return pastSimpleRegular(verb)
+		return pastRegular(verb)
 	}
 
 	return strings.Replace(verb, verbLine[0], verbLine[2], 1)
@@ -100,7 +100,7 @@ func pastParticiple(verb string, verbsIrr [][]string) string {
 func pastSimple(verb string, verbsIrr [][]string) string {
 	verbLine := findIrregular(verb, verbsIrr)
 	if verbLine == nil {
-		return pastSimpleRegular(verb)
+		return pastRegular(verb)
 	}
 
 	return strings.Replace(verb, verbLine[0], verbLine[1], 1)
@@ -128,8 +128,8 @@ func presentSimple(verb string) string {
 	return verb + "s"
 }
 
-/* Appends Past Simple suffix to a regular verb. */
-func pastSimpleRegular(verb string) string {
+/* Appends past tense suffix to a regular verb. */
+func pastRegular(verb string) string {
 	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "y") {
