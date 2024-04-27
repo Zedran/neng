@@ -32,7 +32,7 @@ args = parser.parse_args()
 
 
 def append_missing_verbirr(lines: [str]) -> [str]:
-    """Append irregular verbs that are missing from the source verb file to the processed list."""
+    """Appends irregular verbs that are missing from the source verb file to the processed list."""
 
     with open(f"{RES_DIR}/{VERB_IRR_FILE}", mode='r') as ivf:
         verbirr = [ln.split(',')[0] for ln in ivf.readlines()]
