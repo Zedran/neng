@@ -28,6 +28,38 @@ const (
 	MOD_CASE_UPPER
 )
 
+/*
+Handles past tense and gerund transformations for verbs ending with consonant-vowel-consonant sequence. Takes a number of arguments:
+
+- tenseEnding: '-ing' or '-ed'
+- wi: wordInfo created during earlier processing steps
+- wordExceptions: words that do not conform to transformation rules based on syllable count and verb endings
+*/
+func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) string {
+	if strings.HasSuffix(verb, "c") {
+		// If final letter is 'c', add 'k' before tenseEnding
+		return verb + "k" + tenseEnding
+	}
+
+	if containsString(wordExceptions, verb) {
+		// Double the final consonant if verb is an exception to the rules below
+		return verb + string(verb[len(verb)-1]) + tenseEnding
+	}
+
+	if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "et", "on", "or"}) {
+		// Do not double the final consonant of bisyllabic verbs with specific endings
+		return verb + tenseEnding
+	}
+
+	if wi.sylCount > 2 {
+		// Do not double the final consonant of verbs consisting of more than 2 syllables
+		return verb + tenseEnding
+	}
+
+	// Double the final consonant of any other verb
+	return verb + string(verb[len(verb)-1]) + tenseEnding
+}
+
 /* Returns gerund form of a verb. */
 func gerund(verb string) string {
 	if len(verb) <= 2 {
@@ -59,30 +91,10 @@ func gerund(verb string) string {
 	}
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
-		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
-		if strings.HasSuffix(verb, "c") {
-			// If final letter is 'c', add 'k' instead
-			return verb + "king"
-		}
-
-		if containsString([]string{
+		return handleCVC(verb, "ing", wi, []string{
 			"abet", "beget", "beset", "curvet", "forget", "inset", "offset", "overrun",
 			"recommit", "regret", "reset", "sublet", "typeset", "underrun", "upset",
-		}, verb) {
-			// Seemingly singular exceptions to the rules below
-			return verb + string(verb[len(verb)-1]) + "ing"
-		}
-
-		if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "et", "on", "or"}) {
-			return verb + "ing"
-		}
-
-		if wi.sylCount > 2 {
-			return verb + "ing"
-		}
-
-		// Double any other letter
-		return verb + string(verb[len(verb)-1]) + "ing"
+		})
 	}
 
 	return verb + "ing"
@@ -157,28 +169,7 @@ func pastRegular(verb string) string {
 	}
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
-		// Double the consonant if the sequence of final letters is 'consonant-vowel-consonant'
-		if strings.HasSuffix(verb, "c") {
-			// If final letter is 'c', add 'k' instead
-			return verb + "ked"
-		}
-
-		if containsString([]string{"abet", "curvet", "recommit", "regret"}, verb) {
-			// Seemingly singular exceptions to the rules below
-			return verb + string(verb[len(verb)-1]) + "ed"
-		}
-
-		if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "et", "on", "or"}) {
-			return verb + "ed"
-		}
-
-		if wi.sylCount > 2 {
-			// Do not double if the word is more than 2 syllables long
-			return verb + "ed"
-		}
-
-		// Double any other letter
-		return verb + string(verb[len(verb)-1]) + "ed"
+		return handleCVC(verb, "ed", wi, []string{"abet", "curvet", "recommit", "regret"})
 	}
 
 	return verb + "ed"
