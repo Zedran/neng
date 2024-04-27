@@ -49,7 +49,7 @@ func countSyllables(s, seq string) int {
 	}
 
 	if strings.HasSuffix(s, "e") && strings.HasSuffix(seq, "cv") {
-		// A final 'e' preceeded by a consonant (silent 'e') does not constitute the next syllable
+		// A final 'e' preceded by a consonant (silent 'e') does not constitute the next syllable
 		count--
 	}
 
