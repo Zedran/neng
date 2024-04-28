@@ -107,7 +107,7 @@ func pastParticiple(verb string, verbsIrr [][]string) string {
 		return pastRegular(verb)
 	}
 
-	return strings.Replace(verb, verbLine[0], verbLine[2], 1)
+	return verbLine[2]
 }
 
 /* Returns Past Simple form of a verb. */
@@ -117,7 +117,7 @@ func pastSimple(verb string, verbsIrr [][]string) string {
 		return pastRegular(verb)
 	}
 
-	return strings.Replace(verb, verbLine[0], verbLine[1], 1)
+	return verbLine[1]
 }
 
 /* Returns Present Simple form of a verb. */
