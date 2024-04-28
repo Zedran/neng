@@ -2,13 +2,42 @@ package neng
 
 import "testing"
 
+/* Tests NewGenerator function. Fails if providing an empty list or nil does not trigger an error. */
+func TestNewGenerator(t *testing.T) {
+	type testCase struct {
+		adj, noun, verb []string
+		goodCase        bool
+	}
+
+	cases := []testCase{
+		{[]string{"adj"}, []string{"noun"}, []string{"verb"}, true},
+		{[]string{"adj", "adj2"}, []string{"noun"}, []string{"verb"}, true},
+		{[]string{"adj"}, []string{"noun"}, []string{}, false},
+		{[]string{"adj"}, nil, []string{"verb"}, false},
+	}
+
+	for _, c := range cases {
+		_, err := NewGenerator(c.adj, c.noun, c.verb)
+
+		switch c.goodCase {
+		case true:
+			if err != nil {
+				t.Errorf("Failed for '%v': NewGenerator returned an error: %s", c, err.Error())
+			}
+		default:
+			if err == nil {
+				t.Errorf("Failed for '%v': NewGenerator did not return an error.", c)
+			}
+		}
+	}
+}
+
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
 func TestPhrase(t *testing.T) {
-	gen := Generator{
-		adjectives: []string{"revocable"},
-		nouns:      []string{"snowfall"},
-		verbs:      []string{"stash"},
-		caser:      newCaser(),
+	gen, err := NewGenerator([]string{"revocable"}, []string{"snowfall"}, []string{"stash"})
+	if err != nil {
+		t.Errorf("Failed: NewGenerator returned an error: %s", err.Error())
+		t.FailNow()
 	}
 
 	cases := map[string]string{

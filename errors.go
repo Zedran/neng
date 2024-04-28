@@ -3,6 +3,9 @@ package neng
 import "errors"
 
 var (
+	// Error returned by NewGenerator if one or more of the user-provided lists are nil
+	errEmptyLists error = errors.New("one or more of the provided word lists are nil")
+
 	// Error returned by Generator.Phrase, if pattern is empty
 	errEmptyPattern error = errors.New("provided pattern is empty")
 

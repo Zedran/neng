@@ -188,8 +188,8 @@ func (gen *Generator) Verb(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.verbs), mods...)
 }
 
-/* Returns a new Generator. */
-func NewGenerator() (*Generator, error) {
+/* Returns a new Generator with default word lists. */
+func DefaultGenerator() (*Generator, error) {
 	a, err := loadWords("res/adj")
 	if err != nil {
 		return nil, err
@@ -205,15 +205,24 @@ func NewGenerator() (*Generator, error) {
 		return nil, err
 	}
 
+	return NewGenerator(a, n, v)
+}
+
+/* Initializes a new Generator with provided lists. Returns error if any of the lists is empty. */
+func NewGenerator(adj, noun, verb []string) (*Generator, error) {
+	if len(adj) == 0 || len(noun) == 0 || len(verb) == 0 {
+		return nil, errEmptyLists
+	}
+
 	iv, err := loadIrregularVerbs("res/verb.irr")
 	if err != nil {
 		return nil, err
 	}
 
 	return &Generator{
-		adjectives: a,
-		nouns:      n,
-		verbs:      v,
+		adjectives: adj,
+		nouns:      noun,
+		verbs:      verb,
 		verbsIrr:   iv,
 		caser:      newCaser(),
 	}, nil
