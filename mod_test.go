@@ -10,6 +10,7 @@ func TestGerund(t *testing.T) {
 		"be":        "being",
 		"become":    "becoming",
 		"begin":     "beginning",
+		"blossom":   "blossoming",
 		"buzz":      "buzzing",
 		"care":      "caring",
 		"carry":     "carrying",
@@ -24,6 +25,7 @@ func TestGerund(t *testing.T) {
 		"forget":    "forgetting",
 		"freeze":    "freezing",
 		"go":        "going",
+		"glom":      "glomming",
 		"hold":      "holding",
 		"interpret": "interpreting",
 		"iron":      "ironing",
@@ -50,6 +52,7 @@ func TestGerund(t *testing.T) {
 		"underrun":  "underrunning",
 		"value":     "valuing",
 		"vex":       "vexing",
+		"zoom":      "zooming",
 	}
 
 	for input, expected := range cases {
@@ -150,6 +153,7 @@ func TestPastSimpleRegular(t *testing.T) {
 	cases := map[string]string{
 		"abet":       "abetted",
 		"agree":      "agreed",
+		"blossom":    "blossomed",
 		"buzz":       "buzzed",
 		"care":       "cared",
 		"carry":      "carried",
@@ -162,6 +166,7 @@ func TestPastSimpleRegular(t *testing.T) {
 		"interpret":  "interpreted",
 		"iron":       "ironed",
 		"ford":       "forded",
+		"glom":       "glommed",
 		"panic":      "panicked",
 		"recommit":   "recommitted",
 		"reposit":    "reposited",
@@ -172,6 +177,7 @@ func TestPastSimpleRegular(t *testing.T) {
 		"tighten":    "tightened",
 		"torpedo":    "torpedoed",
 		"vex":        "vexed",
+		"zoom":       "zoomed",
 	}
 
 	for input, expected := range cases {
