@@ -86,7 +86,12 @@ func gerund(verb string) string {
 		}
 	}
 
-	if endsWithAny(verb, []string{"h", "w", "x", "y"}) {
+	if endsWithAny(verb, []string{"h", "w", "x", "s", "y"}) {
+		if strings.HasSuffix(verb, "gas") {
+			// Double the ending of 'gas' and its derivatives
+			return verb + string(verb[len(verb)-1]) + "ing"
+		}
+
 		return verb + "ing"
 	}
 
@@ -164,7 +169,12 @@ func pastRegular(verb string) string {
 		return verb + "d"
 	}
 
-	if endsWithAny(verb, []string{"h", "w", "x"}) {
+	if endsWithAny(verb, []string{"h", "w", "s", "x"}) {
+		if strings.HasSuffix(verb, "gas") {
+			// Double the ending of 'gas' and its derivatives
+			return verb + string(verb[len(verb)-1]) + "ed"
+		}
+
 		return verb + "ed"
 	}
 
