@@ -13,8 +13,7 @@ type Generator struct {
 
 /*
 Generates a single random adjective and transforms it according to mods.
-Returns error if undefined Mod value is passed, e.g. (Mod(123), where
-maximum defined Mod value is 3).
+Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.adjectives), mods...)
@@ -22,8 +21,7 @@ func (gen *Generator) Adjective(mods ...Mod) (string, error) {
 
 /*
 Transforms a word according to specified mods. Not all mods are compatible with every
-part of speech. Compatibility is not checked. Returns error if undefined Mod value
-is passed, e.g. (Mod(123), where maximum defined Mod value is 3).
+part of speech. Compatibility is not checked. Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 	var caseTransformation func(string) string
@@ -58,8 +56,7 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 
 /*
 Generates a single random noun and transforms it according to mods.
-Returns error if undefined Mod value is passed, e.g. (Mod(123), where
-maximum defined Mod value is 3).
+Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.nouns), mods...)
@@ -181,8 +178,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 
 /*
 Generates a single random verb and transforms it according to mods.
-Returns error if undefined Mod value is passed, e.g. (Mod(123), where
-maximum defined Mod value is 3).
+Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.verbs), mods...)

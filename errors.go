@@ -12,7 +12,7 @@ var (
 	// Error returned by Generator.Phrase, if pattern ends with '%'
 	errEscapedStrTerm error = errors.New("escape character at pattern termination")
 
-	// Error returned by Generator.Transform, if unknown modifier value is received (e.g. Mod(123) is passed)
+	// Error returned by Generator.Transform, if undefined modifier value is received, e.g. Mod(123)
 	errUndefinedMod error = errors.New("undefined modifier")
 
 	// Error returned by Generator.Phrase, if pattern contains undefined escaped character
