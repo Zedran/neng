@@ -169,7 +169,7 @@ func pastRegular(verb string) string {
 		return verb + "d"
 	}
 
-	if endsWithAny(verb, []string{"h", "w", "s", "x"}) {
+	if endsWithAny(verb, []string{"h", "s", "w", "x"}) {
 		if strings.HasSuffix(verb, "gas") {
 			// Double the ending of 'gas' and its derivatives
 			return verb + string(verb[len(verb)-1]) + "ed"
