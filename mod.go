@@ -104,7 +104,7 @@ func gerund(verb string) string {
 		return handleIt(verb, "ing", wi)
 	}
 
-	if strings.HasSuffix(verb, "e") {
+	if strings.HasSuffix(verb, "e") && verb != "ante" {
 		if wi.sequence[len(wi.sequence)-2] == 'c' && verb[len(verb)-2] != 'y' {
 			// Remove final 'e' if previous letter is consonant other than 'y'
 			return verb[:len(verb)-1] + "ing"
