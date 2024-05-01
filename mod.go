@@ -97,7 +97,7 @@ func gerund(verb string) string {
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
 		return handleCVC(verb, "ing", wi, []string{
-			"abet", "beget", "beset", "curvet", "forget", "inset", "offset", "overrun",
+			"abet", "abhor", "beget", "beset", "curvet", "forget", "inset", "offset", "overrun",
 			"recommit", "regret", "reset", "sublet", "typeset", "underrun", "upset",
 		})
 	}
@@ -183,7 +183,7 @@ func pastRegular(verb string) string {
 	}
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
-		return handleCVC(verb, "ed", wi, []string{"abet", "curvet", "recommit", "regret"})
+		return handleCVC(verb, "ed", wi, []string{"abet", "abhor", "curvet", "recommit", "regret"})
 	}
 
 	return verb + "ed"

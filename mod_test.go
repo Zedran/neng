@@ -6,6 +6,7 @@ import "testing"
 func TestGerund(t *testing.T) {
 	cases := map[string]string{
 		"abet":      "abetting",
+		"abhor":     "abhorring",
 		"agree":     "agreeing",
 		"alibi":     "alibiing",
 		"be":        "being",
@@ -167,6 +168,7 @@ func TestPresentSimple(t *testing.T) {
 func TestPastRegular(t *testing.T) {
 	cases := map[string]string{
 		"abet":       "abetted",
+		"abhor":      "abhorred",
 		"agree":      "agreed",
 		"alibi":      "alibied",
 		"blossom":    "blossomed",
