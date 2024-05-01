@@ -46,9 +46,16 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 		return verb + string(verb[len(verb)-1]) + tenseEnding
 	}
 
-	if wi.sylCount == 2 && endsWithAny(verb, []string{"en", "er", "et", "om", "on", "or"}) {
-		// Do not double the final consonant of bisyllabic verbs with specific endings
-		return verb + tenseEnding
+	if wi.sylCount == 2 {
+		if endsWithAny(verb, []string{"en", "er", "et", "om", "on", "or"}) {
+			// Do not double the final consonant of bisyllabic verbs with specific endings
+			return verb + tenseEnding
+		}
+
+		if containsString([]string{"augur", "murmur", "sulphur"}, verb) {
+			// Do not double the final consonant of bisyllabic exceptions that end with -ur
+			return verb + tenseEnding
+		}
 	}
 
 	if wi.sylCount > 2 {
