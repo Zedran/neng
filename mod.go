@@ -155,6 +155,10 @@ func pastRegular(verb string) string {
 
 	wi := getWordInfo(verb)
 
+	if strings.HasSuffix(verb, "i") {
+		return verb + "ed"
+	}
+
 	if strings.HasSuffix(verb, "y") {
 		if strings.HasSuffix(wi.sequence, "v") {
 			return verb[:len(verb)-1] + "ied"
