@@ -43,7 +43,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 
 	if containsString(wordExceptions, verb) {
 		// Double the final consonant if verb is an exception to the rules below
-		return verb + string(verb[len(verb)-1]) + tenseEnding
+		return doubleFinal(verb, tenseEnding)
 	}
 
 	if wi.sylCount == 2 {
@@ -64,25 +64,25 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 	}
 
 	// Double the final consonant of any other verb
-	return verb + string(verb[len(verb)-1]) + tenseEnding
+	return doubleFinal(verb, tenseEnding)
 }
 
 /* Handles transformation of verbs ending with '-it'. */
 func handleIt(verb, tenseEnding string, wi wordInfo) string {
 	if strings.HasSuffix(wi.sequence, "vvc") {
 		if strings.HasSuffix(verb, "quit") {
-			return verb + string(verb[len(verb)-1]) + tenseEnding
+			return doubleFinal(verb, tenseEnding)
 		}
 		return verb + tenseEnding
 	}
 
 	if wi.sylCount == 1 {
-		return verb + string(verb[len(verb)-1]) + tenseEnding
+		return doubleFinal(verb, tenseEnding)
 	}
 
 	if endsWithAny(verb, []string{"fit", "mit", "wit"}) {
 		if !containsString([]string{"limit", "profit"}, verb) {
-			return verb + string(verb[len(verb)-1]) + tenseEnding
+			return doubleFinal(verb, tenseEnding)
 		}
 	}
 
@@ -96,7 +96,7 @@ func gerund(verb string) string {
 	}
 
 	if verb == "sic" {
-		return verb + string(verb[len(verb)-1]) + "ing"
+		return doubleFinal(verb, "ing")
 	}
 
 	wi := getWordInfo(verb)
@@ -122,7 +122,7 @@ func gerund(verb string) string {
 	if endsWithAny(verb, []string{"h", "w", "x", "s", "y"}) {
 		if strings.HasSuffix(verb, "gas") {
 			// Double the ending of 'gas' and its derivatives
-			return verb + string(verb[len(verb)-1]) + "ing"
+			return doubleFinal(verb, "ing")
 		}
 
 		return verb + "ing"
@@ -183,7 +183,7 @@ func presentSimple(verb string) string {
 /* Appends past tense suffix to a regular verb. */
 func pastRegular(verb string) string {
 	if verb == "sic" {
-		return verb + string(verb[len(verb)-1]) + "ed"
+		return doubleFinal(verb, "ed")
 	}
 
 	wi := getWordInfo(verb)
@@ -213,7 +213,7 @@ func pastRegular(verb string) string {
 	if endsWithAny(verb, []string{"h", "s", "w", "x"}) {
 		if strings.HasSuffix(verb, "gas") {
 			// Double the ending of 'gas' and its derivatives
-			return verb + string(verb[len(verb)-1]) + "ed"
+			return doubleFinal(verb, "ed")
 		}
 
 		return verb + "ed"

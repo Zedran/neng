@@ -60,6 +60,11 @@ func countSyllables(s, seq string) int {
 	return count
 }
 
+/* Doubles the final consonant of a verb and appends tenseEnding to it. */
+func doubleFinal(verb, tenseEnding string) string {
+	return verb + string(verb[len(verb)-1]) + tenseEnding
+}
+
 /* Returns true if s ends with any element of suf slice. */
 func endsWithAny(s string, suf []string) bool {
 	for _, suffix := range suf {
