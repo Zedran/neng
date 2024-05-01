@@ -67,17 +67,43 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 	return verb + string(verb[len(verb)-1]) + tenseEnding
 }
 
+/* Handles transformation of verbs ending with '-it'. */
+func handleIt(verb, tenseEnding string, wi wordInfo) string {
+	if strings.HasSuffix(wi.sequence, "vvc") {
+		if strings.HasSuffix(verb, "quit") {
+			return verb + string(verb[len(verb)-1]) + tenseEnding
+		}
+		return verb + tenseEnding
+	}
+
+	if wi.sylCount == 1 {
+		return verb + string(verb[len(verb)-1]) + tenseEnding
+	}
+
+	if endsWithAny(verb, []string{"fit", "mit", "wit"}) {
+		if !containsString([]string{"limit", "profit"}, verb) {
+			return verb + string(verb[len(verb)-1]) + tenseEnding
+		}
+	}
+
+	return verb + tenseEnding
+}
+
 /* Returns gerund form of a verb. */
 func gerund(verb string) string {
 	if len(verb) <= 2 {
 		return verb + "ing"
 	}
 
-	if verb == "quit" || verb == "sic" {
+	if verb == "sic" {
 		return verb + string(verb[len(verb)-1]) + "ing"
 	}
 
 	wi := getWordInfo(verb)
+
+	if strings.HasSuffix(verb, "it") {
+		return handleIt(verb, "ing", wi)
+	}
 
 	if strings.HasSuffix(verb, "e") {
 		if wi.sequence[len(wi.sequence)-2] == 'c' && verb[len(verb)-2] != 'y' {
@@ -105,7 +131,7 @@ func gerund(verb string) string {
 	if strings.HasSuffix(wi.sequence, "cvc") {
 		return handleCVC(verb, "ing", wi, []string{
 			"abet", "abhor", "anagram", "beget", "beset", "curvet", "forget", "inset", "offset", "overrun",
-			"recommit", "regret", "reset", "sublet", "typeset", "underrun", "upset",
+			"regret", "reset", "sublet", "typeset", "underrun", "upset",
 		})
 	}
 
@@ -166,6 +192,10 @@ func pastRegular(verb string) string {
 		return verb + "ed"
 	}
 
+	if strings.HasSuffix(verb, "it") {
+		return handleIt(verb, "ed", wi)
+	}
+
 	if strings.HasSuffix(verb, "y") {
 		if strings.HasSuffix(wi.sequence, "v") {
 			return verb[:len(verb)-1] + "ied"
@@ -190,7 +220,7 @@ func pastRegular(verb string) string {
 	}
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
-		return handleCVC(verb, "ed", wi, []string{"abet", "abhor", "anagram", "curvet", "recommit", "regret"})
+		return handleCVC(verb, "ed", wi, []string{"abet", "abhor", "anagram", "curvet", "regret"})
 	}
 
 	return verb + "ed"
