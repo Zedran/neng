@@ -118,7 +118,7 @@ func gerund(verb string) string {
 		}
 	}
 
-	if endsWithAny(verb, []string{"h", "w", "x", "s", "y"}) {
+	if endsWithAny(verb, []string{"h", "s", "w", "x", "y"}) {
 		if strings.HasSuffix(verb, "gas") {
 			// Double the ending of 'gas' and its derivatives
 			return doubleFinal(verb, "ing")
