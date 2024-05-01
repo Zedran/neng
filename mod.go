@@ -74,6 +74,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 func handleIt(verb, tenseEnding string, wi wordInfo) string {
 	if strings.HasSuffix(wi.sequence, "vvc") {
 		if strings.HasSuffix(verb, "quit") {
+			// The case of 'acquit' and 'quit'
 			return doubleFinal(verb, tenseEnding)
 		}
 		return verb + tenseEnding
