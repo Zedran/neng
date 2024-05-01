@@ -36,7 +36,10 @@ Handles past tense and gerund transformations for verbs ending with consonant-vo
   - wordExceptions: words whose endings are doubled, regardless of transformation rules based on syllable count and verb endings
 */
 func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) string {
-	if strings.HasSuffix(verb, "c") {
+	if strings.HasSuffix(verb, "c") && verb != "sic" {
+		if strings.HasSuffix(verb, "lyric") {
+			return verb + tenseEnding
+		}
 		// If final letter is 'c', add 'k' before tenseEnding
 		return verb + "k" + tenseEnding
 	}
@@ -93,10 +96,6 @@ func handleIt(verb, tenseEnding string, wi wordInfo) string {
 func gerund(verb string) string {
 	if len(verb) <= 2 {
 		return verb + "ing"
-	}
-
-	if verb == "sic" {
-		return doubleFinal(verb, "ing")
 	}
 
 	wi := getWordInfo(verb)
@@ -182,10 +181,6 @@ func presentSimple(verb string) string {
 
 /* Appends past tense suffix to a regular verb. */
 func pastRegular(verb string) string {
-	if verb == "sic" {
-		return doubleFinal(verb, "ed")
-	}
-
 	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "i") {

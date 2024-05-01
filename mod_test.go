@@ -48,6 +48,7 @@ func TestGerund(t *testing.T) {
 		"jump":      "jumping",
 		"knit":      "knitting",
 		"limit":     "limiting",
+		"lyric":     "lyricing",
 		"murmur":    "murmuring",
 		"occur":     "occurring",
 		"offset":    "offsetting",
@@ -60,6 +61,7 @@ func TestGerund(t *testing.T) {
 		"profit":    "profiting",
 		"rabbit":    "rabbiting",
 		"recommit":  "recommitting",
+		"relyric":   "relyricing",
 		"reposit":   "repositing",
 		"retrofit":  "retrofitting",
 		"shanghai":  "shanghaiing",
@@ -84,6 +86,7 @@ func TestGerund(t *testing.T) {
 		"verdigris": "verdigrising",
 		"vex":       "vexing",
 		"visit":     "visiting",
+		"zinc":      "zincing",
 		"zoom":      "zooming",
 	}
 
@@ -168,11 +171,15 @@ func TestPresentSimple(t *testing.T) {
 		"have":     "has",
 		"honey":    "honeys",
 		"learn":    "learns",
+		"lyric":    "lyrics",
+		"panic":    "panics",
 		"shanghai": "shanghais",
 		"sic":      "sics",
 		"ski":      "skis",
 		"study":    "studies",
+		"talc":     "talcs",
 		"taxi":     "taxis",
+		"zinc":     "zincs",
 	}
 
 	for input, expected := range cases {
@@ -218,6 +225,7 @@ func TestPastRegular(t *testing.T) {
 		"gas":        "gassed",
 		"glom":       "glommed",
 		"limit":      "limited",
+		"lyric":      "lyriced",
 		"murmur":     "murmured",
 		"outwit":     "outwitted",
 		"panic":      "panicked",
@@ -225,6 +233,7 @@ func TestPastRegular(t *testing.T) {
 		"profit":     "profited",
 		"rabbit":     "rabbited",
 		"recommit":   "recommitted",
+		"relyric":    "relyriced",
 		"reposit":    "reposited",
 		"retrofit":   "retrofitted",
 		"shanghai":   "shanghaied",
@@ -243,6 +252,7 @@ func TestPastRegular(t *testing.T) {
 		"verdigris":  "verdigrised",
 		"vex":        "vexed",
 		"visit":      "visited",
+		"zinc":       "zinced",
 		"zoom":       "zoomed",
 	}
 
