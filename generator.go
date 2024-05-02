@@ -7,6 +7,7 @@ type Generator struct {
 	adjectives []string
 	nouns      []string
 	verbs      []string
+	nounsIrr   [][]string
 	verbsIrr   [][]string
 	caser      *caser
 }
@@ -210,6 +211,11 @@ func NewGenerator(adj, noun, verb []string) (*Generator, error) {
 		return nil, errEmptyLists
 	}
 
+	in, err := loadIrregularVerbs("res/noun.irr")
+	if err != nil {
+		return nil, err
+	}
+
 	iv, err := loadIrregularVerbs("res/verb.irr")
 	if err != nil {
 		return nil, err
@@ -219,6 +225,7 @@ func NewGenerator(adj, noun, verb []string) (*Generator, error) {
 		adjectives: adj,
 		nouns:      noun,
 		verbs:      verb,
+		nounsIrr:   in,
 		verbsIrr:   iv,
 		caser:      newCaser(),
 	}, nil
