@@ -69,3 +69,9 @@ Source files underwent automated formatting with `build_res.py` script. Below is
 11. Append missing irregular verbs (found in `res/verb.irr`) to the verb list
 12. Filter mature and controversial language. Filter files were created with [better_profanity](https://github.com/snguyenthanh/better_profanity) Python package and then edited manually to include more words and remove false positives
 13. Sort word lists alphabetically
+
+The following manual modifications were carried out:
+
+```text
+noun: cutlas -> cutlass
+```
