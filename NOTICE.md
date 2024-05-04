@@ -74,4 +74,5 @@ The following manual modifications were carried out:
 
 ```text
 noun: cutlas -> cutlass
+deletions: cgs, cummings, deVries
 ```
