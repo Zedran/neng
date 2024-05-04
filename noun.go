@@ -13,7 +13,7 @@ func plural(noun string, nounsIrr [][]string) string {
 		return noun
 	}
 
-	if endsWithAny(noun, []string{"ff", "tto"}) {
+	if endsWithAny(noun, []string{"ff", "io", "tto"}) {
 		return noun + "s"
 	}
 

@@ -40,6 +40,7 @@ func TestPlural(t *testing.T) {
 		"photo":         "photos",
 		"potato":        "potatoes",
 		"quartz":        "quartzes",
+		"radio":         "radios",
 		"ray":           "rays",
 		"roof":          "roofs",
 		"sesbania":      "sesbanias",
