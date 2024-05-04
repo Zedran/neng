@@ -235,12 +235,12 @@ func NewGenerator(adj, noun, verb []string) (*Generator, error) {
 		return nil, errEmptyLists
 	}
 
-	in, err := loadIrregularVerbs("res/noun.irr")
+	in, err := loadIrregularWords("res/noun.irr")
 	if err != nil {
 		return nil, err
 	}
 
-	iv, err := loadIrregularVerbs("res/verb.irr")
+	iv, err := loadIrregularWords("res/verb.irr")
 	if err != nil {
 		return nil, err
 	}

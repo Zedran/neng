@@ -97,11 +97,11 @@ func getSequence(s string) string {
 	return seq.String()
 }
 
-/* For irregular verbs, returns slice with verb forms from verbsIrr. For regular verbs, returns nil. */
-func findIrregular(verb string, verbsIrr [][]string) []string {
-	for _, iv := range verbsIrr {
-		if iv[0] == verb {
-			return iv
+/* For irregular words, returns slice with word forms from wordsIrr. For regular words, returns nil. */
+func findIrregular(word string, wordsIrr [][]string) []string {
+	for _, iw := range wordsIrr {
+		if iw[0] == word {
+			return iw
 		}
 	}
 
@@ -109,22 +109,22 @@ func findIrregular(verb string, verbsIrr [][]string) []string {
 }
 
 /*
-Calls loadWords to read lines from efs, splits those lines into a slices of verb forms
+Calls loadWords to read lines from efs, splits those lines into slices of word forms
 and returns [lines][forms]string.
 */
-func loadIrregularVerbs(path string) ([][]string, error) {
+func loadIrregularWords(path string) ([][]string, error) {
 	lines, err := loadWords(path)
 	if err != nil {
 		return nil, err
 	}
 
-	verbsIrr := make([][]string, len(lines))
+	wordsIrr := make([][]string, len(lines))
 
 	for i, ln := range lines {
-		verbsIrr[i] = strings.Split(ln, ",")
+		wordsIrr[i] = strings.Split(ln, ",")
 	}
 
-	return verbsIrr, nil
+	return wordsIrr, nil
 }
 
 /* Loads a word list from path. Returns error if the file is not found. */
