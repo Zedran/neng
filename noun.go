@@ -34,7 +34,7 @@ func plural(noun string, nounsIrr [][]string) string {
 		return noun[:len(noun)-2] + "i"
 	}
 
-	wi := getWordInfo(noun)
+	seq := getSequence(noun)
 
 	switch noun[len(noun)-1] {
 	case 'f':
@@ -42,11 +42,11 @@ func plural(noun string, nounsIrr [][]string) string {
 	case 'o', 's', 'x':
 		return noun + "es"
 	case 'y':
-		if strings.HasSuffix(wi.sequence, "v") {
+		if strings.HasSuffix(seq, "v") {
 			return noun[:len(noun)-1] + "ies"
 		}
 	case 'z':
-		if strings.HasSuffix(wi.sequence, "vc") {
+		if strings.HasSuffix(seq, "vc") {
 			return doubleFinal(noun, "es")
 		}
 		return noun + "es"
