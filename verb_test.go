@@ -162,32 +162,46 @@ func TestPastSimple(t *testing.T) {
 
 /* Tests presentSimple function. Fails if improper Present Simple form of a verb is returned. */
 func TestPresentSimple(t *testing.T) {
-	cases := map[string]string{
-		"alibi":    "alibis",
-		"be":       "is",
-		"buzz":     "buzzes",
-		"dismiss":  "dismisses",
-		"dodge":    "dodges",
-		"go":       "goes",
-		"have":     "has",
-		"honey":    "honeys",
-		"learn":    "learns",
-		"lyric":    "lyrics",
-		"panic":    "panics",
-		"shanghai": "shanghais",
-		"sic":      "sics",
-		"ski":      "skis",
-		"study":    "studies",
-		"talc":     "talcs",
-		"taxi":     "taxis",
-		"zinc":     "zincs",
+	type testCase struct {
+		input    string
+		expected string
+		plural   bool
 	}
 
-	for input, expected := range cases {
-		output := presentSimple(input)
+	cases := []testCase{
+		{"alibi", "alibis", false},
+		{"be", "is", false},
+		{"be", "are", true},
+		{"buzz", "buzzes", false},
+		{"dismiss", "dismisses", false},
+		{"dodge", "dodges", false},
+		{"go", "goes", false},
+		{"have", "has", false},
+		{"have", "have", true},
+		{"honey", "honeys", false},
+		{"learn", "learns", false},
+		{"learn", "learn", true},
+		{"lyric", "lyrics", false},
+		{"panic", "panics", false},
+		{"shanghai", "shanghais", false},
+		{"sic", "sics", false},
+		{"ski", "skis", false},
+		{"study", "studies", false},
+		{"talc", "talcs", false},
+		{"taxi", "taxis", false},
+		{"zinc", "zincs", false},
+	}
 
-		if output != expected {
-			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
+	for _, c := range cases {
+		output := presentSimple(c.input, c.plural)
+
+		if output != c.expected {
+			number := "sing."
+
+			if c.plural {
+				number = "pl."
+			}
+			t.Errorf("Failed for '%s': expected '%s' (%s), got '%s'", c.input, c.expected, number, output)
 		}
 	}
 }

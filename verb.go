@@ -133,7 +133,14 @@ func pastSimple(verb string, verbsIrr [][]string) string {
 }
 
 /* Returns Present Simple form of a verb. */
-func presentSimple(verb string) string {
+func presentSimple(verb string, plural bool) string {
+	if plural {
+		if verb == "be" {
+			return "are"
+		}
+		return verb
+	}
+
 	switch verb {
 	case "be":
 		return "is"
