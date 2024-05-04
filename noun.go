@@ -9,7 +9,7 @@ func plural(noun string, nounsIrr [][]string) string {
 		return nounLine[1]
 	}
 
-	if endsWithAny(noun, []string{"craft", "fish", "hertz", "ics", "mania", "ness"}) {
+	if endsWithAny(noun, []string{"craft", "fish", "gs", "hertz", "ics", "mania", "ness"}) {
 		return noun
 	}
 

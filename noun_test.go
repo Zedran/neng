@@ -9,6 +9,7 @@ func TestPlural(t *testing.T) {
 		"agromania":     "agromania",
 		"alligatorfish": "alligatorfish",
 		"antic":         "antics",
+		"belongings":    "belongings",
 		"box":           "boxes",
 		"brother":       "brothers",
 		"bush":          "bushes",
