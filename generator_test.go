@@ -54,6 +54,9 @@ func TestPhrase(t *testing.T) {
 		"%tNv":           "Stashes",
 		"%ta %un of %ln": "Revocable SNOWFALL of snowfall",
 		"%ttua":          "REVOCABLE",
+		"%tpn":           "Snowfalls",
+		"%upNv":          "STASH",
+		"%pNv %p2v":      "stash stashed",
 	}
 
 	for input, expected := range cases {

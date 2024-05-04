@@ -70,6 +70,7 @@ Currently, no compatibility checks have been implemented. It is legal to transfo
 | `N`    | verb                  | `MOD_PRESENT_SIMPLE`  | Present Simple (now)       |
 | `g`    | verb                  | `MOD_GERUND`          | Gerund                     |
 | `l`    | any                   | `MOD_CASE_LOWER`      | lower case                 |
+| `p`    | noun, verb            | `MOD_PLURAL`          | Plural form                |
 | `t`    | any                   | `MOD_CASE_TITLE`      | Title Case                 |
 | `u`    | any                   | `MOD_CASE_UPPER`      | UPPER CASE                 |
 

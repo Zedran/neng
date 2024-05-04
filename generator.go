@@ -1,6 +1,9 @@
 package neng
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 /* Generates random phrases or words. */
 type Generator struct {
@@ -25,17 +28,30 @@ Transforms a word according to specified mods. Not all mods are compatible with 
 part of speech. Compatibility is not checked. Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
-	var caseTransformation func(string) string
+	var (
+		caseTransformation func(string) string
+		pluralMod          bool
+		verbMod            bool
+	)
+
+	// Ensure MOD_PLURAL is processed first
+	slices.Sort(mods)
 
 	for _, m := range mods {
 		switch m {
+		case MOD_PLURAL:
+			pluralMod = true
 		case MOD_GERUND:
+			verbMod = true
 			word = gerund(word)
 		case MOD_PRESENT_SIMPLE:
-			word = presentSimple(word)
+			verbMod = true
+			word = presentSimple(word, pluralMod)
 		case MOD_PAST_SIMPLE:
+			verbMod = true
 			word = pastSimple(word, gen.verbsIrr)
 		case MOD_PAST_PARTICIPLE:
+			verbMod = true
 			word = pastParticiple(word, gen.verbsIrr)
 		case MOD_CASE_LOWER:
 			caseTransformation = gen.caser.toLower
@@ -46,6 +62,10 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 		default:
 			return "", errUndefinedMod
 		}
+	}
+
+	if pluralMod && !verbMod {
+		word = plural(word, gen.nounsIrr)
 	}
 
 	if caseTransformation != nil {
@@ -79,6 +99,7 @@ Syntax:
 		%3 - transforms a verb into its Past Participle form (3rd form)
 		%N - transforms a verb into its Present Simple form (now)
 		%g - transforms a verb into gerund
+		%p - transform a noun or a verb (Present Simple) into its plural form
 		%l - transform a word to lower case
 		%t - transform a word to Title Case
 		%u - transform a word to UPPER CASE
@@ -143,6 +164,9 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				continue
 			case 'n':
 				word, err = gen.Noun(mods...)
+			case 'p':
+				mods = append(mods, MOD_PLURAL)
+				continue
 			case 't':
 				mods = append(mods, MOD_CASE_TITLE)
 				continue
