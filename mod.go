@@ -28,3 +28,27 @@ const (
 	// Transform a word to UPPER CASE
 	MOD_CASE_UPPER
 )
+
+/* Translates flag character into Mod value. */
+func flagToMod(flag rune) Mod {
+	switch flag {
+	case 'p':
+		return MOD_PLURAL
+	case '2':
+		return MOD_PAST_SIMPLE
+	case '3':
+		return MOD_PAST_PARTICIPLE
+	case 'N':
+		return MOD_PRESENT_SIMPLE
+	case 'g':
+		return MOD_GERUND
+	case 'l':
+		return MOD_CASE_LOWER
+	case 't':
+		return MOD_CASE_TITLE
+	case 'u':
+		return MOD_CASE_UPPER
+	default:
+		return Mod(255)
+	}
+}

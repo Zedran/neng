@@ -145,34 +145,13 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				phrase.WriteRune(c)
 				escaped = false
 				continue
-			case '2':
-				mods = append(mods, MOD_PAST_SIMPLE)
-				continue
-			case '3':
-				mods = append(mods, MOD_PAST_PARTICIPLE)
-				continue
-			case 'N':
-				mods = append(mods, MOD_PRESENT_SIMPLE)
+			case '2', '3', 'N', 'g', 'l', 'p', 't', 'u':
+				mods = append(mods, flagToMod(c))
 				continue
 			case 'a':
 				word, err = gen.Adjective(mods...)
-			case 'g':
-				mods = append(mods, MOD_GERUND)
-				continue
-			case 'l':
-				mods = append(mods, MOD_CASE_LOWER)
-				continue
 			case 'n':
 				word, err = gen.Noun(mods...)
-			case 'p':
-				mods = append(mods, MOD_PLURAL)
-				continue
-			case 't':
-				mods = append(mods, MOD_CASE_TITLE)
-				continue
-			case 'u':
-				mods = append(mods, MOD_CASE_UPPER)
-				continue
 			case 'v':
 				word, err = gen.Verb(mods...)
 			default:
