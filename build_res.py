@@ -13,6 +13,7 @@ from sys              import exit
 
 
 RES_DIR        = "res"
+FILTER_DIR     = RES_DIR + "/filters"
 ORIG_DIR       = RES_DIR + "/wordnet"
 
 LICENSE_OFFSET = 29
@@ -224,8 +225,9 @@ def write_file(path: str, lines: [str]):
 
 if __name__ == "__main__":
     for file in SOURCE_FILES:
-        path     = f"{ORIG_DIR}/{file}"
-        new_path = f"{RES_DIR}/{file.split('.')[1]}"
+        path      = f"{ORIG_DIR}/{file}"
+        new_fname = file.split('.')[1]
+        new_path  = f"{RES_DIR}/{new_fname}"
         
         if exists(new_path) and not args.force:
             print(f"{new_path:<10} exists, skipping.")
@@ -251,12 +253,12 @@ if __name__ == "__main__":
         if args.generate_filters:
             censored = get_mature_language(lines)
 
-            fname = f"{new_path}.filter.auto"
+            fname = f"{FILTER_DIR}/{new_fname}.filter.auto"
             write_file(fname, censored)
 
             print(f"'{fname}' generated. Review and rename it '{fname.strip(".auto")}' or leave it as is and run the script again with '-m' to apply it.")
         elif args.filter_mature:
-            censored = load_filter_file(f"{new_path}.filter")
+            censored = load_filter_file(f"{FILTER_DIR}/{new_fname}.filter")
             lines    = censor_lines(lines, censored)
 
             write_file(new_path, lines)
