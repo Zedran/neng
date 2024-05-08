@@ -16,22 +16,22 @@ func main() {
 	}
 
 	var (
-		pattern string
-		phrase  string
-		scanner = bufio.NewScanner(os.Stdin)
-
 		help string = "Specify your phrase.\n\n" +
 			"a - adjective         n - noun               v - verb\n\n" +
 			"2 - Past Simple       3 - Past Participle    N - Present Simple\n" +
 			"g - Gerund            p - Plural             l - lower case\n" +
 			"t - Title Case        u - UPPER CASE\n\n" +
 			"Example: %ta %tpn that %Npv the %n\n\n"
+
+		pattern string
+		phrase  string
+		scanner = bufio.NewScanner(os.Stdin)
 	)
 
 	fmt.Print(help)
 
 	for {
-		fmt.Print("phrase> ")
+		fmt.Print("pattern> ")
 
 		if scanner.Scan() {
 			pattern = scanner.Text()
@@ -42,6 +42,6 @@ func main() {
 			phrase = "err: " + err.Error()
 		}
 
-		fmt.Printf("      > %s\n", phrase)
+		fmt.Printf("       > %s\n", phrase)
 	}
 }
