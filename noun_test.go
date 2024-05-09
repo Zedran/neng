@@ -38,6 +38,7 @@ func TestPlural(t *testing.T) {
 		"house":         "houses",
 		"index":         "indices",
 		"megahertz":     "megahertz",
+		"paparazzo":     "paparazzi",
 		"photo":         "photos",
 		"potato":        "potatoes",
 		"quartz":        "quartzes",
@@ -58,6 +59,7 @@ func TestPlural(t *testing.T) {
 	irregular := [][]string{
 		{"craft", "crafts"},
 		{"criterion", "criteria"},
+		{"paparazzo", "paparazzi"},
 		{"photo", "photos"},
 		{"sheep", "sheep"},
 		{"roof", "roofs"},
