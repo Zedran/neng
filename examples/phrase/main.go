@@ -17,11 +17,12 @@ func main() {
 
 	var (
 		help string = "Specify your phrase.\n\n" +
-			"a - adjective         n - noun               v - verb\n\n" +
+			"a - adjective         m - adverb\n" +
+			"n - noun              v - verb\n\n" +
 			"2 - Past Simple       3 - Past Participle    N - Present Simple\n" +
 			"g - Gerund            p - Plural             l - lower case\n" +
 			"t - Title Case        u - UPPER CASE\n\n" +
-			"Example: %ta %tpn that %Npv the %n\n\n"
+			"Example: %ta %tpn that %m %Npv the %n\n\n"
 
 		pattern string
 		phrase  string
