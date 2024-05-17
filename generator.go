@@ -133,8 +133,6 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 	}
 
 	var (
-		err error
-
 		// If true, the next character is interpreted as syntax character
 		escaped bool
 
@@ -143,9 +141,6 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 
 		// Built phrase
 		phrase strings.Builder
-
-		// Out of scope container for the generated word
-		word string
 	)
 
 	for i, c := range pattern {
@@ -158,25 +153,16 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			case '2', '3', 'N', 'g', 'l', 'p', 't', 'u':
 				mods = append(mods, flagToMod(c))
 				continue
-			case 'a':
-				word, err = gen.Adjective(mods...)
-			case 'm':
-				word, err = gen.Adverb(mods...)
-			case 'n':
-				word, err = gen.Noun(mods...)
-			case 'v':
-				word, err = gen.Verb(mods...)
+			case 'a', 'm', 'n', 'v':
+				word, err := gen.getGenerator(c)(mods...)
+				if err != nil {
+					return "", err
+				}
+				phrase.WriteString(word)
+				escaped = false
 			default:
 				return "", errUnknownCommand
 			}
-
-			if err != nil {
-				return "", err
-			}
-
-			phrase.WriteString(word)
-
-			escaped = false
 		} else if c == '%' {
 			if i == len(pattern)-1 {
 				return "", errEscapedStrTerm
@@ -198,6 +184,27 @@ Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.verbs), mods...)
+}
+
+/*
+A helper method that was created to make the loop in Generator.Phrase easier to understand.
+It accepts an insertion command character and returns the corresponding generator method.
+nil is never returned as this method is only called when a valid insertion command
+is encountered.
+*/
+func (gen *Generator) getGenerator(flag rune) func(...Mod) (string, error) {
+	switch flag {
+	case 'a':
+		return gen.Adjective
+	case 'm':
+		return gen.Adverb
+	case 'n':
+		return gen.Noun
+	case 'v':
+		return gen.Verb
+	default:
+		return nil
+	}
 }
 
 /* Returns a new Generator with default word lists. */
