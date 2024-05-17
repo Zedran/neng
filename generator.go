@@ -8,6 +8,7 @@ import (
 /* Generates random phrases or words. */
 type Generator struct {
 	adjectives []string
+	adverbs    []string
 	nouns      []string
 	verbs      []string
 	nounsIrr   [][]string
@@ -21,6 +22,14 @@ Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.adjectives), mods...)
+}
+
+/*
+Generates a single random adverb and transforms it according to mods.
+Returns an error if an undefined Mod is received.
+*/
+func (gen *Generator) Adverb(mods ...Mod) (string, error) {
+	return gen.Transform(randItem(gen.adverbs), mods...)
 }
 
 /*
@@ -91,6 +100,7 @@ Syntax:
 	Insertion:
 		%% - inserts '%' sign
 		%a - inserts a random adjective
+		%m - inserts a random adverb
 		%n - inserts a random noun
 		%v - inserts a random verb
 
@@ -150,6 +160,8 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				continue
 			case 'a':
 				word, err = gen.Adjective(mods...)
+			case 'm':
+				word, err = gen.Adverb(mods...)
 			case 'n':
 				word, err = gen.Noun(mods...)
 			case 'v':
@@ -195,6 +207,11 @@ func DefaultGenerator() (*Generator, error) {
 		return nil, err
 	}
 
+	m, err := loadWords("res/adv")
+	if err != nil {
+		return nil, err
+	}
+
 	n, err := loadWords("res/noun")
 	if err != nil {
 		return nil, err
@@ -205,11 +222,11 @@ func DefaultGenerator() (*Generator, error) {
 		return nil, err
 	}
 
-	return NewGenerator(a, n, v)
+	return NewGenerator(a, m, n, v)
 }
 
 /* Initializes a new Generator with provided lists. Returns error if any of the lists is empty. */
-func NewGenerator(adj, noun, verb []string) (*Generator, error) {
+func NewGenerator(adj, adv, noun, verb []string) (*Generator, error) {
 	if len(adj) == 0 || len(noun) == 0 || len(verb) == 0 {
 		return nil, errEmptyLists
 	}
@@ -226,6 +243,7 @@ func NewGenerator(adj, noun, verb []string) (*Generator, error) {
 
 	return &Generator{
 		adjectives: adj,
+		adverbs:    adv,
 		nouns:      noun,
 		verbs:      verb,
 		nounsIrr:   in,

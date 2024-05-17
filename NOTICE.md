@@ -49,6 +49,7 @@ Princeton University and LICENSEE agrees to preserve same.
 | Project file | Source file |
 |:------------:|:-----------:|
 | `res/adj`    | `data.adj`  |
+| `res/adv`    | `data.adv`  |
 | `res/noun`   | `data.noun` |
 | `res/verb`   | `data.verb` |
 

@@ -5,19 +5,19 @@ import "testing"
 /* Tests NewGenerator function. Fails if providing an empty list or nil does not trigger an error. */
 func TestNewGenerator(t *testing.T) {
 	type testCase struct {
-		adj, noun, verb []string
-		goodCase        bool
+		adj, adv, noun, verb []string
+		goodCase             bool
 	}
 
 	cases := []testCase{
-		{[]string{"adj"}, []string{"noun"}, []string{"verb"}, true},
-		{[]string{"adj", "adj2"}, []string{"noun"}, []string{"verb"}, true},
-		{[]string{"adj"}, []string{"noun"}, []string{}, false},
-		{[]string{"adj"}, nil, []string{"verb"}, false},
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true},
+		{[]string{"adj", "adj2"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true},
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{}, false},
+		{[]string{"adj"}, []string{"adv"}, nil, []string{"verb"}, false},
 	}
 
 	for _, c := range cases {
-		_, err := NewGenerator(c.adj, c.noun, c.verb)
+		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb)
 
 		switch c.goodCase {
 		case true:
@@ -34,7 +34,7 @@ func TestNewGenerator(t *testing.T) {
 
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
 func TestPhrase(t *testing.T) {
-	gen, err := NewGenerator([]string{"revocable"}, []string{"snowfall"}, []string{"stash"})
+	gen, err := NewGenerator([]string{"revocable"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"})
 	if err != nil {
 		t.Errorf("Failed: NewGenerator returned an error: %s", err.Error())
 		t.FailNow()
@@ -57,6 +57,7 @@ func TestPhrase(t *testing.T) {
 		"%tpn":           "Snowfalls",
 		"%upNv":          "STASH",
 		"%pNv %p2v":      "stash stashed",
+		"%Nv %n %m":      "stashes snowfall nicely",
 	}
 
 	for input, expected := range cases {

@@ -19,7 +19,7 @@ ORIG_DIR       = RES_DIR + "/wordnet"
 LICENSE_OFFSET = 29
 WORDS_COLUMN   =  4
 
-SOURCE_FILES   = ("data.adj", "data.noun", "data.verb")
+SOURCE_FILES   = ("data.adj", "data.adv", "data.noun", "data.verb")
 VERB_IRR_FILE  = "verb.irr"
 
 
