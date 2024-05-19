@@ -149,10 +149,8 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			case '%':
 				phrase.WriteRune(c)
 				escaped = false
-				continue
 			case '2', '3', 'N', 'g', 'l', 'p', 't', 'u':
 				mods = append(mods, flagToMod(c))
-				continue
 			case 'a', 'm', 'n', 'v':
 				word, err := gen.getGenerator(c)(mods...)
 				if err != nil {
