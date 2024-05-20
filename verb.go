@@ -115,11 +115,11 @@ func handleIt(verb, tenseEnding string, wi wordInfo) string {
 /* Returns Past Participle form of a verb. */
 func pastParticiple(verb string, verbsIrr [][]string) string {
 	verbLine := findIrregular(verb, verbsIrr)
-	if verbLine == nil {
-		return pastRegular(verb)
+	if verbLine != nil {
+		return verbLine[2]
 	}
 
-	return verbLine[2]
+	return pastRegular(verb)
 }
 
 /* Appends past tense suffix to a regular verb. */
@@ -167,11 +167,11 @@ func pastRegular(verb string) string {
 /* Returns Past Simple form of a verb. */
 func pastSimple(verb string, verbsIrr [][]string) string {
 	verbLine := findIrregular(verb, verbsIrr)
-	if verbLine == nil {
-		return pastRegular(verb)
+	if verbLine != nil {
+		return verbLine[1]
 	}
 
-	return verbLine[1]
+	return pastRegular(verb)
 }
 
 /* Returns Present Simple form of a verb. */
