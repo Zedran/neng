@@ -11,6 +11,7 @@ type Generator struct {
 	adverbs    []string
 	nouns      []string
 	verbs      []string
+	adjIrr     [][]string
 	nounsIrr   [][]string
 	verbsIrr   [][]string
 	caser      *caser
@@ -62,6 +63,10 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 		case MOD_PAST_PARTICIPLE:
 			verbMod = true
 			word = pastParticiple(word, gen.verbsIrr)
+		case MOD_COMPARATIVE:
+			word = comparative(word, gen.adjIrr)
+		case MOD_SUPERLATIVE:
+			word = superlative(word, gen.adjIrr)
 		case MOD_CASE_LOWER:
 			caseTransformation = gen.caser.toLower
 		case MOD_CASE_TITLE:
@@ -108,8 +113,10 @@ Syntax:
 		%2 - transforms a verb into its Past Simple form (2nd form)
 		%3 - transforms a verb into its Past Participle form (3rd form)
 		%N - transforms a verb into its Present Simple form (now)
+		%c - transforms an adjective or an adverb into comparative (better)
 		%g - transforms a verb into gerund
 		%p - transform a noun or a verb (Present Simple) into its plural form
+		%s - transforms an adjective or an adverb into superlative (best)
 		%l - transform a word to lower case
 		%t - transform a word to Title Case
 		%u - transform a word to UPPER CASE
@@ -149,7 +156,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			case '%':
 				phrase.WriteRune(c)
 				escaped = false
-			case '2', '3', 'N', 'g', 'l', 'p', 't', 'u':
+			case '2', '3', 'N', 'c', 'g', 'l', 'p', 's', 't', 'u':
 				mods = append(mods, flagToMod(c))
 			case 'a', 'm', 'n', 'v':
 				word, err := gen.getGenerator(c)(mods...)
@@ -236,6 +243,11 @@ func NewGenerator(adj, adv, noun, verb []string) (*Generator, error) {
 		return nil, errEmptyLists
 	}
 
+	ia, err := loadIrregularWords("res/adj.irr")
+	if err != nil {
+		return nil, err
+	}
+
 	in, err := loadIrregularWords("res/noun.irr")
 	if err != nil {
 		return nil, err
@@ -251,6 +263,7 @@ func NewGenerator(adj, adv, noun, verb []string) (*Generator, error) {
 		adverbs:    adv,
 		nouns:      noun,
 		verbs:      verb,
+		adjIrr:     ia,
 		nounsIrr:   in,
 		verbsIrr:   iv,
 		caser:      newCaser(),

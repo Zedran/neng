@@ -46,16 +46,17 @@ Princeton University and LICENSEE agrees to preserve same.
 
 ### Used files
 
-| Project file | Source file |
-|:------------:|:-----------:|
-| `res/adj`    | `data.adj`  |
-| `res/adv`    | `data.adv`  |
-| `res/noun`   | `data.noun` |
-| `res/verb`   | `data.verb` |
+| Project file  | Source file            |
+|:-------------:|:----------------------:|
+| `res/adj`     | `data.adj`             |
+| `res/adv`     | `data.adv`             |
+| `res/noun`    | `data.noun`            |
+| `res/verb`    | `data.verb`            |
+| `res/adj.irr` | `adj.exc`<br>`adv.exc` |
 
 ### Modifications
 
-Source files underwent automated formatting with `build_res.py` script. Below is the summary of the procedure:
+Most of the source files underwent automated formatting with `build_res.py` script. Below is the summary of the procedure:
 
 1. Remove license text from the beginning of the file
 2. Extract words from the surrounding metadata
@@ -73,6 +74,6 @@ Source files underwent automated formatting with `build_res.py` script. Below is
 
 The following manual modifications were carried out:
 
-```text
-noun: cutlas -> cutlass
-```
+* `adj.irr` was built manually based on the corresponding source files
+* `noun`: `cutlas -> cutlass`
+* `adv`: `+hard +well`

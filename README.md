@@ -69,9 +69,11 @@ Currently, no compatibility checks have been implemented. It is legal to transfo
 | `2`    | verb                  | `MOD_PAST_SIMPLE`     | Past Simple (2nd form)     |
 | `3`    | verb                  | `MOD_PAST_PARTICIPLE` | Past Participle (3rd form) |
 | `N`    | verb                  | `MOD_PRESENT_SIMPLE`  | Present Simple (now)       |
+| `c`    | adjective, adverb     | `MOD_COMPARATIVE`     | Comparative (better)       |
 | `g`    | verb                  | `MOD_GERUND`          | Gerund                     |
 | `l`    | any                   | `MOD_CASE_LOWER`      | lower case                 |
 | `p`    | noun, verb            | `MOD_PLURAL`          | Plural form                |
+| `s`    | adjective, adverb     | `MOD_SUPERLATIVE`     | Superlative (best)         |
 | `t`    | any                   | `MOD_CASE_TITLE`      | Title Case                 |
 | `u`    | any                   | `MOD_CASE_UPPER`      | UPPER CASE                 |
 

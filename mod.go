@@ -19,6 +19,12 @@ const (
 	// Create gerund form of a verb (-ing)
 	MOD_GERUND
 
+	// Transform an adjective or an adverb into comparative (good -> better)
+	MOD_COMPARATIVE
+
+	// Transform an adjective or an adverb into superlative (good -> best)
+	MOD_SUPERLATIVE
+
 	// Transform a word to lower case
 	MOD_CASE_LOWER
 
@@ -40,10 +46,14 @@ func flagToMod(flag rune) Mod {
 		return MOD_PAST_PARTICIPLE
 	case 'N':
 		return MOD_PRESENT_SIMPLE
+	case 'c':
+		return MOD_COMPARATIVE
 	case 'g':
 		return MOD_GERUND
 	case 'l':
 		return MOD_CASE_LOWER
+	case 's':
+		return MOD_SUPERLATIVE
 	case 't':
 		return MOD_CASE_TITLE
 	case 'u':
