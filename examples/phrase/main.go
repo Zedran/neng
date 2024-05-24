@@ -20,9 +20,10 @@ func main() {
 			"a - adjective         m - adverb\n" +
 			"n - noun              v - verb\n\n" +
 			"2 - Past Simple       3 - Past Participle    N - Present Simple\n" +
-			"g - Gerund            p - Plural             l - lower case\n" +
-			"t - Title Case        u - UPPER CASE\n\n" +
-			"Example: %ta %tpn that %m %Npv the %n\n\n"
+			"c - Comparative       g - Gerund             p - Plural\n" +
+			"l - lower case        s - Superlative        t - Title Case\n" +
+			"u - UPPER CASE\n\n" +
+			"Example: %tsa %tpn that %m %Npv the %n\n\n"
 
 		pattern string
 		phrase  string
