@@ -63,7 +63,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 		return verb + "k" + tenseEnding
 	}
 
-	if containsString(wordExceptions, verb) {
+	if contains(wordExceptions, verb) {
 		// Double the final consonant if verb is an exception to the rules below
 		return doubleFinal(verb, tenseEnding)
 	}
@@ -74,7 +74,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 			return verb + tenseEnding
 		}
 
-		if containsString([]string{"augur", "murmur", "sulphur"}, verb) {
+		if contains([]string{"augur", "murmur", "sulphur"}, verb) {
 			// Do not double the final consonant of bisyllabic exceptions that end with -ur
 			return verb + tenseEnding
 		}
@@ -104,7 +104,7 @@ func handleIt(verb, tenseEnding string, wi wordInfo) string {
 	}
 
 	if endsWithAny(verb, []string{"fit", "mit", "wit"}) {
-		if !containsString([]string{"limit", "profit"}, verb) {
+		if !contains([]string{"limit", "profit"}, verb) {
 			return doubleFinal(verb, tenseEnding)
 		}
 	}

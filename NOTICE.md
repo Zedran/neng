@@ -2,6 +2,20 @@
 
 This software incorporates materials licensed by third parties.
 
+## Wiktionary
+
+### Source
+
+Wiktionary. Category: Non-comparable adjectives. Available at https://simple.wiktionary.org/w/index.php?title=Category:Non-comparable_adjectives&pagefrom=functionless#mw-pages \[2024-05-21] Wikimedia Foundation. 2006.
+
+### License
+
+[Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/4.0)
+
+### Used material
+
+Page titles in the "Non-comparable adjectives" category were used to compile `res/adj.nc`.
+
 ## WordNet
 
 ### Source

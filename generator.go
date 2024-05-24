@@ -5,6 +5,9 @@ import (
 	"strings"
 )
 
+// Iteration limit used by the default Generator
+const DEFAULT_ITER_LIMIT int = 1000
+
 /* Generates random phrases or words. */
 type Generator struct {
 	adjectives []string
@@ -12,32 +15,69 @@ type Generator struct {
 	nouns      []string
 	verbs      []string
 	adjIrr     [][]string
+	adjNC      []string
 	nounsIrr   [][]string
 	verbsIrr   [][]string
 	caser      *caser
+	iterLimit  int
 }
 
 /*
 Generates a single random adjective and transforms it according to mods.
-Returns an error if an undefined Mod is received.
+Returns an error if an undefined Mod is received or if the iteration limit
+is reached while attempting to generate a comparable adjective.
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
-	return gen.Transform(randItem(gen.adjectives), mods...)
+	adj := randItem(gen.adjectives)
+
+	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
+		i := 0
+		for contains(gen.adjNC, adj) {
+			if i == DEFAULT_ITER_LIMIT {
+				return "", errIterLimit
+			}
+
+			adj = randItem(gen.adjectives)
+			i++
+		}
+	}
+
+	return gen.Transform(adj, mods...)
 }
 
 /*
 Generates a single random adverb and transforms it according to mods.
-Returns an error if an undefined Mod is received.
+Returns an error if an undefined Mod is received or if the iteration limit
+is reached while attempting to generate a comparable adverb.
 */
 func (gen *Generator) Adverb(mods ...Mod) (string, error) {
-	return gen.Transform(randItem(gen.adverbs), mods...)
+	adv := randItem(gen.adverbs)
+
+	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
+		i := 0
+		for contains(gen.adjNC, adv) {
+			if i == DEFAULT_ITER_LIMIT {
+				return "", errIterLimit
+			}
+
+			adv = randItem(gen.adverbs)
+			i++
+		}
+	}
+
+	return gen.Transform(adv, mods...)
 }
 
 /*
 Transforms a word according to specified mods. Not all mods are compatible with every
-part of speech. Compatibility is not checked. Returns an error if an undefined Mod is received.
+part of speech. Compatibility is not checked. Returns an error if an undefined Mod is received
+or if user requested gradation, but provided non-comparable adjective or adverb.
 */
 func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
+	if (contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE)) && contains(gen.adjNC, word) {
+		return "", errNonComparable
+	}
+
 	var (
 		caseTransformation func(string) string
 		pluralMod          bool
@@ -234,16 +274,34 @@ func DefaultGenerator() (*Generator, error) {
 		return nil, err
 	}
 
-	return NewGenerator(a, m, n, v)
+	return NewGenerator(a, m, n, v, DEFAULT_ITER_LIMIT)
 }
 
-/* Initializes a new Generator with provided lists. Returns error if any of the lists is empty. */
-func NewGenerator(adj, adv, noun, verb []string) (*Generator, error) {
+/*
+Initializes a new Generator with provided lists. Returns an error if any of the lists is empty.
+
+iterLimit is a safeguard for Generator.Adjective and Generator.Adverb methods.
+In presence of MOD_COMPARATIVE or MOD_SUPERLATIVE, those methods generate a word candidate until they
+find a comparable one or until iteration limit is reached.
+
+iterLimit value should be set with regards to the size of your word base
+and the number of non-comparable adjectives and adverbs in it.
+*/
+func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, error) {
+	if iterLimit <= 0 {
+		return nil, errBadIterLimit
+	}
+
 	if len(adj) == 0 || len(noun) == 0 || len(verb) == 0 {
 		return nil, errEmptyLists
 	}
 
 	ia, err := loadIrregularWords("res/adj.irr")
+	if err != nil {
+		return nil, err
+	}
+
+	nc, err := loadWords("res/adj.nc")
 	if err != nil {
 		return nil, err
 	}
@@ -264,8 +322,10 @@ func NewGenerator(adj, adv, noun, verb []string) (*Generator, error) {
 		nouns:      noun,
 		verbs:      verb,
 		adjIrr:     ia,
+		adjNC:      nc,
 		nounsIrr:   in,
 		verbsIrr:   iv,
 		caser:      newCaser(),
+		iterLimit:  iterLimit,
 	}, nil
 }

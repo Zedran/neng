@@ -5,10 +5,10 @@ import (
 	"strings"
 )
 
-/* Returns true if s is in sl. */
-func containsString(sl []string, s string) bool {
-	for _, e := range sl {
-		if e == s {
+/* Returns true if query is in slice. */
+func contains[T comparable](slice []T, query T) bool {
+	for _, e := range slice {
+		if e == query {
 			return true
 		}
 	}
