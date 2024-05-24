@@ -301,7 +301,7 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		return nil, err
 	}
 
-	nc, err := loadWords("res/adj.nc")
+	nc, err := loadWords("res/adj.ncmp")
 	if err != nil {
 		return nil, err
 	}
