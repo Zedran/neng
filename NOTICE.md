@@ -14,7 +14,7 @@ Wiktionary. Category: Non-comparable adjectives. Available at https://simple.wik
 
 ### Used material
 
-Page titles in the "Non-comparable adjectives" category were used to compile `res/adj.nc`.
+Page titles in the "Non-comparable adjectives" category were used to compile `res/adj.ncmp`.
 
 ## WordNet
 
