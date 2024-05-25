@@ -28,21 +28,7 @@ Returns an error if an undefined Mod is received or if the iteration limit
 is reached while attempting to generate a comparable adjective.
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
-	adj := randItem(gen.adjectives)
-
-	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
-		i := 0
-		for contains(gen.adjNC, adj) {
-			if i == DEFAULT_ITER_LIMIT {
-				return "", errIterLimit
-			}
-
-			adj = randItem(gen.adjectives)
-			i++
-		}
-	}
-
-	return gen.Transform(adj, mods...)
+	return gen.generateModifier(gen.adjectives, mods...)
 }
 
 /*
@@ -51,21 +37,7 @@ Returns an error if an undefined Mod is received or if the iteration limit
 is reached while attempting to generate a comparable adverb.
 */
 func (gen *Generator) Adverb(mods ...Mod) (string, error) {
-	adv := randItem(gen.adverbs)
-
-	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
-		i := 0
-		for contains(gen.adjNC, adv) {
-			if i == DEFAULT_ITER_LIMIT {
-				return "", errIterLimit
-			}
-
-			adv = randItem(gen.adverbs)
-			i++
-		}
-	}
-
-	return gen.Transform(adv, mods...)
+	return gen.generateModifier(gen.adverbs, mods...)
 }
 
 /*
@@ -229,6 +201,29 @@ Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
 	return gen.Transform(randItem(gen.verbs), mods...)
+}
+
+/*
+A common method used to generate adjectives (noun modifiers) and adverbs (verb modifiers).
+Returns error if Generator.iterLimit is reached when attempting to generate a comparable
+adjective or adverb. Relays errUndefinedMod from Generator.Transform.
+*/
+func (gen *Generator) generateModifier(items []string, mods ...Mod) (string, error) {
+	a := randItem(items)
+
+	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
+		i := 0
+		for contains(gen.adjNC, a) {
+			if i == DEFAULT_ITER_LIMIT {
+				return "", errIterLimit
+			}
+
+			a = randItem(gen.adverbs)
+			i++
+		}
+	}
+
+	return gen.Transform(a, mods...)
 }
 
 /*
