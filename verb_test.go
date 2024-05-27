@@ -113,11 +113,9 @@ func TestPastParticiple(t *testing.T) {
 		"panic":   "panicked",
 	}
 
-	irregular := [][]string{
-		{"do", "did", "done"},
-		{"forgive", "forgave", "forgiven"},
-		{"freeze", "froze", "frozen"},
-		{"give", "gave", "given"},
+	irregular, err := loadIrregularWords("res/verb.irr")
+	if err != nil {
+		t.Fatalf("loadIrregularWords failed: %s", err.Error())
 	}
 
 	for input, expected := range cases {
@@ -148,11 +146,9 @@ func TestPastSimple(t *testing.T) {
 		{"panic", "panicked", false},
 	}
 
-	irregular := [][]string{
-		{"do", "did", "done"},
-		{"forgive", "forgave", "forgiven"},
-		{"freeze", "froze", "frozen"},
-		{"give", "gave", "given"},
+	irregular, err := loadIrregularWords("res/verb.irr")
+	if err != nil {
+		t.Fatalf("loadIrregularWords failed: %s", err.Error())
 	}
 
 	for _, c := range cases {

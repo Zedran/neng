@@ -87,11 +87,9 @@ func TestFindIrregular(t *testing.T) {
 		"give",
 	}
 
-	irregular := [][]string{
-		{"do", "did", "done"},
-		{"forgive", "forgave", "forgiven"},
-		{"freeze", "froze", "frozen"},
-		{"give", "gave", "given"},
+	irregular, err := loadIrregularWords("res/verb.irr")
+	if err != nil {
+		t.Fatalf("loadIrregularWords failed: %s", err.Error())
 	}
 
 	for _, input := range cases {

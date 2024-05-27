@@ -9,8 +9,9 @@ func TestComparative(t *testing.T) {
 		"valuable": "more valuable",
 	}
 
-	irregular := [][]string{
-		{"good", "better", "best"},
+	irregular, err := loadIrregularWords("res/adj.irr")
+	if err != nil {
+		t.Fatalf("loadIrregularWords failed: %s", err.Error())
 	}
 
 	for input, expected := range cases {
@@ -29,8 +30,9 @@ func TestSuperlative(t *testing.T) {
 		"valuable": "most valuable",
 	}
 
-	irregular := [][]string{
-		{"good", "better", "best"},
+	irregular, err := loadIrregularWords("res/adj.irr")
+	if err != nil {
+		t.Fatalf("loadIrregularWords failed: %s", err.Error())
 	}
 
 	for input, expected := range cases {

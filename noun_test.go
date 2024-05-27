@@ -56,13 +56,9 @@ func TestPlural(t *testing.T) {
 		"wolf":          "wolves",
 	}
 
-	irregular := [][]string{
-		{"craft", "crafts"},
-		{"criterion", "criteria"},
-		{"paparazzo", "paparazzi"},
-		{"photo", "photos"},
-		{"sheep", "sheep"},
-		{"roof", "roofs"},
+	irregular, err := loadIrregularWords("res/noun.irr")
+	if err != nil {
+		t.Fatalf("loadIrregularWords failed: %s", err.Error())
 	}
 
 	for input, expected := range cases {
