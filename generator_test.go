@@ -39,26 +39,9 @@ func TestPhrase(t *testing.T) {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
 
-	cases := map[string]string{
-		"a pretty %a %n": "a pretty big snowfall",
-		"%a %n of %n":    "big snowfall of snowfall",
-		"a n":            "a n",
-		"%%a":            "%a",
-		"a %2v %n":       "a stashed snowfall",
-		"%gv":            "stashing",
-		"%Nv":            "stashes",
-		"%3v":            "stashed",
-		"%nn":            "snowfalln",
-		"%%":             "%",
-		"%tNv":           "Stashes",
-		"%ta %un of %ln": "Big SNOWFALL of snowfall",
-		"%ttua":          "BIG",
-		"%tpn":           "Snowfalls",
-		"%upNv":          "STASH",
-		"%pNv %p2v":      "stash stashed",
-		"%Nv %n %m":      "stashes snowfall nicely",
-		"%Nv %n %cm":     "stashes snowfall more nicely",
-		"the %sa %n":     "the biggest snowfall",
+	cases, err := loadTestMapStringString("TestPhrase.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
 	for input, expected := range cases {

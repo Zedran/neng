@@ -4,41 +4,9 @@ import "testing"
 
 /* Tests whether countSyllables returns a proper number of syllables for sample words. */
 func TestCountSyllables(t *testing.T) {
-	cases := map[string]int{
-		"agree":       2,
-		"be":          1,
-		"beat":        1,
-		"buoy":        1,
-		"care":        1,
-		"carry":       2,
-		"caveat":      3,
-		"chikadee":    3,
-		"clear":       1,
-		"create":      2,
-		"commemorate": 4,
-		"commission":  3,
-		"commit":      2,
-		"country":     2,
-		"covenant":    3,
-		"decoy":       2,
-		"eat":         1,
-		"entresol":    3,
-		"evacuate":    4,
-		"exfoliate":   4,
-		"ford":        1,
-		"go":          1,
-		"heave":       1,
-		"lee":         1,
-		"panic":       2,
-		"receipt":     2,
-		"reposit":     3,
-		"salaam":      2,
-		"spree":       1,
-		"stop":        1,
-		"study":       2,
-		"torpedo":     3,
-		"vex":         1,
-		"":            0,
+	cases, err := loadTestMapStringInt("TestCountSyllables.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
 	for input, expected := range cases {
@@ -53,20 +21,9 @@ func TestCountSyllables(t *testing.T) {
 
 /* Tests getSequence function. */
 func TestGetSequence(t *testing.T) {
-	cases := map[string]string{
-		"agree":      "vccvv",
-		"care":       "cvcv",
-		"carry":      "cvccv",
-		"commission": "cvccvccvvc",
-		"covenant":   "cvcvcvcc",
-		"decoy":      "cvcvc",
-		"ford":       "cvcc",
-		"panic":      "cvcvc",
-		"stop":       "ccvc",
-		"study":      "ccvcv",
-		"torpedo":    "cvccvcv",
-		"vex":        "cvc",
-		"":           "",
+	cases, err := loadTestMapStringString("TestGetSequence.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
 	for input, expected := range cases {
@@ -80,11 +37,9 @@ func TestGetSequence(t *testing.T) {
 
 /* Tests whether findIrregular returns a correct verb line. */
 func TestFindIrregular(t *testing.T) {
-	cases := []string{
-		"do",
-		"freeze",
-		"forgive",
-		"give",
+	cases, err := loadTest2DSliceString("TestFindIrregular.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
 	irregular, err := loadIrregularWords("res/verb.irr")
@@ -93,11 +48,11 @@ func TestFindIrregular(t *testing.T) {
 	}
 
 	for _, input := range cases {
-		output := findIrregular(input, irregular)
+		output := findIrregular(input[0], irregular)
 
 		if output == nil {
 			t.Errorf("Failed for '%s': nil returned", input)
-		} else if output[0] != input {
+		} else if output[0] != input[0] {
 			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, input, output)
 		}
 	}

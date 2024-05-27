@@ -4,9 +4,9 @@ import "testing"
 
 /* Tests comparative function. Fails if incorrect comparative form is returned.*/
 func TestComparative(t *testing.T) {
-	cases := map[string]string{
-		"good":     "better",
-		"valuable": "more valuable",
+	cases, err := loadTestMapStringString("TestComparative.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
 	irregular, err := loadIrregularWords("res/adj.irr")
@@ -25,9 +25,9 @@ func TestComparative(t *testing.T) {
 
 /* Tests superlative function. Fails if incorrect superlative form is returned.*/
 func TestSuperlative(t *testing.T) {
-	cases := map[string]string{
-		"good":     "best",
-		"valuable": "most valuable",
+	cases, err := loadTestMapStringString("TestSuperlative.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
 	irregular, err := loadIrregularWords("res/adj.irr")

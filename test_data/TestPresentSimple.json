@@ -1,0 +1,127 @@
+[
+    {
+        "input":    "alibi",
+        "expected": "alibis",
+        "plural": false
+    },
+
+    {
+        "input":    "be",
+        "expected": "is",
+        "plural":   false
+    },
+
+    {
+        "input":    "be",
+        "expected": "are",
+        "plural":   true
+    },
+
+    {
+        "input":    "buzz",
+        "expected": "buzzes",
+        "plural":   false
+    },
+
+    {
+        "input":    "dismiss",
+        "expected": "dismisses",
+        "plural":   false
+    },
+
+    {
+        "input":    "dodge",
+        "expected": "dodges",
+        "plural":   false
+    },
+
+    {
+        "input":    "go",
+        "expected": "goes",
+        "plural":   false
+    },
+
+    {
+        "input":    "have",
+        "expected": "has",
+        "plural":   false
+    },
+
+    {
+        "input":    "have",
+        "expected": "have",
+        "plural":   true
+    },
+
+    {
+        "input":    "honey",
+        "expected": "honeys",
+        "plural":   false
+    },
+
+    {
+        "input":    "learn",
+        "expected": "learns",
+        "plural":   false
+    },
+
+    {
+        "input":    "learn",
+        "expected": "learn",
+        "plural":   true
+    },
+
+    {
+        "input":    "lyric",
+        "expected": "lyrics",
+        "plural":   false
+    },
+
+    {
+        "input":    "panic",
+        "expected": "panics",
+        "plural":   false
+    },
+
+    {
+        "input":    "shanghai",
+        "expected": "shanghais",
+        "plural":   false
+    },
+
+    {
+        "input":    "sic",
+        "expected": "sics",
+        "plural":   false
+    },
+
+    {
+        "input":    "ski",
+        "expected": "skis",
+        "plural":   false
+    },
+
+    {
+        "input":    "study",
+        "expected": "studies",
+        "plural":   false
+    },
+
+    {
+        "input":    "talc",
+        "expected": "talcs",
+        "plural":   false
+    },
+
+    {
+        "input":    "taxi",
+        "expected": "taxis",
+        "plural":   false
+    },
+
+    {
+        "input":    "zinc",
+        "expected": "zincs",
+        "plural":   false
+    }
+]
