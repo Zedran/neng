@@ -136,16 +136,16 @@ Handling of regular verbs is only symbolically checked, as it is the focus of Te
 func TestPastSimple(t *testing.T) {
 	type testCase struct {
 		input    string
-		plural   bool
 		expected string
+		plural   bool
 	}
 
 	cases := []testCase{
-		{"be", false, "was"},
-		{"be", true, "were"},
-		{"forgive", false, "forgave"},
-		{"freeze", true, "froze"},
-		{"panic", false, "panicked"},
+		{"be", "was", false},
+		{"be", "were", true},
+		{"forgive", "forgave", false},
+		{"freeze", "froze", true},
+		{"panic", "panicked", false},
 	}
 
 	irregular := [][]string{
