@@ -9,7 +9,7 @@ import (
 // Default test data directory
 const test_data_directory string = "test_data"
 
-/* A struct used for testing plural verbs. */
+/* A struct used for storing test data related to verb transformations that are influenced by MOD_PLURAL. */
 type testCasePlural struct {
 	Input    string `json:"input"`
 	Expected string `json:"expected"`
