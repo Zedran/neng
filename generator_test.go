@@ -36,8 +36,7 @@ func TestNewGenerator(t *testing.T) {
 func TestPhrase(t *testing.T) {
 	gen, err := NewGenerator([]string{"big"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"}, DEFAULT_ITER_LIMIT)
 	if err != nil {
-		t.Errorf("Failed: NewGenerator returned an error: %s", err.Error())
-		t.FailNow()
+		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
 
 	cases := map[string]string{
@@ -89,8 +88,7 @@ func TestPhrase(t *testing.T) {
 func TestTransform(t *testing.T) {
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Errorf("Failed: NewGenerator returned an error: %s", err.Error())
-		t.FailNow()
+		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
 
 	if output, err := gen.Transform("own", MOD_COMPARATIVE); err == nil {
