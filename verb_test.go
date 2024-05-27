@@ -114,7 +114,6 @@ func TestPastParticiple(t *testing.T) {
 	}
 
 	irregular := [][]string{
-		{"be", "was", "been"},
 		{"do", "did", "done"},
 		{"forgive", "forgave", "forgiven"},
 		{"freeze", "froze", "frozen"},
@@ -135,27 +134,32 @@ Tests pastSimple function. Fails if improper Past Simple form of a verb is retur
 Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
 */
 func TestPastSimple(t *testing.T) {
-	cases := map[string]string{
-		"be":      "was",
-		"do":      "did",
-		"forgive": "forgave",
-		"freeze":  "froze",
-		"panic":   "panicked",
+	type testCase struct {
+		input    string
+		plural   bool
+		expected string
+	}
+
+	cases := []testCase{
+		{"be", false, "was"},
+		{"be", true, "were"},
+		{"forgive", false, "forgave"},
+		{"freeze", true, "froze"},
+		{"panic", false, "panicked"},
 	}
 
 	irregular := [][]string{
-		{"be", "was", "been"},
 		{"do", "did", "done"},
 		{"forgive", "forgave", "forgiven"},
 		{"freeze", "froze", "frozen"},
 		{"give", "gave", "given"},
 	}
 
-	for input, expected := range cases {
-		output := pastSimple(input, irregular)
+	for _, c := range cases {
+		output := pastSimple(c.input, irregular, c.plural)
 
-		if output != expected {
-			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
+		if output != c.expected {
+			t.Errorf("Failed for '%s' (plural = %v): expected '%s', got '%s'", c.input, c.plural, c.expected, output)
 		}
 	}
 }

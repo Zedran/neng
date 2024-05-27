@@ -114,6 +114,10 @@ func handleIt(verb, tenseEnding string, wi wordInfo) string {
 
 /* Returns Past Participle form of a verb. */
 func pastParticiple(verb string, verbsIrr [][]string) string {
+	if verb == "be" {
+		return "been"
+	}
+
 	verbLine := findIrregular(verb, verbsIrr)
 	if verbLine != nil {
 		return verbLine[2]
@@ -165,7 +169,15 @@ func pastRegular(verb string) string {
 }
 
 /* Returns Past Simple form of a verb. */
-func pastSimple(verb string, verbsIrr [][]string) string {
+func pastSimple(verb string, verbsIrr [][]string, plural bool) string {
+	if verb == "be" {
+		if plural {
+			return "were"
+		}
+
+		return "was"
+	}
+
 	verbLine := findIrregular(verb, verbsIrr)
 	if verbLine != nil {
 		return verbLine[1]

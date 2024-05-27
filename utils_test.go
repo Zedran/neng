@@ -81,14 +81,13 @@ func TestGetSequence(t *testing.T) {
 /* Tests whether findIrregular returns a correct verb line. */
 func TestFindIrregular(t *testing.T) {
 	cases := []string{
-		"be",
 		"do",
 		"freeze",
 		"forgive",
+		"give",
 	}
 
 	irregular := [][]string{
-		{"be", "was", "been"},
 		{"do", "did", "done"},
 		{"forgive", "forgave", "forgiven"},
 		{"freeze", "froze", "frozen"},

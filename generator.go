@@ -71,7 +71,7 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 			word = presentSimple(word, pluralMod)
 		case MOD_PAST_SIMPLE:
 			verbMod = true
-			word = pastSimple(word, gen.verbsIrr)
+			word = pastSimple(word, gen.verbsIrr, pluralMod)
 		case MOD_PAST_PARTICIPLE:
 			verbMod = true
 			word = pastParticiple(word, gen.verbsIrr)
