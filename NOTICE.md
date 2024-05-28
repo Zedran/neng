@@ -60,13 +60,13 @@ Princeton University and LICENSEE agrees to preserve same.
 
 ### Used files
 
-| Project file  | Source file            |
-|:-------------:|:----------------------:|
-| `res/adj`     | `data.adj`             |
-| `res/adv`     | `data.adv`             |
-| `res/noun`    | `data.noun`            |
-| `res/verb`    | `data.verb`            |
-| `res/adj.irr` | `adj.exc`<br>`adv.exc` |
+| Project file                   | Source file            |
+|:------------------------------:|:----------------------:|
+| `res/adj`                      | `data.adj`             |
+| `res/adv`                      | `data.adv`             |
+| `res/noun`                     | `data.noun`            |
+| `res/verb`                     | `data.verb`            |
+| `res/adj.irr`<br>`res/adj.suf` | `adj.exc`<br>`adv.exc` |
 
 ### Modifications
 
@@ -88,6 +88,6 @@ Most of the source files underwent automated formatting with `build_res.py` scri
 
 The following manual modifications were carried out:
 
-* `adj.irr` was built manually based on the corresponding source files
+* `adj.irr` and `adj.suf` were built manually based on the corresponding source files
 * `noun`: `cutlas -> cutlass`
 * `adv`: `+hard +well`

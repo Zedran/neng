@@ -7,6 +7,7 @@ import "embed"
 //go:embed res/noun
 //go:embed res/verb
 //go:embed res/adj.irr
+//go:embed res/adj.suf
 //go:embed res/adj.ncmp
 //go:embed res/noun.irr
 //go:embed res/verb.irr

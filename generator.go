@@ -15,6 +15,7 @@ type Generator struct {
 	nouns      []string
 	verbs      []string
 	adjIrr     [][]string
+	adjSuf     []string
 	adjNC      []string
 	nounsIrr   [][]string
 	verbsIrr   [][]string
@@ -76,9 +77,9 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 			verbMod = true
 			word = pastParticiple(word, gen.verbsIrr)
 		case MOD_COMPARATIVE:
-			word = comparative(word, gen.adjIrr)
+			word = comparative(word, gen.adjIrr, gen.adjSuf)
 		case MOD_SUPERLATIVE:
-			word = superlative(word, gen.adjIrr)
+			word = superlative(word, gen.adjIrr, gen.adjSuf)
 		case MOD_CASE_LOWER:
 			caseTransformation = gen.caser.toLower
 		case MOD_CASE_TITLE:
@@ -296,6 +297,11 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		return nil, err
 	}
 
+	sa, err := loadWords("res/adj.suf")
+	if err != nil {
+		return nil, err
+	}
+
 	nc, err := loadWords("res/adj.ncmp")
 	if err != nil {
 		return nil, err
@@ -317,6 +323,7 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		nouns:      noun,
 		verbs:      verb,
 		adjIrr:     ia,
+		adjSuf:     sa,
 		adjNC:      nc,
 		nounsIrr:   in,
 		verbsIrr:   iv,
