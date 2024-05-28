@@ -10,17 +10,43 @@ const DEFAULT_ITER_LIMIT int = 1000
 
 /* Generates random phrases or words. */
 type Generator struct {
+	// Main list of adjectives
 	adjectives []string
-	adverbs    []string
-	nouns      []string
-	verbs      []string
-	adjIrr     [][]string
-	adjSuf     []string
-	adjNC      []string
-	nounsIrr   [][]string
-	verbsIrr   [][]string
-	caser      *caser
-	iterLimit  int
+
+	// Main list of adverbs
+	adverbs []string
+
+	// Main list of nouns
+	nouns []string
+
+	// Main list of verbs
+	verbs []string
+
+	// Adjectives that are graded by adding suffix (-er, -est)
+	adjSuf []string
+
+	// Non-comparable adjectives
+	adjNC []string
+
+	// Irregularly graded adjectives
+	adjIrr [][]string
+
+	// Nouns with irregular plural forms
+	nounsIrr [][]string
+
+	// Irregular verbs
+	verbsIrr [][]string
+
+	// Case transformation handler
+	caser *caser
+
+	// A safeguard for Generator.generateModifier method.
+	// In presence of MOD_COMPARATIVE or MOD_SUPERLATIVE, this method attempts
+	// to generate a comparable adjective or adverb until one is found.
+	// iterLimit was implemented to ensure the looped generation does not render
+	// the application unresponsive by becoming either too long or infinite,
+	// depending on the underlying word database.
+	iterLimit int
 }
 
 /*
