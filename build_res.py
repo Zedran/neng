@@ -25,7 +25,7 @@ VERB_IRR_FILE  = "verb.irr"
 
 parser = ArgumentParser(
     prog="build_res.py",
-    description="This script formats WordNet files for neng. Run in neng's root directory.."
+    description="This script formats WordNet files for neng. Run it in neng's root directory."
 )
 
 parser.add_argument("-f", "--force", action="store_true", help="Overwrite a resource file if it exists.")
