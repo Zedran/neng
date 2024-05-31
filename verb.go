@@ -74,7 +74,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 			return verb + tenseEnding
 		}
 
-		if contains([]string{"augur", "murmur", "sulphur"}, verb) {
+		if contains([]string{"augur", "murmur", "orphan", "sulphur"}, verb) {
 			// Do not double the final consonant of bisyllabic exceptions that end with -ur
 			return verb + tenseEnding
 		}
