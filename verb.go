@@ -39,8 +39,8 @@ func gerund(verb string) string {
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
 		return handleCVC(verb, "ing", wi, []string{
-			"abet", "abhor", "anagram", "beget", "begin", "beset", "curvet", "forget", "inset", "offset", "overrun",
-			"regret", "reset", "sublet", "typeset", "underrun", "unpin", "upset",
+			"beget", "begin", "beset", "forget", "inset", "offset", "overrun",
+			"reset", "sublet", "typeset", "underrun", "upset",
 		})
 	}
 
@@ -63,8 +63,14 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 		return verb + "k" + tenseEnding
 	}
 
+	if contains([]string{"abet", "abhor", "anagram", "curvet", "regret", "unpin"}, verb) {
+		// Double the final consonant for exceptions that are common for past forms and gerund
+		return doubleFinal(verb, tenseEnding)
+	}
+
+	// nil-safe, omitting check
 	if contains(wordExceptions, verb) {
-		// Double the final consonant if verb is an exception to the rules below
+		// Double the final consonant for exceptions specific to the caller
 		return doubleFinal(verb, tenseEnding)
 	}
 
@@ -162,7 +168,7 @@ func pastRegular(verb string) string {
 	}
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
-		return handleCVC(verb, "ed", wi, []string{"abet", "abhor", "anagram", "curvet", "regret", "unpin"})
+		return handleCVC(verb, "ed", wi, nil)
 	}
 
 	return verb + "ed"
