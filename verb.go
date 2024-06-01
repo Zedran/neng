@@ -52,9 +52,9 @@ Handles past tense and gerund transformations for verbs ending with consonant-vo
 
   - tenseEnding: '-ing' or '-ed'
   - wi: wordInfo created during earlier processing steps
-  - wordExceptions: words whose endings are doubled, regardless of transformation rules based on syllable count and verb endings
+  - tenseExceptions: tense-specific words whose endings are doubled, regardless of transformation rules based on syllable count and verb endings
 */
-func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) string {
+func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) string {
 	if strings.HasSuffix(verb, "c") && verb != "sic" {
 		if strings.HasSuffix(verb, "lyric") {
 			return verb + tenseEnding
@@ -74,7 +74,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 	}
 
 	// nil-safe, omitting check
-	if contains(wordExceptions, verb) {
+	if contains(tenseExceptions, verb) {
 		// Double the final consonant for exceptions specific to the caller
 		return doubleFinal(verb, tenseEnding)
 	}
