@@ -10,6 +10,10 @@ func gerund(verb string) string {
 
 	wi := getWordInfo(verb)
 
+	if strings.HasSuffix(verb, "el") {
+		return handleEl(verb, "ing", wi)
+	}
+
 	if strings.HasSuffix(verb, "it") {
 		return handleIt(verb, "ing", wi)
 	}
@@ -100,6 +104,15 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	return doubleFinal(verb, tenseEnding)
 }
 
+/* Handles transformation of verbs ending with '-el'. */
+func handleEl(verb, tenseEnding string, wi wordInfo) string {
+	if strings.HasSuffix(wi.sequence, "vvc") || verb == "wedel" {
+		return verb + tenseEnding
+	}
+
+	return doubleFinal(verb, tenseEnding)
+}
+
 /* Handles transformation of verbs ending with '-it'. */
 func handleIt(verb, tenseEnding string, wi wordInfo) string {
 	if strings.HasSuffix(wi.sequence, "vvc") {
@@ -143,6 +156,10 @@ func pastRegular(verb string) string {
 
 	if endsWithAny(verb, []string{"a", "i"}) {
 		return verb + "ed"
+	}
+
+	if strings.HasSuffix(verb, "el") {
+		return handleEl(verb, "ed", wi)
 	}
 
 	if strings.HasSuffix(verb, "it") {
