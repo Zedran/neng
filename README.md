@@ -47,8 +47,8 @@ func main() {
 ### Output
 
 ```text
-Phrase -> share
-Verb   -> Serenade perplexes a STRAY SUPERBUG
+Phrase -> Serenade perplexes a STRAY SUPERBUG
+Verb   -> share
 Word   -> stashing
 ```
 
