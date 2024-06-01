@@ -63,7 +63,12 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, wordExceptions []string) s
 		return verb + "k" + tenseEnding
 	}
 
-	if contains([]string{"abet", "abhor", "anagram", "confer", "curvet", "deter", "prefer", "refer", "regret", "transfer", "unpin"}, verb) {
+	commonExceptions := []string{
+		"abet", "abhor", "anagram", "confer", "curvet", "deter",
+		"prefer", "refer", "regret", "transfer", "unpin",
+	}
+
+	if contains(commonExceptions, verb) {
 		// Double the final consonant for exceptions that are common for past forms and gerund
 		return doubleFinal(verb, tenseEnding)
 	}
