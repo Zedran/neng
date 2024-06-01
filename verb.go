@@ -141,7 +141,7 @@ func pastParticiple(verb string, verbsIrr [][]string) string {
 func pastRegular(verb string) string {
 	wi := getWordInfo(verb)
 
-	if strings.HasSuffix(verb, "i") {
+	if endsWithAny(verb, []string{"a", "i"}) {
 		return verb + "ed"
 	}
 
