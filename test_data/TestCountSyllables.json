@@ -1,4 +1,5 @@
 {
+    "":            0,
     "agree":       2,
     "be":          1,
     "beat":        1,
@@ -8,12 +9,12 @@
     "caveat":      3,
     "chikadee":    3,
     "clear":       1,
-    "create":      2,
     "commemorate": 4,
     "commission":  3,
     "commit":      2,
     "country":     2,
     "covenant":    3,
+    "create":      2,
     "decoy":       2,
     "eat":         1,
     "entresol":    3,
@@ -31,6 +32,5 @@
     "stop":        1,
     "study":       2,
     "torpedo":     3,
-    "vex":         1,
-    "":            0
+    "vex":         1
 }

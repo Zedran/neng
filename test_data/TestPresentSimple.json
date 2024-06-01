@@ -7,14 +7,14 @@
 
     {
         "input":    "be",
-        "expected": "is",
-        "plural":   false
+        "expected": "are",
+        "plural":   true
     },
 
     {
         "input":    "be",
-        "expected": "are",
-        "plural":   true
+        "expected": "is",
+        "plural":   false
     },
 
     {
