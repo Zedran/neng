@@ -8,6 +8,10 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
+	if strings.HasSuffix(verb, "r") {
+		return handleR(verb, "ing")
+	}
+
 	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "el") {
@@ -68,12 +72,11 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	}
 
 	commonSingleExceptions := []string{
-		"augur", "batik", "kayak", "murmur", "orphan", "sulphur",
+		"batik", "kayak", "orphan",
 	}
 
 	commonDoubledExceptions := []string{
-		"abet", "abhor", "anagram", "confer", "curvet", "decontrol",
-		"deter", "prefer", "refer", "regret", "transfer", "unpin",
+		"abet", "anagram", "curvet", "decontrol", "regret", "unpin",
 	}
 
 	if contains(commonSingleExceptions, verb) {
@@ -92,7 +95,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	}
 
 	if wi.sylCount == 2 {
-		if endsWithAny(verb, []string{"en", "er", "et", "in", "om", "on", "or"}) {
+		if endsWithAny(verb, []string{"en", "et", "in", "om", "on"}) {
 			// Do not double the final consonant of bisyllabic verbs with specific endings
 			return verb + tenseEnding
 		}
@@ -139,6 +142,23 @@ func handleIt(verb, tenseEnding string, wi wordInfo) string {
 	return verb + tenseEnding
 }
 
+/* Handles transformation of verbs ending with '-r'. */
+func handleR(verb, tenseEnding string) string {
+	doubled := []string{
+		"abhor", "bar", "bestir", "blur", "bur", "char", "concur",
+		"confer", "debar", "demur", "deter", "disbar", "disinter",
+		"incur", "jar", "mar", "occur", "par", "prefer", "recur",
+		"refer", "scar", "slur", "spar", "spur", "star", "tar",
+		"transfer", "unbar", "war",
+	}
+
+	if contains(doubled, verb) {
+		return doubleFinal(verb, tenseEnding)
+	}
+
+	return verb + tenseEnding
+}
+
 /* Returns Past Participle form of a verb. */
 func pastParticiple(verb string, verbsIrr [][]string) string {
 	if verb == "be" {
@@ -167,6 +187,10 @@ func pastRegular(verb string) string {
 
 	if strings.HasSuffix(verb, "it") {
 		return handleIt(verb, "ed", wi)
+	}
+
+	if strings.HasSuffix(verb, "r") {
+		return handleR(verb, "ed")
 	}
 
 	if strings.HasSuffix(verb, "y") {
