@@ -156,7 +156,7 @@ func handleR(verb, tenseEnding string) string {
 		"abhor", "bar", "bestir", "blur", "bur", "char", "concur",
 		"confer", "debar", "demur", "deter", "disbar", "disinter",
 		"incur", "jar", "mar", "occur", "par", "prefer", "recur",
-		"refer", "scar", "slur", "spar", "spur", "star", "tar",
+		"refer", "scar", "slur", "spar", "spur", "star", "stir", "tar",
 		"transfer", "unbar", "war",
 	}
 
