@@ -72,7 +72,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	}
 
 	commonSingleExceptions := []string{
-		"batik", "kayak", "orphan", "wedel",
+		"batik", "kayak", "orphan", "pyramid", "wedel",
 	}
 
 	commonDoubledExceptions := []string{
