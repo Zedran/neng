@@ -80,7 +80,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	}
 
 	commonDoubledExceptions := []string{
-		"abet", "anagram", "curvet", "regret", "revet", "unpin",
+		"abet", "anagram", "curvet", "regret", "revet", "underpin", "unpin",
 	}
 
 	if contains(commonSingleExceptions, verb) {
