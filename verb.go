@@ -67,7 +67,9 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 		return verb + "k" + tenseEnding
 	}
 
-	commonSingleExceptions := []string{"batik", "kayak"}
+	commonSingleExceptions := []string{
+		"augur", "batik", "kayak", "murmur", "orphan", "sulphur",
+	}
 
 	commonDoubledExceptions := []string{
 		"abet", "abhor", "anagram", "confer", "curvet", "decontrol",
@@ -92,11 +94,6 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	if wi.sylCount == 2 {
 		if endsWithAny(verb, []string{"en", "er", "et", "in", "om", "on", "or"}) {
 			// Do not double the final consonant of bisyllabic verbs with specific endings
-			return verb + tenseEnding
-		}
-
-		if contains([]string{"augur", "murmur", "orphan", "sulphur"}, verb) {
-			// Do not double the final consonant of bisyllabic exceptions that end with -ur
 			return verb + tenseEnding
 		}
 	}
