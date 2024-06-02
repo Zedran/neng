@@ -14,8 +14,8 @@ func gerund(verb string) string {
 
 	wi := getWordInfo(verb)
 
-	if strings.HasSuffix(verb, "el") {
-		return handleEl(verb, "ing", wi)
+	if strings.HasSuffix(verb, "l") && strings.HasSuffix(wi.sequence, "vvc") {
+		return handleVVL(verb, "ing")
 	}
 
 	if strings.HasSuffix(verb, "it") {
@@ -72,11 +72,11 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	}
 
 	commonSingleExceptions := []string{
-		"batik", "kayak", "orphan",
+		"batik", "kayak", "orphan", "wedel",
 	}
 
 	commonDoubledExceptions := []string{
-		"abet", "anagram", "curvet", "decontrol", "regret", "unpin",
+		"abet", "anagram", "curvet", "regret", "unpin",
 	}
 
 	if contains(commonSingleExceptions, verb) {
@@ -91,6 +91,10 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	// nil-safe, omitting check
 	if contains(tenseExceptions, verb) {
 		// Double the final consonant for exceptions specific to the caller
+		return doubleFinal(verb, tenseEnding)
+	}
+
+	if strings.HasSuffix(verb, "l") {
 		return doubleFinal(verb, tenseEnding)
 	}
 
@@ -110,13 +114,13 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	return doubleFinal(verb, tenseEnding)
 }
 
-/* Handles transformation of verbs ending with '-el'. */
-func handleEl(verb, tenseEnding string, wi wordInfo) string {
-	if strings.HasSuffix(wi.sequence, "vvc") || verb == "wedel" {
-		return verb + tenseEnding
+/* Handles transformation of verbs ending with vowel-vowel-l sequence. */
+func handleVVL(verb, tenseEnding string) string {
+	if strings.HasSuffix(verb, "uel") || contains([]string{"victual", "vitriol"}, verb) {
+		return doubleFinal(verb, tenseEnding)
 	}
 
-	return doubleFinal(verb, tenseEnding)
+	return verb + tenseEnding
 }
 
 /* Handles transformation of verbs ending with '-it'. */
@@ -181,8 +185,8 @@ func pastRegular(verb string) string {
 		return verb + "ed"
 	}
 
-	if strings.HasSuffix(verb, "el") {
-		return handleEl(verb, "ed", wi)
+	if strings.HasSuffix(verb, "l") && strings.HasSuffix(wi.sequence, "vvc") {
+		return handleVVL(verb, "ed")
 	}
 
 	if strings.HasSuffix(verb, "it") {
