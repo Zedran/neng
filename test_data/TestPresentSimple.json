@@ -84,6 +84,12 @@
     },
 
     {
+        "input":    "quiz",
+        "expected": "quizzes",
+        "plural":   false
+    },
+
+    {
         "input":    "shanghai",
         "expected": "shanghais",
         "plural":   false

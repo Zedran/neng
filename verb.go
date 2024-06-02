@@ -8,6 +8,10 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
+	if verb == "quiz" {
+		return doubleFinal(verb, "ing")
+	}
+
 	if strings.HasSuffix(verb, "r") {
 		return handleR(verb, "ing")
 	}
@@ -179,6 +183,10 @@ func pastParticiple(verb string, verbsIrr [][]string) string {
 
 /* Appends past tense suffix to a regular verb. */
 func pastRegular(verb string) string {
+	if verb == "quiz" {
+		return doubleFinal(verb, "ed")
+	}
+
 	wi := getWordInfo(verb)
 
 	if endsWithAny(verb, []string{"a", "i"}) {
@@ -268,6 +276,9 @@ func presentSimple(verb string, plural bool) string {
 	} else if strings.HasSuffix(verb, "y") && strings.HasSuffix(seq, "v") {
 		return verb[:len(verb)-1] + "ies"
 	} else if endsWithAny(verb, []string{"ch", "s", "sh", "x", "z"}) {
+		if verb == "quiz" {
+			return doubleFinal(verb, "es")
+		}
 		return verb + "es"
 	}
 
