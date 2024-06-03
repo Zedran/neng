@@ -245,7 +245,7 @@ func (gen *Generator) generateModifier(items []string, mods ...Mod) (string, err
 				return "", errIterLimit
 			}
 
-			a = randItem(gen.adverbs)
+			a = randItem(items)
 			i++
 		}
 	}
