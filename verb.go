@@ -4,12 +4,12 @@ import "strings"
 
 /* Returns gerund form of a verb. */
 func gerund(verb string) string {
-	if len(verb) <= 2 {
-		return verb + "ing"
+	if contains([]string{"quiz", "up"}, verb) {
+		return doubleFinal(verb, "ing")
 	}
 
-	if verb == "quiz" {
-		return doubleFinal(verb, "ing")
+	if len(verb) <= 2 {
+		return verb + "ing"
 	}
 
 	if strings.HasSuffix(verb, "r") {
@@ -183,7 +183,7 @@ func pastParticiple(verb string, verbsIrr [][]string) string {
 
 /* Appends past tense suffix to a regular verb. */
 func pastRegular(verb string) string {
-	if verb == "quiz" {
+	if contains([]string{"quiz", "up"}, verb) {
 		return doubleFinal(verb, "ed")
 	}
 
