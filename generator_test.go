@@ -1,8 +1,6 @@
 package neng
 
-import (
-	"testing"
-)
+import "testing"
 
 /* Tests NewGenerator function. Fails if providing an empty list or nil does not trigger an error. */
 func TestNewGenerator(t *testing.T) {
