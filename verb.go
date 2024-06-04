@@ -197,7 +197,6 @@ func pastRegular(verb string) string {
 			// Double the ending of 'gas' and its derivatives
 			return doubleFinal(verb, "ed")
 		}
-
 		return verb + "ed"
 	case 'r':
 		return handleR(verb, "ed")
