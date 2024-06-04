@@ -1,6 +1,8 @@
 package neng
 
-import "testing"
+import (
+	"testing"
+)
 
 /* Tests NewGenerator function. Fails if providing an empty list or nil does not trigger an error. */
 func TestNewGenerator(t *testing.T) {
@@ -72,6 +74,10 @@ func TestTransform(t *testing.T) {
 	gen, err := DefaultGenerator()
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+	}
+
+	if output, err := gen.Transform("aa", MOD_PLURAL); err == nil {
+		t.Errorf("Failed for MOD_PLURAL: no error returned. Output: '%s'", output)
 	}
 
 	if output, err := gen.Transform("own", MOD_COMPARATIVE); err == nil {

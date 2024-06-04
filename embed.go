@@ -10,5 +10,6 @@ import "embed"
 //go:embed res/adj.suf
 //go:embed res/adj.ncmp
 //go:embed res/noun.irr
+//go:embed res/noun.unc
 //go:embed res/verb.irr
 var efs embed.FS

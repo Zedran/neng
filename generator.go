@@ -28,6 +28,9 @@ type Generator struct {
 	// Non-comparable adjectives
 	adjNC []string
 
+	// Uncountable nouns
+	nounsUnc []string
+
 	// Irregularly graded adjectives
 	adjIrr [][]string
 
@@ -40,12 +43,12 @@ type Generator struct {
 	// Case transformation handler
 	caser *caser
 
-	// A safeguard for Generator.generateModifier method.
-	// In presence of MOD_COMPARATIVE or MOD_SUPERLATIVE, this method attempts
-	// to generate a comparable adjective or adverb until one is found.
-	// iterLimit was implemented to ensure the looped generation does not render
-	// the application unresponsive by becoming either too long or infinite,
-	// depending on the underlying word database.
+	// A safeguard for Generator.generateModifier and Generator.Noun methods.
+	// In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, these methods
+	// attempt to generate a comparable adjective, adverb or countable noun until
+	// one is found. iterLimit was implemented to ensure the looped generation
+	// does not render the application unresponsive by becoming either too long
+	// or infinite, depending on the underlying word database.
 	iterLimit int
 }
 
@@ -70,10 +73,14 @@ func (gen *Generator) Adverb(mods ...Mod) (string, error) {
 /*
 Transforms a word according to specified mods. Not all mods are compatible with every
 part of speech. Compatibility is not checked. Returns an error if an undefined Mod is received
-or if user requested gradation, but provided non-comparable adjective or adverb.
+or if user requested gradation or pluralization, but provided word does not have the requested form.
 */
 func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 	if (contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE)) && contains(gen.adjNC, word) {
+		return "", errNonComparable
+	}
+
+	if contains(mods, MOD_PLURAL) && contains(gen.nounsUnc, word) {
 		return "", errNonComparable
 	}
 
@@ -129,11 +136,26 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 }
 
 /*
-Generates a single random noun and transforms it according to mods.
-Returns an error if an undefined Mod is received.
+Generates a single random noun and transforms it according to mods. Returns error
+if timeout (Generator.iterLimit) is reached while attempting to generate a countable noun
+or if an undefined Mod is received.
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
-	return gen.Transform(randItem(gen.nouns), mods...)
+	n := randItem(gen.nouns)
+
+	if contains(mods, MOD_PLURAL) {
+		i := 0
+		for contains(gen.nounsUnc, n) {
+			if i == DEFAULT_ITER_LIMIT {
+				return "", errIterLimit
+			}
+
+			n = randItem(gen.nouns)
+			i++
+		}
+	}
+
+	return gen.Transform(n, mods...)
 }
 
 /*
@@ -232,7 +254,7 @@ func (gen *Generator) Verb(mods ...Mod) (string, error) {
 
 /*
 A common method used to generate adjectives (noun modifiers) and adverbs (verb modifiers).
-Returns error if Generator.iterLimit is reached when attempting to generate a comparable
+Returns error if Generator.iterLimit is reached while attempting to generate a comparable
 adjective or adverb. Relays errUndefinedMod from Generator.Transform.
 */
 func (gen *Generator) generateModifier(items []string, mods ...Mod) (string, error) {
@@ -302,12 +324,12 @@ func DefaultGenerator() (*Generator, error) {
 /*
 Initializes a new Generator with provided lists. Returns an error if any of the lists is empty.
 
-iterLimit is a safeguard for Generator.Adjective and Generator.Adverb methods.
-In presence of MOD_COMPARATIVE or MOD_SUPERLATIVE, those methods generate a word candidate until they
-find a comparable one or until iteration limit is reached.
+iterLimit is a safeguard for Generator.Adjective, Generator.Adverb and Generator.Noun methods.
+In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, those methods generate a word
+candidate until they find a comparable / countable one or until iteration limit is reached.
 
 iterLimit value should be set with regards to the size of your word base
-and the number of non-comparable adjectives and adverbs in it.
+and the number of non-comparable adjectives, adverbs and countable nouns in it.
 */
 func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, error) {
 	if iterLimit <= 0 {
@@ -333,6 +355,11 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		return nil, err
 	}
 
+	un, err := loadWords("res/noun.unc")
+	if err != nil {
+		return nil, err
+	}
+
 	in, err := loadIrregularWords("res/noun.irr")
 	if err != nil {
 		return nil, err
@@ -351,6 +378,7 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		adjIrr:     ia,
 		adjSuf:     sa,
 		adjNC:      nc,
+		nounsUnc:   un,
 		nounsIrr:   in,
 		verbsIrr:   iv,
 		caser:      newCaser(),

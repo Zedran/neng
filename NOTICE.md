@@ -6,7 +6,9 @@ This software incorporates materials licensed by third parties.
 
 ### Source
 
-Wiktionary. Category: Non-comparable adjectives. Available at https://simple.wiktionary.org/w/index.php?title=Category:Non-comparable_adjectives&pagefrom=functionless#mw-pages \[2024-05-21] Wikimedia Foundation. 2006.
+* Wiktionary. Category: English countable nouns. Available at https://en.wiktionary.org/wiki/Category:English_countable_nouns \[2024-06-03] Wikimedia Foundation. 2022.
+* Wiktionary. Category: English uncountable nouns. Available at https://en.wiktionary.org/wiki/Category:English_uncountable_nouns \[2024-06-03] Wikimedia Foundation. 2022.
+* Wiktionary. Category: Non-comparable adjectives. Available at https://simple.wiktionary.org/w/index.php?title=Category:Non-comparable_adjectives&pagefrom=functionless#mw-pages \[2024-05-21] Wikimedia Foundation. 2006.
 
 ### License
 
@@ -14,7 +16,8 @@ Wiktionary. Category: Non-comparable adjectives. Available at https://simple.wik
 
 ### Used material
 
-Page titles in the "Non-comparable adjectives" category were used to compile `res/adj.ncmp`.
+* Page titles in the "English countable nouns" and "English uncountable nouns" categories were used to compile `res/noun.unc`.
+* Page titles in the "Non-comparable adjectives" category were used to compile `res/adj.ncmp`.
 
 ## WordNet
 
