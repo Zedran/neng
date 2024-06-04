@@ -189,43 +189,33 @@ func pastRegular(verb string) string {
 
 	wi := getWordInfo(verb)
 
-	if endsWithAny(verb, []string{"a", "i"}) {
-		return verb + "ed"
-	}
-
-	if strings.HasSuffix(verb, "l") && strings.HasSuffix(wi.sequence, "vvc") {
-		return handleVVL(verb, "ed")
-	}
-
-	if strings.HasSuffix(verb, "it") {
-		return handleIt(verb, "ed", wi)
-	}
-
-	if strings.HasSuffix(verb, "r") {
-		return handleR(verb, "ed")
-	}
-
-	if strings.HasSuffix(verb, "y") {
-		if strings.HasSuffix(wi.sequence, "v") {
-			return verb[:len(verb)-1] + "ied"
-		}
-		return verb + "ed"
-	}
-
-	if strings.HasSuffix(wi.sequence, "v") {
-		if strings.HasSuffix(verb, "o") {
-			return verb + "ed"
-		}
+	switch verb[len(verb)-1] {
+	case 'e', 'u':
 		return verb + "d"
-	}
-
-	if endsWithAny(verb, []string{"h", "s", "w", "x"}) {
+	case 'h', 's', 'w', 'x':
 		if strings.HasSuffix(verb, "gas") {
 			// Double the ending of 'gas' and its derivatives
 			return doubleFinal(verb, "ed")
 		}
 
 		return verb + "ed"
+	case 'r':
+		return handleR(verb, "ed")
+	case 'l':
+		if strings.HasSuffix(wi.sequence, "vvc") {
+			return handleVVL(verb, "ed")
+		}
+	case 'y':
+		if strings.HasSuffix(wi.sequence, "v") {
+			return verb[:len(verb)-1] + "ied"
+		}
+		return verb + "ed"
+	case 'a', 'i', 'o':
+		return verb + "ed"
+	}
+
+	if strings.HasSuffix(verb, "it") {
+		return handleIt(verb, "ed", wi)
 	}
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
