@@ -12,23 +12,12 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
-	if strings.HasSuffix(verb, "r") {
-		return handleR(verb, "ing")
-	}
-
 	wi := getWordInfo(verb)
 
-	if strings.HasSuffix(verb, "l") && strings.HasSuffix(wi.sequence, "vvc") {
-		return handleVVL(verb, "ing")
-	}
-
-	if strings.HasSuffix(verb, "it") {
-		return handleIt(verb, "ing", wi)
-	}
-
-	if strings.HasSuffix(verb, "e") && verb != "ante" {
-		if wi.sequence[len(wi.sequence)-2] == 'c' && verb[len(verb)-2] != 'y' {
-			// Remove final 'e' if previous letter is consonant other than 'y'
+	switch verb[len(verb)-1] {
+	case 'e':
+		if strings.HasSuffix(wi.sequence, "cv") && !strings.HasSuffix(verb, "ye") && verb != "ante" {
+			// Remove final 'e' if previous letter is consonant other than 'y' and the verb is not 'ante'
 			return verb[:len(verb)-1] + "ing"
 		}
 
@@ -38,15 +27,22 @@ func gerund(verb string) string {
 		case 'i': // ie
 			return verb[:len(verb)-2] + "ying"
 		}
-	}
-
-	if endsWithAny(verb, []string{"h", "s", "w", "x", "y"}) {
+	case 'h', 's', 'w', 'x', 'y':
 		if strings.HasSuffix(verb, "gas") {
 			// Double the ending of 'gas' and its derivatives
 			return doubleFinal(verb, "ing")
 		}
-
 		return verb + "ing"
+	case 'r':
+		return handleR(verb, "ing")
+	case 'l':
+		if strings.HasSuffix(wi.sequence, "vvc") {
+			return handleVVL(verb, "ing")
+		}
+	}
+
+	if strings.HasSuffix(verb, "it") {
+		return handleIt(verb, "ing", wi)
 	}
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
