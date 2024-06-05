@@ -73,7 +73,7 @@ Princeton University and LICENSEE agrees to preserve same.
 
 ### Modifications
 
-Most of the source files underwent automated formatting with `build_res.py` script. Below is the summary of the procedure:
+`adj.irr` and `adj.suf` were manually constructed using their respective source files. Automated formatting via the `build_res.py` script was applied to the remaining source files. Below is the summary of the procedure:
 
 1. Remove license text from the beginning of the file
 2. Extract words from the surrounding metadata
@@ -88,8 +88,5 @@ Most of the source files underwent automated formatting with `build_res.py` scri
 11. Append missing irregular verbs (found in `res/verb.irr`) to the verb list
 12. Filter mature and controversial language. Filter files were created with [better_profanity](https://github.com/snguyenthanh/better_profanity) Python package and then edited manually to include more words and remove false positives
 13. Sort word lists alphabetically
-
-The following manual modifications were carried out:
-
-* `adj.irr` and `adj.suf` were built manually based on the corresponding source files
-* `noun`: `cutlas -> cutlass`
+14. Change spelling of the following words:
+    * `noun`: `cutlas -> cutlass`

@@ -208,6 +208,15 @@ def load_filter_file(path: str) -> [str]:
     return lines
 
 
+def modify_list(fname: str, lines: [str]) -> [str]:
+    """Performs file-specific modifications, mainly spelling changes."""
+
+    if fname == "noun":
+        lines[lines.index("cutlas")] = "cutlass"
+
+    return lines
+
+
 def strip_license(lines: [str]) -> str:
     """Removes license at the beginning of a file."""
 
@@ -249,6 +258,8 @@ if __name__ == "__main__":
 
         if file == "data.verb":
             lines = append_missing_verbirr(lines)
+
+        lines = modify_list(new_fname, lines)
 
         if args.generate_filters:
             censored = get_mature_language(lines)
