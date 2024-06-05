@@ -93,4 +93,3 @@ The following manual modifications were carried out:
 
 * `adj.irr` and `adj.suf` were built manually based on the corresponding source files
 * `noun`: `cutlas -> cutlass`
-* `adv`: `+hard +well`
