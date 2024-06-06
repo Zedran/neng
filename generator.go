@@ -340,48 +340,48 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		return nil, errEmptyLists
 	}
 
-	ia, err := loadIrregularWords("res/adj.irr")
+	var (
+		err error
+
+		gen = Generator{
+			adjectives: adj,
+			adverbs:    adv,
+			nouns:      noun,
+			verbs:      verb,
+			caser:      newCaser(),
+			iterLimit:  iterLimit,
+		}
+	)
+
+	gen.adjIrr, err = loadIrregularWords("res/adj.irr")
 	if err != nil {
 		return nil, err
 	}
 
-	sa, err := loadWords("res/adj.suf")
+	gen.adjSuf, err = loadWords("res/adj.suf")
 	if err != nil {
 		return nil, err
 	}
 
-	nc, err := loadWords("res/adj.ncmp")
+	gen.adjNC, err = loadWords("res/adj.ncmp")
 	if err != nil {
 		return nil, err
 	}
 
-	un, err := loadWords("res/noun.unc")
+	gen.nounsUnc, err = loadWords("res/noun.unc")
 	if err != nil {
 		return nil, err
 	}
 
-	in, err := loadIrregularWords("res/noun.irr")
+	gen.nounsIrr, err = loadIrregularWords("res/noun.irr")
 	if err != nil {
 		return nil, err
 	}
 
-	iv, err := loadIrregularWords("res/verb.irr")
+	gen.verbsIrr, err = loadIrregularWords("res/verb.irr")
 	if err != nil {
 		return nil, err
 	}
 
-	return &Generator{
-		adjectives: adj,
-		adverbs:    adv,
-		nouns:      noun,
-		verbs:      verb,
-		adjIrr:     ia,
-		adjSuf:     sa,
-		adjNC:      nc,
-		nounsUnc:   un,
-		nounsIrr:   in,
-		verbsIrr:   iv,
-		caser:      newCaser(),
-		iterLimit:  iterLimit,
-	}, nil
+	return &gen, nil
 }
