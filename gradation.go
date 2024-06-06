@@ -19,18 +19,19 @@ func comparative(a string, adjIrr [][]string, adjSuf []string) string {
 /* Returns comparative or superlative form of those adjectives to which suffix is appended during gradation process. */
 func sufGrad(a, suf string) string {
 	switch a[len(a)-1] {
-	case 'e':
-		return a[:len(a)-1] + suf
-	case 'b', 'd', 'g', 'm', 'n', 'p', 't':
-		seq := getSequence(a)
-		if strings.HasSuffix(seq, "cvc") {
-			return doubleFinal(a, suf)
-		}
 	case 'y':
 		if strings.HasSuffix(a, "ey") {
 			return a[:len(a)-2] + "i" + suf
 		}
 		return a[:len(a)-1] + "i" + suf
+
+	case 'b', 'd', 'g', 'm', 'n', 'p', 't':
+		seq := getSequence(a)
+		if strings.HasSuffix(seq, "cvc") {
+			return doubleFinal(a, suf)
+		}
+	case 'e':
+		return a[:len(a)-1] + suf
 	}
 
 	return a + suf
