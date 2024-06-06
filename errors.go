@@ -15,11 +15,11 @@ var (
 	// Error returned by Generator.Phrase, if pattern ends with '%'
 	errEscapedStrTerm error = errors.New("escape character at pattern termination")
 
-	// Error returned by Generator.Transform, if non-comparable adjective or adverb is received along with gradation modifier
-	errNonComparable error = errors.New("gradation requested, but the provided word is non-comparable")
-
 	// Error returned by Generator.Adjective or Generator.Adverb if iteration limit is reached while searching for comparable word
 	errIterLimit error = errors.New("iteration limit reached while trying to draw a valid comparative adjective or adverb")
+
+	// Error returned by Generator.Transform, if non-comparable adjective or adverb is received along with gradation modifier
+	errNonComparable error = errors.New("gradation requested, but the provided word is non-comparable")
 
 	// Error returned by Generator.Transform, if uncountable noun is received along with pluralization modifier
 	errUncountable error = errors.New("pluralization requested, but the provided word is uncountable")
