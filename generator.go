@@ -81,7 +81,7 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 	}
 
 	if contains(mods, MOD_PLURAL) && contains(gen.nounsUnc, word) {
-		return "", errNonComparable
+		return "", errUncountable
 	}
 
 	var (
