@@ -38,7 +38,7 @@ func main() {
     verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 
     // Transforming an arbitrary word
-    word, _ := gen.Transform("STASH", neng.MOD_GERUND, neng.MOD_CASE_LOWER)
+    word, _ := gen.Transform("STASH", neng.WC_VERB, neng.MOD_GERUND, neng.MOD_CASE_LOWER)
 
     fmt.Printf("Phrase -> %s\nVerb   -> %s\nWord   -> %s\n", phrase, verb, word)
 }
@@ -58,17 +58,17 @@ Word   -> stashing
 
 ### Insertion
 
-| Symbol | Description                |
-|:------:|:---------------------------|
-| `%`    | Inserts `%` sign           |
-| `a`    | Inserts a random adjective |
-| `m`    | Inserts a random adverb    |
-| `n`    | Inserts a random noun      |
-| `v`    | Inserts a random verb      |
+| Symbol | WordClass      | Description                |
+|:------:|:--------------:|:---------------------------|
+| `%`    |                | Inserts `%` sign           |
+| `a`    | `WC_ADJECTIVE` | Inserts a random adjective |
+| `m`    | `WC_ADVERB`    | Inserts a random adverb    |
+| `n`    | `WC_NOUN`      | Inserts a random noun      |
+| `v`    | `WC_VERB`      | Inserts a random verb      |
 
 ### Transformation
 
-Currently, no compatibility checks have been implemented. It is legal to transform any word with any modifier, it is also possible to assign more than one modifier of the same type to a word. Improper use of modifiers will therefore result in deformations.
+Transformations can only be applied to compatible parts of speech. It is possible to assign more than one modifier of the same type to a word (multiple tense mods or duplicates). Improper use of modifiers will therefore result in deformations.
 
 | Symbol | Compatible with       | Package constant      | Description                |
 |:------:|:---------------------:|:----------------------|:---------------------------|
@@ -78,10 +78,12 @@ Currently, no compatibility checks have been implemented. It is legal to transfo
 | `c`    | adjective, adverb     | `MOD_COMPARATIVE`     | Comparative (better)       |
 | `g`    | verb                  | `MOD_GERUND`          | Gerund                     |
 | `l`    | any                   | `MOD_CASE_LOWER`      | lower case                 |
-| `p`    | noun, verb            | `MOD_PLURAL`          | Plural form                |
+| `p`    | noun, verb*           | `MOD_PLURAL`          | Plural form                |
 | `s`    | adjective, adverb     | `MOD_SUPERLATIVE`     | Superlative (best)         |
 | `t`    | any                   | `MOD_CASE_TITLE`      | Title Case                 |
 | `u`    | any                   | `MOD_CASE_UPPER`      | UPPER CASE                 |
+
+\*`MOD_PLURAL` is only compatible with verbs when combined with `MOD_PAST_SIMPLE` or `MOD_PRESENT_SIMPLE`.
 
 Symbols are used to specify transformation parameters for words within a phrase. Package constants are designed to work with "single-word" methods.
 
