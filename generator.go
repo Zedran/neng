@@ -91,11 +91,11 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
-		if (contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE)) && contains(gen.adjNC, word) {
+		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && slices.Contains(gen.adjNC, word) {
 			return "", errNonComparable
 		}
 	case WC_NOUN:
-		if contains(mods, MOD_PLURAL) && contains(gen.nounsUnc, word) {
+		if slices.Contains(mods, MOD_PLURAL) && slices.Contains(gen.nounsUnc, word) {
 			return "", errUncountable
 		}
 	}
@@ -157,8 +157,8 @@ Returns an error if:
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
 	n := randItem(gen.nouns)
 
-	if contains(mods, MOD_PLURAL) {
-		for i := 0; contains(gen.nounsUnc, n); i++ {
+	if slices.Contains(mods, MOD_PLURAL) {
+		for i := 0; slices.Contains(gen.nounsUnc, n); i++ {
 			if i == DEFAULT_ITER_LIMIT {
 				return "", errIterLimit
 			}
@@ -277,8 +277,8 @@ Returns an error if:
 func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod) (string, error) {
 	a := randItem(items)
 
-	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
-		for i := 0; contains(gen.adjNC, a); i++ {
+	if slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE) {
+		for i := 0; slices.Contains(gen.adjNC, a); i++ {
 			if i == DEFAULT_ITER_LIMIT {
 				return "", errIterLimit
 			}

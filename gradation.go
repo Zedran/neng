@@ -1,6 +1,9 @@
 package neng
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 /* Returns comparative form of an adjective or an adverb (good -> better). */
 func comparative(a string, adjIrr [][]string, adjSuf []string) string {
@@ -9,7 +12,7 @@ func comparative(a string, adjIrr [][]string, adjSuf []string) string {
 		return aLine[1]
 	}
 
-	if contains(adjSuf, a) {
+	if slices.Contains(adjSuf, a) {
 		return sufGrad(a, "er")
 	}
 
@@ -44,7 +47,7 @@ func superlative(a string, adjIrr [][]string, adjSuf []string) string {
 		return aLine[2]
 	}
 
-	if contains(adjSuf, a) {
+	if slices.Contains(adjSuf, a) {
 		return sufGrad(a, "est")
 	}
 

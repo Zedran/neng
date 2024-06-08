@@ -1,10 +1,13 @@
 package neng
 
-import "strings"
+import (
+	"slices"
+	"strings"
+)
 
 /* Returns gerund form of a verb. */
 func gerund(verb string) string {
-	if contains([]string{"quiz", "up"}, verb) {
+	if slices.Contains([]string{"quiz", "up"}, verb) {
 		return doubleFinal(verb, "ing")
 	}
 
@@ -79,17 +82,17 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 		"abet", "anagram", "curvet", "regret", "revet", "underpin", "unpin",
 	}
 
-	if contains(commonSingleExceptions, verb) {
+	if slices.Contains(commonSingleExceptions, verb) {
 		return verb + tenseEnding
 	}
 
-	if contains(commonDoubledExceptions, verb) {
+	if slices.Contains(commonDoubledExceptions, verb) {
 		// Double the final consonant for exceptions that are common for past forms and gerund
 		return doubleFinal(verb, tenseEnding)
 	}
 
 	// nil-safe, omitting check
-	if contains(tenseExceptions, verb) {
+	if slices.Contains(tenseExceptions, verb) {
 		// Double the final consonant for exceptions specific to the caller
 		return doubleFinal(verb, tenseEnding)
 	}
@@ -116,7 +119,7 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 
 /* Handles transformation of verbs ending with vowel-vowel-l sequence. */
 func handleVVL(verb, tenseEnding string) string {
-	if strings.HasSuffix(verb, "uel") || contains([]string{"victual", "vitriol"}, verb) {
+	if strings.HasSuffix(verb, "uel") || slices.Contains([]string{"victual", "vitriol"}, verb) {
 		return doubleFinal(verb, tenseEnding)
 	}
 
@@ -138,7 +141,7 @@ func handleIt(verb, tenseEnding string, wi wordInfo) string {
 	}
 
 	if endsWithAny(verb, []string{"fit", "mit", "wit"}) {
-		if !contains([]string{"limit", "profit"}, verb) {
+		if !slices.Contains([]string{"limit", "profit"}, verb) {
 			return doubleFinal(verb, tenseEnding)
 		}
 	}
@@ -156,7 +159,7 @@ func handleR(verb, tenseEnding string) string {
 		"transfer", "unbar", "war",
 	}
 
-	if contains(doubled, verb) {
+	if slices.Contains(doubled, verb) {
 		return doubleFinal(verb, tenseEnding)
 	}
 
@@ -179,7 +182,7 @@ func pastParticiple(verb string, verbsIrr [][]string) string {
 
 /* Appends past tense suffix to a regular verb. */
 func pastRegular(verb string) string {
-	if contains([]string{"quiz", "up"}, verb) {
+	if slices.Contains([]string{"quiz", "up"}, verb) {
 		return doubleFinal(verb, "ed")
 	}
 

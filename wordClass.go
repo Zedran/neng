@@ -1,5 +1,7 @@
 package neng
 
+import "slices"
+
 // WordClass type helps Generator.Transform differentiate
 // parts of speech and process them accordingly.
 type WordClass uint8
@@ -21,7 +23,7 @@ func (wc WordClass) CompatibleWith(mods ...Mod) bool {
 				return false
 			}
 
-			if wc == WC_VERB && !contains(mods, MOD_PAST_SIMPLE) && !contains(mods, MOD_PRESENT_SIMPLE) {
+			if wc == WC_VERB && !slices.Contains(mods, MOD_PAST_SIMPLE) && !slices.Contains(mods, MOD_PRESENT_SIMPLE) {
 				return false
 			}
 

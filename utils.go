@@ -5,17 +5,6 @@ import (
 	"strings"
 )
 
-/* Returns true if query is in slice. */
-func contains[T comparable](slice []T, query T) bool {
-	for _, e := range slice {
-		if e == query {
-			return true
-		}
-	}
-
-	return false
-}
-
 /*
 Returns number of syllables in s given consonant-vowel sequence seq.
 Accuracy of this function is uncertain, especially for borrowed words (cafe).
