@@ -15,6 +15,9 @@ var (
 	// Error returned by Generator.Phrase, if pattern ends with '%'
 	errEscapedStrTerm error = errors.New("escape character at pattern termination")
 
+	// Error returned by Generator.Transform, if given WordClass is incompatible with requested transformations
+	errIncompatible error = errors.New("WordClass not compatible with the provided mod(s)")
+
 	// Error returned by Generator.Adjective or Generator.Adverb if iteration limit is reached while searching for comparable word
 	errIterLimit error = errors.New("iteration limit reached while trying to draw a valid comparative adjective or adverb")
 

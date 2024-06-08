@@ -54,34 +54,50 @@ type Generator struct {
 
 /*
 Generates a single random adjective and transforms it according to mods.
-Returns an error if an undefined Mod is received or if the iteration limit
-is reached while attempting to generate a comparable adjective.
+
+Returns an error if:
+- an undefined Mod is received (relays from Generator.Transform)
+- an incompatible Mod is received (relays from Generator.Transform)
+- iteration limit is reached while attempting to generate a comparable adjective
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
-	return gen.generateModifier(gen.adjectives, mods...)
+	return gen.generateModifier(gen.adjectives, WC_ADJECTIVE, mods...)
 }
 
 /*
 Generates a single random adverb and transforms it according to mods.
-Returns an error if an undefined Mod is received or if the iteration limit
-is reached while attempting to generate a comparable adverb.
+
+Returns an error if:
+- an undefined Mod is received (relays from Generator.Transform)
+- an incompatible Mod is received (relays from Generator.Transform)
+- iteration limit is reached while attempting to generate a comparable adverb
 */
 func (gen *Generator) Adverb(mods ...Mod) (string, error) {
-	return gen.generateModifier(gen.adverbs, mods...)
+	return gen.generateModifier(gen.adverbs, WC_ADVERB, mods...)
 }
 
 /*
-Transforms a word according to specified mods. Not all mods are compatible with every
-part of speech. Compatibility is not checked. Returns an error if an undefined Mod is received
-or if user requested gradation or pluralization, but provided word does not have the requested form.
+Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
+
+Returns an error if:
+- WordClass of the word is not compatible with any Mod in mods
+- transformation into comparative or superlative form is requested for non-comparable adjective or adverb
+- transformation into plural form is requested for an uncountable noun
 */
-func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
-	if (contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE)) && contains(gen.adjNC, word) {
-		return "", errNonComparable
+func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string, error) {
+	if !wc.CompatibleWith(mods...) {
+		return "", errIncompatible
 	}
 
-	if contains(mods, MOD_PLURAL) && contains(gen.nounsUnc, word) {
-		return "", errUncountable
+	switch wc {
+	case WC_ADJECTIVE, WC_ADVERB:
+		if (contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE)) && contains(gen.adjNC, word) {
+			return "", errNonComparable
+		}
+	case WC_NOUN:
+		if contains(mods, MOD_PLURAL) && contains(gen.nounsUnc, word) {
+			return "", errUncountable
+		}
 	}
 
 	var (
@@ -136,9 +152,12 @@ func (gen *Generator) Transform(word string, mods ...Mod) (string, error) {
 }
 
 /*
-Generates a single random noun and transforms it according to mods. Returns error
-if timeout (Generator.iterLimit) is reached while attempting to generate a countable noun
-or if an undefined Mod is received.
+Generates a single random noun and transforms it according to mods.
+
+Returns an error if:
+- an undefined Mod is received (relays from Generator.Transform)
+- an incompatible Mod is received (relays from Generator.Transform)
+- iteration limit is reached while attempting to generate a countable noun
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
 	n := randItem(gen.nouns)
@@ -155,7 +174,7 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 		}
 	}
 
-	return gen.Transform(n, mods...)
+	return gen.Transform(n, WC_NOUN, mods...)
 }
 
 /*
@@ -186,9 +205,9 @@ Error is returned if:
   - provided pattern is empty
   - character other than the above is escaped with a '%' sign
   - a single '%' ends the pattern
+  - incompatible modifier is assigned to the word
 
 Error is not returned if:
-  - incompatible modifier is assigned to the word
   - duplicate modifier is assigned to the same word
 
 Example phrase:
@@ -249,15 +268,20 @@ Generates a single random verb and transforms it according to mods.
 Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
-	return gen.Transform(randItem(gen.verbs), mods...)
+	return gen.Transform(randItem(gen.verbs), WC_VERB, mods...)
 }
 
 /*
 A common method used to generate adjectives (noun modifiers) and adverbs (verb modifiers).
 Returns error if Generator.iterLimit is reached while attempting to generate a comparable
 adjective or adverb. Relays errUndefinedMod from Generator.Transform.
+
+Returns an error if:
+- an undefined Mod is received (relays from Generator.Transform)
+- an incompatible Mod is received (relays from Generator.Transform)
+- Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
 */
-func (gen *Generator) generateModifier(items []string, mods ...Mod) (string, error) {
+func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod) (string, error) {
 	a := randItem(items)
 
 	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
@@ -272,7 +296,7 @@ func (gen *Generator) generateModifier(items []string, mods ...Mod) (string, err
 		}
 	}
 
-	return gen.Transform(a, mods...)
+	return gen.Transform(a, wc, mods...)
 }
 
 /*

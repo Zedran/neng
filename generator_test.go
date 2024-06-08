@@ -67,22 +67,47 @@ func TestPhrase(t *testing.T) {
 	}
 }
 
-/* Tests whether the Generator.Transform returns error upon receiving gradation modifier together with non-comparable word. */
+/*
+Tests whether the Generator.Transform returns errNonComparable and errUncountable for appropriate WordClass.
+errNonComparable should only be returned if gradation was requested for non-comparable adjective or adverb and
+errUncountable should only be returned if pluralization was requested for an uncountable noun.
+*/
 func TestTransform(t *testing.T) {
+	type testCase struct {
+		description string
+		word        string
+		mods        []Mod
+		wc          WordClass
+		goodCase    bool
+	}
+
 	gen, err := DefaultGenerator()
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
 
-	if output, err := gen.Transform("aa", MOD_PLURAL); err == nil {
-		t.Errorf("Failed for MOD_PLURAL: no error returned. Output: '%s'", output)
+	cases := []testCase{
+		{"Uncountable noun + MOD_PLURAL", "aa", []Mod{MOD_PLURAL}, WC_NOUN, false},
+		{"Non-comparable adj + MOD_COMPARATIVE", "own", []Mod{MOD_COMPARATIVE}, WC_ADJECTIVE, false},
+		{"Non-comparable adj + MOD_SUPERLATIVE", "own", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, false},
+		{"Noun in adj.ncmp + MOD_SUPERLATIVE", "arctic", []Mod{MOD_PLURAL}, WC_NOUN, true},
+		{"Verb in adj.ncmp + MOD_PLURAL", "present", []Mod{MOD_PRESENT_SIMPLE, MOD_PLURAL}, WC_VERB, true},
+		{"Adj in noun.unc + MOD_SUPERLATIVE", "cool", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, true},
+		{"Adv in noun.unc + MOD_SUPERLATIVE", "cool", []Mod{MOD_SUPERLATIVE}, WC_ADVERB, true},
 	}
 
-	if output, err := gen.Transform("own", MOD_COMPARATIVE); err == nil {
-		t.Errorf("Failed for MOD_COMPARATIVE: no error returned. Output: '%s'", output)
-	}
+	for _, c := range cases {
+		out, err := gen.Transform(c.word, c.wc, c.mods...)
 
-	if output, err := gen.Transform("own", MOD_SUPERLATIVE); err == nil {
-		t.Errorf("Failed for MOD_SUPERLATIVE: no error returned. Output: '%s'", output)
+		switch c.goodCase {
+		case true:
+			if err != nil {
+				t.Errorf("Failed for '%s - %s': error returned: '%s'", c.description, c.word, err.Error())
+			}
+		default:
+			if err == nil {
+				t.Errorf("Failed for '%s - %s': error not returned, output: %s.", c.description, c.word, out)
+			}
+		}
 	}
 }
