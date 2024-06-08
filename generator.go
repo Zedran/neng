@@ -103,7 +103,6 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 	var (
 		caseTransformation func(string) string
 		pluralMod          bool
-		verbMod            bool
 	)
 
 	// Ensure MOD_PLURAL is processed first
@@ -114,16 +113,12 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 		case MOD_PLURAL:
 			pluralMod = true
 		case MOD_GERUND:
-			verbMod = true
 			word = gerund(word)
 		case MOD_PRESENT_SIMPLE:
-			verbMod = true
 			word = presentSimple(word, pluralMod)
 		case MOD_PAST_SIMPLE:
-			verbMod = true
 			word = pastSimple(word, gen.verbsIrr, pluralMod)
 		case MOD_PAST_PARTICIPLE:
-			verbMod = true
 			word = pastParticiple(word, gen.verbsIrr)
 		case MOD_COMPARATIVE:
 			word = comparative(word, gen.adjIrr, gen.adjSuf)
@@ -140,7 +135,7 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 		}
 	}
 
-	if pluralMod && !verbMod {
+	if pluralMod && wc != WC_VERB {
 		word = plural(word, gen.nounsIrr)
 	}
 
