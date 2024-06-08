@@ -77,76 +77,6 @@ func (gen *Generator) Adverb(mods ...Mod) (string, error) {
 }
 
 /*
-Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
-
-Returns an error if:
-- WordClass of the word is not compatible with any Mod in mods
-- transformation into comparative or superlative form is requested for non-comparable adjective or adverb
-- transformation into plural form is requested for an uncountable noun
-*/
-func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string, error) {
-	if !wc.CompatibleWith(mods...) {
-		return "", errIncompatible
-	}
-
-	switch wc {
-	case WC_ADJECTIVE, WC_ADVERB:
-		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && slices.Contains(gen.adjNC, word) {
-			return "", errNonComparable
-		}
-	case WC_NOUN:
-		if slices.Contains(mods, MOD_PLURAL) && slices.Contains(gen.nounsUnc, word) {
-			return "", errUncountable
-		}
-	}
-
-	var (
-		caseTransformation func(string) string
-		pluralMod          bool
-	)
-
-	// Ensure MOD_PLURAL is processed first
-	slices.Sort(mods)
-
-	for _, m := range mods {
-		switch m {
-		case MOD_PLURAL:
-			pluralMod = true
-		case MOD_GERUND:
-			word = gerund(word)
-		case MOD_PRESENT_SIMPLE:
-			word = presentSimple(word, pluralMod)
-		case MOD_PAST_SIMPLE:
-			word = pastSimple(word, gen.verbsIrr, pluralMod)
-		case MOD_PAST_PARTICIPLE:
-			word = pastParticiple(word, gen.verbsIrr)
-		case MOD_COMPARATIVE:
-			word = comparative(word, gen.adjIrr, gen.adjSuf)
-		case MOD_SUPERLATIVE:
-			word = superlative(word, gen.adjIrr, gen.adjSuf)
-		case MOD_CASE_LOWER:
-			caseTransformation = gen.caser.toLower
-		case MOD_CASE_TITLE:
-			caseTransformation = gen.caser.toTitle
-		case MOD_CASE_UPPER:
-			caseTransformation = gen.caser.toUpper
-		default:
-			return "", errUndefinedMod
-		}
-	}
-
-	if pluralMod && wc != WC_VERB {
-		word = plural(word, gen.nounsIrr)
-	}
-
-	if caseTransformation != nil {
-		word = caseTransformation(word)
-	}
-
-	return word, nil
-}
-
-/*
 Generates a single random noun and transforms it according to mods.
 
 Returns an error if:
@@ -254,6 +184,76 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 	}
 
 	return phrase.String(), nil
+}
+
+/*
+Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
+
+Returns an error if:
+- WordClass of the word is not compatible with any Mod in mods
+- transformation into comparative or superlative form is requested for non-comparable adjective or adverb
+- transformation into plural form is requested for an uncountable noun
+*/
+func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string, error) {
+	if !wc.CompatibleWith(mods...) {
+		return "", errIncompatible
+	}
+
+	switch wc {
+	case WC_ADJECTIVE, WC_ADVERB:
+		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && slices.Contains(gen.adjNC, word) {
+			return "", errNonComparable
+		}
+	case WC_NOUN:
+		if slices.Contains(mods, MOD_PLURAL) && slices.Contains(gen.nounsUnc, word) {
+			return "", errUncountable
+		}
+	}
+
+	var (
+		caseTransformation func(string) string
+		pluralMod          bool
+	)
+
+	// Ensure MOD_PLURAL is processed first
+	slices.Sort(mods)
+
+	for _, m := range mods {
+		switch m {
+		case MOD_PLURAL:
+			pluralMod = true
+		case MOD_GERUND:
+			word = gerund(word)
+		case MOD_PRESENT_SIMPLE:
+			word = presentSimple(word, pluralMod)
+		case MOD_PAST_SIMPLE:
+			word = pastSimple(word, gen.verbsIrr, pluralMod)
+		case MOD_PAST_PARTICIPLE:
+			word = pastParticiple(word, gen.verbsIrr)
+		case MOD_COMPARATIVE:
+			word = comparative(word, gen.adjIrr, gen.adjSuf)
+		case MOD_SUPERLATIVE:
+			word = superlative(word, gen.adjIrr, gen.adjSuf)
+		case MOD_CASE_LOWER:
+			caseTransformation = gen.caser.toLower
+		case MOD_CASE_TITLE:
+			caseTransformation = gen.caser.toTitle
+		case MOD_CASE_UPPER:
+			caseTransformation = gen.caser.toUpper
+		default:
+			return "", errUndefinedMod
+		}
+	}
+
+	if pluralMod && wc != WC_VERB {
+		word = plural(word, gen.nounsIrr)
+	}
+
+	if caseTransformation != nil {
+		word = caseTransformation(word)
+	}
+
+	return word, nil
 }
 
 /*

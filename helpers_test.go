@@ -31,21 +31,6 @@ func loadSliceTestCasePlural(fname string) ([]testCasePlural, error) {
 	return cases, nil
 }
 
-/* Extracts map[string]int from a test data file. */
-func loadTestMapStringInt(fname string) (map[string]int, error) {
-	stream, err := os.ReadFile(filepath.Join(test_data_directory, fname))
-	if err != nil {
-		return nil, err
-	}
-
-	var cases map[string]int
-	if err := json.Unmarshal(stream, &cases); err != nil {
-		return nil, err
-	}
-
-	return cases, nil
-}
-
 /* Extracts [][]string from a test data file. */
 func loadTest2DSliceString(fname string) ([][]string, error) {
 	stream, err := os.ReadFile(filepath.Join(test_data_directory, fname))
@@ -54,6 +39,21 @@ func loadTest2DSliceString(fname string) ([][]string, error) {
 	}
 
 	var cases [][]string
+	if err := json.Unmarshal(stream, &cases); err != nil {
+		return nil, err
+	}
+
+	return cases, nil
+}
+
+/* Extracts map[string]int from a test data file. */
+func loadTestMapStringInt(fname string) (map[string]int, error) {
+	stream, err := os.ReadFile(filepath.Join(test_data_directory, fname))
+	if err != nil {
+		return nil, err
+	}
+
+	var cases map[string]int
 	if err := json.Unmarshal(stream, &cases); err != nil {
 		return nil, err
 	}

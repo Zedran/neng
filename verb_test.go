@@ -42,6 +42,22 @@ func TestPastParticiple(t *testing.T) {
 	}
 }
 
+/* Tests pastRegular function. Fails if incorrect past tense form of a regular verb is returned. */
+func TestPastRegular(t *testing.T) {
+	cases, err := loadTestMapStringString("TestPastRegular.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
+	}
+
+	for input, expected := range cases {
+		output := pastRegular(input)
+
+		if output != expected {
+			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
+		}
+	}
+}
+
 /*
 Tests pastSimple function. Fails if improper Past Simple form of a verb is returned.
 Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
@@ -83,22 +99,6 @@ func TestPresentSimple(t *testing.T) {
 				number = "pl."
 			}
 			t.Errorf("Failed for '%s': expected '%s' (%s), got '%s'", c.Input, c.Expected, number, output)
-		}
-	}
-}
-
-/* Tests pastRegular function. Fails if incorrect past tense form of a regular verb is returned. */
-func TestPastRegular(t *testing.T) {
-	cases, err := loadTestMapStringString("TestPastRegular.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
-	}
-
-	for input, expected := range cases {
-		output := pastRegular(input)
-
-		if output != expected {
-			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
 		}
 	}
 }

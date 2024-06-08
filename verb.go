@@ -117,15 +117,6 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 	return doubleFinal(verb, tenseEnding)
 }
 
-/* Handles transformation of verbs ending with vowel-vowel-l sequence. */
-func handleVVL(verb, tenseEnding string) string {
-	if strings.HasSuffix(verb, "uel") || slices.Contains([]string{"victual", "vitriol"}, verb) {
-		return doubleFinal(verb, tenseEnding)
-	}
-
-	return verb + tenseEnding
-}
-
 /* Handles transformation of verbs ending with '-it'. */
 func handleIt(verb, tenseEnding string, wi wordInfo) string {
 	if strings.HasSuffix(wi.sequence, "vvc") {
@@ -160,6 +151,15 @@ func handleR(verb, tenseEnding string) string {
 	}
 
 	if slices.Contains(doubled, verb) {
+		return doubleFinal(verb, tenseEnding)
+	}
+
+	return verb + tenseEnding
+}
+
+/* Handles transformation of verbs ending with vowel-vowel-l sequence. */
+func handleVVL(verb, tenseEnding string) string {
+	if strings.HasSuffix(verb, "uel") || slices.Contains([]string{"victual", "vitriol"}, verb) {
 		return doubleFinal(verb, tenseEnding)
 	}
 

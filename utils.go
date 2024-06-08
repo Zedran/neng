@@ -65,6 +65,17 @@ func endsWithAny(s string, suf []string) bool {
 	return false
 }
 
+/* For irregular words, returns slice with word forms from wordsIrr. For regular words, returns nil. */
+func findIrregular(word string, wordsIrr [][]string) []string {
+	for _, iw := range wordsIrr {
+		if iw[0] == word {
+			return iw
+		}
+	}
+
+	return nil
+}
+
 /* Returns a representation of vowel-consonant sequence in s ('word' == 'cvcc'). */
 func getSequence(s string) string {
 	var (
@@ -84,17 +95,6 @@ func getSequence(s string) string {
 	}
 
 	return seq.String()
-}
-
-/* For irregular words, returns slice with word forms from wordsIrr. For regular words, returns nil. */
-func findIrregular(word string, wordsIrr [][]string) []string {
-	for _, iw := range wordsIrr {
-		if iw[0] == word {
-			return iw
-		}
-	}
-
-	return nil
 }
 
 /*

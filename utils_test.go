@@ -19,22 +19,6 @@ func TestCountSyllables(t *testing.T) {
 	}
 }
 
-/* Tests getSequence function. */
-func TestGetSequence(t *testing.T) {
-	cases, err := loadTestMapStringString("TestGetSequence.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
-	}
-
-	for input, expected := range cases {
-		output := getSequence(input)
-
-		if output != expected {
-			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
-		}
-	}
-}
-
 /* Tests whether findIrregular returns a correct verb line. */
 func TestFindIrregular(t *testing.T) {
 	cases, err := loadTest2DSliceString("TestFindIrregular.json")
@@ -61,5 +45,21 @@ func TestFindIrregular(t *testing.T) {
 
 	if output := findIrregular(regularVerb, irregular); output != nil {
 		t.Errorf("Failed for '%s': nil not returned", regularVerb)
+	}
+}
+
+/* Tests getSequence function. */
+func TestGetSequence(t *testing.T) {
+	cases, err := loadTestMapStringString("TestGetSequence.json")
+	if err != nil {
+		t.Fatalf("Failed loading test data: %s", err.Error())
+	}
+
+	for input, expected := range cases {
+		output := getSequence(input)
+
+		if output != expected {
+			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
+		}
 	}
 }
