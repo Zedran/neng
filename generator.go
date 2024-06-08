@@ -158,14 +158,12 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 	n := randItem(gen.nouns)
 
 	if contains(mods, MOD_PLURAL) {
-		i := 0
-		for contains(gen.nounsUnc, n) {
+		for i := 0; contains(gen.nounsUnc, n); i++ {
 			if i == DEFAULT_ITER_LIMIT {
 				return "", errIterLimit
 			}
 
 			n = randItem(gen.nouns)
-			i++
 		}
 	}
 
@@ -280,14 +278,12 @@ func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod
 	a := randItem(items)
 
 	if contains(mods, MOD_COMPARATIVE) || contains(mods, MOD_SUPERLATIVE) {
-		i := 0
-		for contains(gen.adjNC, a) {
+		for i := 0; contains(gen.adjNC, a); i++ {
 			if i == DEFAULT_ITER_LIMIT {
 				return "", errIterLimit
 			}
 
 			a = randItem(items)
-			i++
 		}
 	}
 
