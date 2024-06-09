@@ -344,7 +344,13 @@ In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, those methods gen
 candidate until they find a comparable / countable one or until iteration limit is reached.
 
 iterLimit value should be set with regards to the size of your word base
-and the number of non-comparable adjectives, adverbs and countable nouns in it.
+and the number of non-comparable adjectives, adverbs and uncountable nouns in it.
+
+For example, to meet the default iterLimit of 1000, the Generator would need to draw
+a non-comparable or uncountable word 1,000 times in a row. The embedded database contains
+approximately 10,000 adjectives, of which 700 are non-comparable, and 25,000 nouns,
+with 1,100 being uncountable. Given these numbers, it is unlikely that the iterLimit
+will be reached.
 */
 func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, error) {
 	if iterLimit <= 0 {
