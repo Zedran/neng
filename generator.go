@@ -357,7 +357,7 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		return nil, errBadIterLimit
 	}
 
-	if len(adj) == 0 || len(noun) == 0 || len(verb) == 0 {
+	if len(adj) == 0 || len(adv) == 0 || len(noun) == 0 || len(verb) == 0 {
 		return nil, errEmptyLists
 	}
 

@@ -10,10 +10,14 @@ func TestNewGenerator(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true},
-		{[]string{"adj", "adj2"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true},
-		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{}, false},
-		{[]string{"adj"}, []string{"adv"}, nil, []string{"verb"}, false},
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true}, // Words present in every slice
+		{[]string{"adj"}, []string{"adv"}, nil, []string{"verb"}, false},             // nil pointer
+		{[]string{}, []string{"adv"}, []string{"noun"}, []string{"verb"}, false},     // No adjectives
+		{[]string{"adj"}, []string{}, []string{"noun"}, []string{"verb"}, false},     // No adverbs
+		{[]string{"adj"}, []string{"adv"}, []string{}, []string{"verb"}, false},      // No nouns
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{}, false},      // No verbs
+		{[]string{}, []string{}, []string{}, []string{}, false},                      // Empty slices only
+		{nil, nil, nil, nil, false}, // nil pointers only
 	}
 
 	for _, c := range cases {
