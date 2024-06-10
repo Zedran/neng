@@ -1,7 +1,7 @@
 package neng
 
 import (
-	"math/rand"
+	"math/rand/v2"
 	"strings"
 )
 
@@ -128,5 +128,5 @@ func loadWords(path string) ([]string, error) {
 
 /* Returns a random item from s. */
 func randItem(s []string) string {
-	return s[rand.Intn(len(s))]
+	return s[rand.IntN(len(s))]
 }
