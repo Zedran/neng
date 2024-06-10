@@ -19,22 +19,18 @@ func gerund(verb string) string {
 
 	switch verb[len(verb)-1] {
 	case 'e':
-		if strings.HasSuffix(wi.sequence, "cv") && !strings.HasSuffix(verb, "ye") && verb != "ante" {
-			// Remove final 'e' if previous letter is consonant other than 'y' and the verb is not 'ante'
-			return verb[:len(verb)-1] + "ing"
-		}
-
 		switch verb[len(verb)-2] {
 		case 'u': // ue
 			return verb[:len(verb)-1] + "ing"
 		case 'i': // ie
 			return verb[:len(verb)-2] + "ying"
 		}
-	case 'h', 's', 'w', 'x', 'y':
-		if strings.HasSuffix(verb, "gas") {
-			// Double the ending of 'gas' and its derivatives
-			return doubleFinal(verb, "ing")
+
+		if strings.HasSuffix(wi.sequence, "cv") && !strings.HasSuffix(verb, "ye") && verb != "ante" {
+			// Remove final 'e' if previous letter is consonant other than 'y' and the verb is not 'ante'
+			return verb[:len(verb)-1] + "ing"
 		}
+	case 'y', 'h', 'w', 'x':
 		return verb + "ing"
 	case 'r':
 		return handleR(verb, "ing")
@@ -42,6 +38,12 @@ func gerund(verb string) string {
 		if strings.HasSuffix(wi.sequence, "vvc") {
 			return handleVVL(verb, "ing")
 		}
+	case 's':
+		if strings.HasSuffix(verb, "gas") {
+			// Double the ending of 'gas' and its derivatives
+			return doubleFinal(verb, "ing")
+		}
+		return verb + "ing"
 	}
 
 	if strings.HasSuffix(verb, "it") {
