@@ -4,7 +4,7 @@ package neng
 type Mod uint8
 
 const (
-	// Transform a noun or a verb (Present Simple) into its plural form
+	// Transform a noun or a verb (Past Simple, Present Simple) into its plural form
 	MOD_PLURAL Mod = iota
 
 	// Add Past Simple suffix to a verb or substitute its irregular form
