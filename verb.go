@@ -193,14 +193,10 @@ func pastRegular(verb string) string {
 	switch verb[len(verb)-1] {
 	case 'e', 'u':
 		return verb + "d"
-	case 'h', 's', 'w', 'x':
-		if strings.HasSuffix(verb, "gas") {
-			// Double the ending of 'gas' and its derivatives
-			return doubleFinal(verb, "ed")
-		}
-		return verb + "ed"
 	case 'r':
 		return handleR(verb, "ed")
+	case 'h', 'w', 'x':
+		return verb + "ed"
 	case 'l':
 		if strings.HasSuffix(wi.sequence, "vvc") {
 			return handleVVL(verb, "ed")
@@ -210,7 +206,13 @@ func pastRegular(verb string) string {
 			return verb[:len(verb)-1] + "ied"
 		}
 		return verb + "ed"
-	case 'a', 'i', 'o':
+	case 's':
+		if strings.HasSuffix(verb, "gas") {
+			// Double the ending of 'gas' and its derivatives
+			return doubleFinal(verb, "ed")
+		}
+		return verb + "ed"
+	case 'o', 'a', 'i':
 		return verb + "ed"
 	}
 
