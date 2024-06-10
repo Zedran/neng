@@ -263,14 +263,25 @@ func presentSimple(verb string, plural bool) string {
 
 	seq := getSequence(verb)
 
-	if strings.HasSuffix(verb, "o") && strings.HasSuffix(seq, "cv") {
+	switch verb[len(verb)-1] {
+	case 'y':
+		if strings.HasSuffix(seq, "v") {
+			return verb[:len(verb)-1] + "ies"
+		}
+	case 's', 'x':
 		return verb + "es"
-	} else if strings.HasSuffix(verb, "y") && strings.HasSuffix(seq, "v") {
-		return verb[:len(verb)-1] + "ies"
-	} else if endsWithAny(verb, []string{"ch", "s", "sh", "x", "z"}) {
+	case 'o':
+		if strings.HasSuffix(seq, "cv") {
+			return verb + "es"
+		}
+	case 'z':
 		if verb == "quiz" {
 			return doubleFinal(verb, "es")
 		}
+		return verb + "es"
+	}
+
+	if endsWithAny(verb, []string{"ch", "sh"}) {
 		return verb + "es"
 	}
 
