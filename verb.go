@@ -191,7 +191,7 @@ func pastRegular(verb string) string {
 	wi := getWordInfo(verb)
 
 	switch verb[len(verb)-1] {
-	case 'e', 'u':
+	case 'e':
 		return verb + "d"
 	case 'r':
 		return handleR(verb, "ed")
@@ -212,7 +212,7 @@ func pastRegular(verb string) string {
 			return doubleFinal(verb, "ed")
 		}
 		return verb + "ed"
-	case 'o', 'a', 'i':
+	case 'o', 'a', 'i', 'u':
 		return verb + "ed"
 	}
 
