@@ -195,7 +195,7 @@ func pastRegular(verb string) string {
 		return verb + "d"
 	case 'r':
 		return handleR(verb, "ed")
-	case 'h', 'w', 'x':
+	case 'h', 'w', 'o', 'x', 'a', 'i', 'u':
 		return verb + "ed"
 	case 'l':
 		if strings.HasSuffix(wi.sequence, "vvc") {
@@ -211,8 +211,6 @@ func pastRegular(verb string) string {
 			// Double the ending of 'gas' and its derivatives
 			return doubleFinal(verb, "ed")
 		}
-		return verb + "ed"
-	case 'o', 'a', 'i', 'u':
 		return verb + "ed"
 	}
 
