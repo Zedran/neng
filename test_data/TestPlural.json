@@ -8,6 +8,7 @@
     "bush":          "bushes",
     "business":      "businesses",
     "cactus":        "cacti",
+    "caiman":        "caimans",
     "car":           "cars",
     "ceramics":      "ceramics",
     "cliff":         "cliffs",
@@ -30,6 +31,7 @@
     "hoof":          "hooves",
     "house":         "houses",
     "index":         "indices",
+    "man":           "men",
     "mania":         "manias",
     "megahertz":     "megahertz",
     "paparazzo":     "paparazzi",
@@ -48,5 +50,7 @@
     "virus":         "viruses",
     "volcano":       "volcanoes",
     "wife":          "wives",
-    "wolf":          "wolves"
+    "wolf":          "wolves",
+    "woman":         "women",
+    "yeoman":        "yeomen"
 }

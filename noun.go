@@ -17,6 +17,10 @@ func plural(noun string, nounsIrr [][]string) string {
 		return noun + "es"
 	}
 
+	if strings.HasSuffix(noun, "man") {
+		return noun[:len(noun)-2] + "en"
+	}
+
 	if endsWithAny(noun, []string{"ff", "io", "tto"}) {
 		return noun + "s"
 	}
