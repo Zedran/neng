@@ -21,10 +21,6 @@ func plural(noun string, nounsIrr [][]string) string {
 		return noun[:len(noun)-2] + "en"
 	}
 
-	if endsWithAny(noun, []string{"ff", "io", "tto"}) {
-		return noun + "s"
-	}
-
 	switch noun[len(noun)-2:] {
 	case "um":
 		return noun[:len(noun)-2] + "a"
@@ -45,10 +41,12 @@ func plural(noun string, nounsIrr [][]string) string {
 		if strings.HasSuffix(seq, "v") {
 			return noun[:len(noun)-1] + "ies"
 		}
-	case 's', 'o', 'x':
+	case 's', 'x':
 		return noun + "es"
 	case 'f':
-		return noun[:len(noun)-1] + "ves"
+		if !strings.HasSuffix(noun, "ff") {
+			return noun[:len(noun)-1] + "ves"
+		}
 	case 'z':
 		if strings.HasSuffix(seq, "vc") {
 			return doubleFinal(noun, "es")
