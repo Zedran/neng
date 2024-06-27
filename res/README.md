@@ -11,6 +11,7 @@
 | `adv`      | Main list of adverbs                        |
 | `noun`     | Main list of nouns                          |
 | `noun.irr` | Nouns with irregular plural forms           |
+| `noun.plo` | Nouns that only have plural form            |
 | `noun.unc` | Uncountable nouns                           |
 | `verb`     | Main list of verbs                          |
 | `verb.irr` | Verbs with irregular past tense forms       |

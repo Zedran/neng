@@ -28,6 +28,9 @@ type Generator struct {
 	// Non-comparable adjectives
 	adjNC []string
 
+	// Plural-only nouns
+	nounsPlO []string
+
 	// Uncountable nouns
 	nounsUnc []string
 
@@ -246,7 +249,7 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 	}
 
 	if pluralMod && wc != WC_VERB {
-		word = plural(word, gen.nounsIrr)
+		word = plural(word, gen.nounsPlO, gen.nounsIrr)
 	}
 
 	if caseTransformation != nil {
@@ -385,6 +388,11 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 	}
 
 	gen.adjNC, err = loadWords("res/adj.ncmp")
+	if err != nil {
+		return nil, err
+	}
+
+	gen.nounsPlO, err = loadWords("res/noun.plo")
 	if err != nil {
 		return nil, err
 	}
