@@ -28,11 +28,13 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		return noun[:len(noun)-2] + "en"
 	}
 
+	if endsWithAny(noun, []string{"sis", "xis"}) {
+		return noun[:len(noun)-2] + "es"
+	}
+
 	switch noun[len(noun)-2:] {
 	case "um":
 		return noun[:len(noun)-2] + "a"
-	case "is":
-		return noun[:len(noun)-2] + "es"
 	case "ex", "ix":
 		return noun[:len(noun)-2] + "ices"
 	case "fe":
