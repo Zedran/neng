@@ -20,7 +20,7 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		return noun
 	}
 
-	if endsWithAny(noun, []string{"sh", "ch", "fix", "virus"}) {
+	if endsWithAny(noun, []string{"sh", "ch", "fix"}) {
 		return noun + "es"
 	}
 
@@ -31,8 +31,6 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 	switch noun[len(noun)-2:] {
 	case "um":
 		return noun[:len(noun)-2] + "a"
-	case "us":
-		return noun[:len(noun)-2] + "i"
 	case "is":
 		return noun[:len(noun)-2] + "es"
 	case "ex", "ix":
@@ -49,6 +47,9 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 			return noun[:len(noun)-1] + "ies"
 		}
 	case 's', 'x':
+		if endsWithAny(noun, []string{"cirrus", "cumulus", "nimbus", "stratus"}) {
+			return noun[:len(noun)-2] + "i"
+		}
 		return noun + "es"
 	case 'f':
 		if !strings.HasSuffix(noun, "ff") {
