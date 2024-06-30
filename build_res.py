@@ -22,6 +22,18 @@ WORDS_COLUMN   =  4
 SOURCE_FILES   = ("data.adj", "data.adv", "data.noun", "data.verb")
 VERB_IRR_FILE  = "verb.irr"
 
+REPLACEMENTS   = {
+    "noun": {
+        "adz"   : "adze",
+        "ax"    : "axe",
+        "cutlas": "cutlass",
+        "poleax": "poleaxe"
+    },
+    "verb": {
+        "poleax": "poleaxe"
+    }
+}
+
 
 parser = ArgumentParser(
     prog="build_res.py",
@@ -211,13 +223,13 @@ def load_filter_file(path: str) -> [str]:
 def modify_list(fname: str, lines: [str]) -> [str]:
     """Performs file-specific modifications, mainly spelling changes."""
 
-    if fname == "noun":
-        lines[lines.index("cutlas")] = "cutlass"
-        lines[lines.index("adz")] = "adze"
-        lines[lines.index("ax")] = "axe"
-        lines[lines.index("poleax")] = "poleaxe"
-    elif fname == "verb":
-        lines[lines.index("poleax")] = "poleaxe"
+    if fname in REPLACEMENTS:
+        for old, new in REPLACEMENTS[fname].items():
+            try:
+                lines[lines.index(old)] = new
+            except ValueError as e:
+                print(f"modify_list: {e} '{fname}'")
+                continue
 
     return lines
 
