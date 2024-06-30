@@ -32,13 +32,15 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		return noun[:len(noun)-2] + "es"
 	}
 
+	if endsWithAny(noun, []string{"life", "knife", "wife"}) {
+		return noun[:len(noun)-2] + "ves"
+	}
+
 	switch noun[len(noun)-2:] {
 	case "um":
 		return noun[:len(noun)-2] + "a"
 	case "ex", "ix":
 		return noun[:len(noun)-2] + "ices"
-	case "fe":
-		return noun[:len(noun)-2] + "ves"
 	}
 
 	seq := getSequence(noun)
