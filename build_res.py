@@ -213,6 +213,7 @@ def modify_list(fname: str, lines: [str]) -> [str]:
 
     if fname == "noun":
         lines[lines.index("cutlas")] = "cutlass"
+        lines[lines.index("adz")] = "adze"
         lines[lines.index("ax")] = "axe"
         lines[lines.index("poleax")] = "poleaxe"
     elif fname == "verb":
