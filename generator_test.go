@@ -2,40 +2,6 @@ package neng
 
 import "testing"
 
-/* Tests NewGenerator function. Fails if providing an empty list or nil does not trigger an error. */
-func TestNewGenerator(t *testing.T) {
-	type testCase struct {
-		adj, adv, noun, verb []string
-		goodCase             bool
-	}
-
-	cases := []testCase{
-		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true}, // Words present in every slice
-		{[]string{"adj"}, []string{"adv"}, nil, []string{"verb"}, false},             // nil pointer
-		{[]string{}, []string{"adv"}, []string{"noun"}, []string{"verb"}, false},     // No adjectives
-		{[]string{"adj"}, []string{}, []string{"noun"}, []string{"verb"}, false},     // No adverbs
-		{[]string{"adj"}, []string{"adv"}, []string{}, []string{"verb"}, false},      // No nouns
-		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{}, false},      // No verbs
-		{[]string{}, []string{}, []string{}, []string{}, false},                      // Empty slices only
-		{nil, nil, nil, nil, false}, // nil pointers only
-	}
-
-	for _, c := range cases {
-		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, DEFAULT_ITER_LIMIT)
-
-		switch c.goodCase {
-		case true:
-			if err != nil {
-				t.Errorf("Failed for '%v': NewGenerator returned an error: %s", c, err.Error())
-			}
-		default:
-			if err == nil {
-				t.Errorf("Failed for '%v': NewGenerator did not return an error.", c)
-			}
-		}
-	}
-}
-
 /*
 Tests whether Generator.Noun correctly skips uncountable nouns in presence of MOD_PLURAL
 and plural-only nouns in absence of plural modifier.
@@ -140,6 +106,40 @@ func TestGenerator_Transform(t *testing.T) {
 		default:
 			if err == nil {
 				t.Errorf("Failed for '%s - %s': error not returned, output: %s.", c.description, c.word, out)
+			}
+		}
+	}
+}
+
+/* Tests NewGenerator function. Fails if providing an empty list or nil does not trigger an error. */
+func TestNewGenerator(t *testing.T) {
+	type testCase struct {
+		adj, adv, noun, verb []string
+		goodCase             bool
+	}
+
+	cases := []testCase{
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true}, // Words present in every slice
+		{[]string{"adj"}, []string{"adv"}, nil, []string{"verb"}, false},             // nil pointer
+		{[]string{}, []string{"adv"}, []string{"noun"}, []string{"verb"}, false},     // No adjectives
+		{[]string{"adj"}, []string{}, []string{"noun"}, []string{"verb"}, false},     // No adverbs
+		{[]string{"adj"}, []string{"adv"}, []string{}, []string{"verb"}, false},      // No nouns
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{}, false},      // No verbs
+		{[]string{}, []string{}, []string{}, []string{}, false},                      // Empty slices only
+		{nil, nil, nil, nil, false}, // nil pointers only
+	}
+
+	for _, c := range cases {
+		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, DEFAULT_ITER_LIMIT)
+
+		switch c.goodCase {
+		case true:
+			if err != nil {
+				t.Errorf("Failed for '%v': NewGenerator returned an error: %s", c, err.Error())
+			}
+		default:
+			if err == nil {
+				t.Errorf("Failed for '%v': NewGenerator did not return an error.", c)
 			}
 		}
 	}
