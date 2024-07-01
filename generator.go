@@ -92,7 +92,7 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 
 	if slices.Contains(mods, MOD_PLURAL) {
 		for i := 0; slices.Contains(gen.nounsUnc, n); i++ {
-			if i == DEFAULT_ITER_LIMIT {
+			if i == gen.iterLimit {
 				return "", errIterLimit
 			}
 
@@ -282,7 +282,7 @@ func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod
 
 	if slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE) {
 		for i := 0; slices.Contains(gen.adjNC, a); i++ {
-			if i == DEFAULT_ITER_LIMIT {
+			if i == gen.iterLimit {
 				return "", errIterLimit
 			}
 
