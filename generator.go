@@ -88,16 +88,22 @@ Returns an error if:
 - iteration limit is reached while attempting to generate a countable noun
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
-	n := randItem(gen.nouns)
+	var excluded []string
 
 	if slices.Contains(mods, MOD_PLURAL) {
-		for i := 0; slices.Contains(gen.nounsUnc, n); i++ {
-			if i == gen.iterLimit {
-				return "", errIterLimit
-			}
+		excluded = gen.nounsUnc
+	} else {
+		excluded = gen.nounsPlO
+	}
 
-			n = randItem(gen.nouns)
+	n := randItem(gen.nouns)
+
+	for i := 0; slices.Contains(excluded, n); i++ {
+		if i == gen.iterLimit {
+			return "", errIterLimit
 		}
+
+		n = randItem(gen.nouns)
 	}
 
 	return gen.Transform(n, WC_NOUN, mods...)

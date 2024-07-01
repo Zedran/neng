@@ -36,6 +36,35 @@ func TestNewGenerator(t *testing.T) {
 	}
 }
 
+/*
+Tests whether Generator.Noun correctly skips uncountable nouns in presence of MOD_PLURAL
+and plural-only nouns in absence of plural modifier.
+*/
+func TestGenerator_Noun(t *testing.T) {
+	gen, err := NewGenerator([]string{"big"}, []string{"nicely"}, []string{"binoculars"}, []string{"stash"}, 10)
+	if err != nil {
+		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+	}
+
+	if n, err := gen.Noun(); err == nil {
+		t.Errorf("Failed for singular: plural-only noun was not rejected. Noun returned: %s", n)
+	}
+
+	if _, err = gen.Noun(MOD_PLURAL); err != nil {
+		t.Errorf("Failed for plural: plural-only noun was rejected: %s", err.Error())
+	}
+
+	gen.nouns = []string{"boldness"}
+
+	if n, err := gen.Noun(MOD_PLURAL); err == nil {
+		t.Errorf("Failed for plural: uncountable noun was not rejected. Noun returned: %s", n)
+	}
+
+	if _, err = gen.Noun(); err != nil {
+		t.Errorf("Failed for singular: uncountable noun was rejected: %s", err.Error())
+	}
+}
+
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
 func TestGenerator_Phrase(t *testing.T) {
 	gen, err := NewGenerator([]string{"big"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"}, DEFAULT_ITER_LIMIT)
