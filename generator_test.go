@@ -37,7 +37,7 @@ func TestNewGenerator(t *testing.T) {
 }
 
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
-func TestPhrase(t *testing.T) {
+func TestGenerator_Phrase(t *testing.T) {
 	gen, err := NewGenerator([]string{"big"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"}, DEFAULT_ITER_LIMIT)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
@@ -76,7 +76,7 @@ Tests whether the Generator.Transform returns errNonComparable and errUncountabl
 errNonComparable should only be returned if gradation was requested for non-comparable adjective or adverb and
 errUncountable should only be returned if pluralization was requested for an uncountable noun.
 */
-func TestTransform(t *testing.T) {
+func TestGenerator_Transform(t *testing.T) {
 	type testCase struct {
 		description string
 		word        string

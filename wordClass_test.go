@@ -6,7 +6,7 @@ import "testing"
 Tests WordClass.CompatibleWith method. Fails if compatibility assessment
 is not consistent with documentation.
 */
-func TestCompatibleWith(t *testing.T) {
+func TestWordClass_CompatibleWith(t *testing.T) {
 	type testCase struct {
 		expected bool
 		wc       WordClass
