@@ -96,17 +96,13 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 		excluded = gen.nounsPlO
 	}
 
-	n := randItem(gen.nouns)
-
-	for i := 0; slices.Contains(excluded, n); i++ {
-		if i == gen.iterLimit {
-			return "", errIterLimit
+	for i := 0; i < gen.iterLimit; i++ {
+		if n := randItem(gen.nouns); !slices.Contains(excluded, n) {
+			return gen.Transform(n, WC_NOUN, mods...)
 		}
-
-		n = randItem(gen.nouns)
 	}
 
-	return gen.Transform(n, WC_NOUN, mods...)
+	return "", errIterLimit
 }
 
 /*
