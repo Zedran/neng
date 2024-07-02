@@ -2,26 +2,6 @@ package neng
 
 import "testing"
 
-/* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
-func TestGenerator_generateModifier(t *testing.T) {
-	gen, err := NewGenerator([]string{"bottomless"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"}, 10)
-	if err != nil {
-		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
-	}
-
-	if _, err = gen.Adjective(); err != nil {
-		t.Errorf("Failed for positive: non-comparable adjective was rejected: %s", err.Error())
-	}
-
-	if a, err := gen.Adjective(MOD_COMPARATIVE); err == nil {
-		t.Errorf("Failed for comparative: non-comparable adjective was not rejected. Adjective returned: %s", a)
-	}
-
-	if a, err := gen.Adjective(MOD_SUPERLATIVE); err == nil {
-		t.Errorf("Failed for superlative: non-comparable adjective was not rejected. Adjective returned: %s", a)
-	}
-}
-
 /*
 Tests whether Generator.Noun correctly skips uncountable nouns in presence of MOD_PLURAL
 and plural-only nouns in absence of plural modifier.
@@ -128,6 +108,26 @@ func TestGenerator_Transform(t *testing.T) {
 				t.Errorf("Failed for '%s - %s': error not returned, output: %s.", c.description, c.word, out)
 			}
 		}
+	}
+}
+
+/* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
+func TestGenerator_generateModifier(t *testing.T) {
+	gen, err := NewGenerator([]string{"bottomless"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"}, 10)
+	if err != nil {
+		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+	}
+
+	if _, err = gen.Adjective(); err != nil {
+		t.Errorf("Failed for positive: non-comparable adjective was rejected: %s", err.Error())
+	}
+
+	if a, err := gen.Adjective(MOD_COMPARATIVE); err == nil {
+		t.Errorf("Failed for comparative: non-comparable adjective was not rejected. Adjective returned: %s", a)
+	}
+
+	if a, err := gen.Adjective(MOD_SUPERLATIVE); err == nil {
+		t.Errorf("Failed for superlative: non-comparable adjective was not rejected. Adjective returned: %s", a)
 	}
 }
 
