@@ -280,19 +280,17 @@ Returns an error if:
 - Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
 */
 func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod) (string, error) {
-	a := randItem(items)
+	if !slices.Contains(mods, MOD_COMPARATIVE) && !slices.Contains(mods, MOD_SUPERLATIVE) {
+		return gen.Transform(randItem(items), wc, mods...)
+	}
 
-	if slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE) {
-		for i := 0; slices.Contains(gen.adjNC, a); i++ {
-			if i == gen.iterLimit {
-				return "", errIterLimit
-			}
-
-			a = randItem(items)
+	for i := 0; i < gen.iterLimit; i++ {
+		if a := randItem(items); !slices.Contains(gen.adjNC, a) {
+			return gen.Transform(a, wc, mods...)
 		}
 	}
 
-	return gen.Transform(a, wc, mods...)
+	return "", errIterLimit
 }
 
 /*
