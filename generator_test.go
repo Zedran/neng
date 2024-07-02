@@ -67,7 +67,8 @@ func TestGenerator_Phrase(t *testing.T) {
 }
 
 /*
-Tests whether the Generator.Transform returns errNonComparable and errUncountable for appropriate WordClass.
+Tests whether the Generator.Transform correctly returns errIncompatible, errNonComparable and errUncountable.
+errIncompatible should be returned if the requested modification is incompatible with a given WordClass.
 errNonComparable should only be returned if gradation was requested for non-comparable adjective or adverb and
 errUncountable should only be returned if pluralization was requested for an uncountable noun.
 */
@@ -86,6 +87,7 @@ func TestGenerator_Transform(t *testing.T) {
 	}
 
 	cases := []testCase{
+		{"WordClass-Mod incompatibility", "aa", []Mod{MOD_COMPARATIVE}, WC_NOUN, false},
 		{"Uncountable noun + MOD_PLURAL", "aa", []Mod{MOD_PLURAL}, WC_NOUN, false},
 		{"Non-comparable adj + MOD_COMPARATIVE", "own", []Mod{MOD_COMPARATIVE}, WC_ADJECTIVE, false},
 		{"Non-comparable adj + MOD_SUPERLATIVE", "own", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, false},
