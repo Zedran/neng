@@ -21,6 +21,8 @@ func TestWordClass_CompatibleWith(t *testing.T) {
 		{true, WC_VERB, []Mod{MOD_PAST_SIMPLE}},
 		{true, WC_VERB, []Mod{MOD_PRESENT_SIMPLE}},
 		{false, WC_ADJECTIVE, []Mod{MOD_GERUND}},
+		{false, WC_ADJECTIVE, []Mod{MOD_PLURAL}},
+		{false, WC_ADVERB, []Mod{MOD_PLURAL}},
 		{false, WC_ADVERB, []Mod{MOD_PAST_SIMPLE}},
 		{false, WC_NOUN, []Mod{MOD_COMPARATIVE}},
 		{false, WC_VERB, []Mod{MOD_SUPERLATIVE}},
