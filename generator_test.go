@@ -134,26 +134,29 @@ func TestGenerator_generateModifier(t *testing.T) {
 	}
 }
 
-/* Tests NewGenerator function. Fails if providing an empty list or nil does not trigger an error. */
+/* Tests NewGenerator function. Fails if providing an empty list, nil or an invalid iterLimit value does not trigger an error. */
 func TestNewGenerator(t *testing.T) {
 	type testCase struct {
 		adj, adv, noun, verb []string
+		iterLimit            int
 		goodCase             bool
 	}
 
 	cases := []testCase{
-		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, true}, // Words present in every slice
-		{[]string{"adj"}, []string{"adv"}, nil, []string{"verb"}, false},             // nil pointer
-		{[]string{}, []string{"adv"}, []string{"noun"}, []string{"verb"}, false},     // No adjectives
-		{[]string{"adj"}, []string{}, []string{"noun"}, []string{"verb"}, false},     // No adverbs
-		{[]string{"adj"}, []string{"adv"}, []string{}, []string{"verb"}, false},      // No nouns
-		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{}, false},      // No verbs
-		{[]string{}, []string{}, []string{}, []string{}, false},                      // Empty slices only
-		{nil, nil, nil, nil, false}, // nil pointers only
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, 1, true},   // Words present in every slice
+		{[]string{"adj"}, []string{"adv"}, nil, []string{"verb"}, 1, false},               // nil pointer
+		{[]string{}, []string{"adv"}, []string{"noun"}, []string{"verb"}, 1, false},       // No adjectives
+		{[]string{"adj"}, []string{}, []string{"noun"}, []string{"verb"}, 1, false},       // No adverbs
+		{[]string{"adj"}, []string{"adv"}, []string{}, []string{"verb"}, 1, false},        // No nouns
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{}, 1, false},        // No verbs
+		{[]string{}, []string{}, []string{}, []string{}, 1, false},                        // Empty slices only
+		{nil, nil, nil, nil, DEFAULT_ITER_LIMIT, false},                                   // nil pointers only
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, 0, false},  // iterLimit == 0
+		{[]string{"adj"}, []string{"adv"}, []string{"noun"}, []string{"verb"}, -5, false}, // Negative iterLimit
 	}
 
 	for _, c := range cases {
-		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, DEFAULT_ITER_LIMIT)
+		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, c.iterLimit)
 
 		switch c.goodCase {
 		case true:
