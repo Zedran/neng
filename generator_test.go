@@ -56,6 +56,7 @@ func TestGenerator_Phrase(t *testing.T) {
 		"",     // pattern is empty
 		"abc%", // escape character at pattern termination
 		"%q",   // unknown command
+		"%cn",  // WordClass-Mod incompatibility
 	}
 
 	for _, bc := range errCases {
