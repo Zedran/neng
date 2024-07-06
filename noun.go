@@ -20,7 +20,7 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		return noun
 	}
 
-	if endsWithAny(noun, []string{"sh", "ch", "fix"}) {
+	if endsWithAny(noun, []string{"sh", "ch"}) {
 		return noun + "es"
 	}
 
@@ -40,7 +40,10 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 	case "um":
 		return noun[:len(noun)-2] + "a"
 	case "ex", "ix":
-		return noun[:len(noun)-2] + "ices"
+		if endsWithAny(noun, []string{"dex", "dix", "fex", "pex", "rix", "tex"}) {
+			return noun[:len(noun)-2] + "ices"
+		}
+		return noun + "es"
 	}
 
 	seq := getSequence(noun)
