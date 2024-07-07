@@ -28,10 +28,6 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		return noun[:len(noun)-2] + "en"
 	}
 
-	if endsWithAny(noun, []string{"sis", "xis"}) {
-		return noun[:len(noun)-2] + "es"
-	}
-
 	if endsWithAny(noun, []string{"life", "knife", "wife"}) {
 		return noun[:len(noun)-2] + "ves"
 	}
@@ -49,6 +45,9 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 			return noun[:len(noun)-1] + "ies"
 		}
 	case 's':
+		if endsWithAny(noun, []string{"sis", "xis"}) {
+			return noun[:len(noun)-2] + "es"
+		}
 		if endsWithAny(noun, []string{"cirrus", "cumulus", "nimbus", "stratus"}) {
 			return noun[:len(noun)-2] + "i"
 		}
