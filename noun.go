@@ -39,11 +39,6 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 	switch noun[len(noun)-2:] {
 	case "um":
 		return noun[:len(noun)-2] + "a"
-	case "ex", "ix":
-		if endsWithAny(noun, []string{"dex", "dix", "fex", "pex", "rix", "tex"}) {
-			return noun[:len(noun)-2] + "ices"
-		}
-		return noun + "es"
 	}
 
 	seq := getSequence(noun)
@@ -53,7 +48,7 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		if strings.HasSuffix(seq, "v") {
 			return noun[:len(noun)-1] + "ies"
 		}
-	case 's', 'x':
+	case 's':
 		if endsWithAny(noun, []string{"cirrus", "cumulus", "nimbus", "stratus"}) {
 			return noun[:len(noun)-2] + "i"
 		}
@@ -62,6 +57,11 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		if !strings.HasSuffix(noun, "ff") {
 			return noun[:len(noun)-1] + "ves"
 		}
+	case 'x':
+		if endsWithAny(noun, []string{"dex", "dix", "fex", "pex", "rix", "tex"}) {
+			return noun[:len(noun)-2] + "ices"
+		}
+		return noun + "es"
 	case 'z':
 		if strings.HasSuffix(seq, "vc") {
 			return doubleFinal(noun, "es")
