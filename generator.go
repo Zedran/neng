@@ -194,6 +194,12 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 /*
 Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
 
+Assumes the following about the 'word' argument:
+- Word is lower case (irrelevant if case transformation is requested)
+- Adjectives and adverbs are in their positive forms
+- Nouns are in their singular forms
+- Verbs are in their infinitive forms
+
 Returns an error if:
 - WordClass of the word is not compatible with any Mod in mods
 - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
