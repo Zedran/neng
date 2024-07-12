@@ -24,14 +24,14 @@ VERB_IRR_FILE  = "verb.irr"
 
 REPLACEMENTS   = {
     "noun": {
-        "adz"   : "adze",
-        "ax"    : "axe",
-        "cutlas": "cutlass",
+        "adz"         : "adze",
+        "ax"          : "axe",
+        "cutlas"      : "cutlass",
         "panenthesism": "panentheism",
-        "poleax": "poleaxe"
+        "poleax"      : "poleaxe"
     },
     "verb": {
-        "poleax": "poleaxe"
+        "poleax"      : "poleaxe"
     }
 }
 
