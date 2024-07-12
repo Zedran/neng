@@ -27,6 +27,7 @@ REPLACEMENTS   = {
         "adz"   : "adze",
         "ax"    : "axe",
         "cutlas": "cutlass",
+        "panenthesism": "panentheism",
         "poleax": "poleaxe"
     },
     "verb": {
