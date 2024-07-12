@@ -7,8 +7,6 @@
 
 neng is a Golang package that can generate random English phrases from nouns, verbs, adverbs and adjectives according to user-specified pattern. It is powered by diverse collection of 42000 words compiled from [WordNet Lexical Database](https://wordnet.princeton.edu). Inspired by Terraria's world name generator, neng is designed to be simple yet versatile name making tool for other projects.
 
-If the embedded word database does not meet your requirements, you can provide neng with your own word lists.
-
 Unsuitable for cryptographic applications.
 
 ## Showcase
@@ -106,6 +104,8 @@ Generator's default vocabulary consists of:
 * 2000 adverbs
 
 Original WordNet lists have been thoroughly vetted. I have strived to remove any words that are offensive, too specific (chemistry, medicine) or relate to topics that are considered sensitive, controversial or fear-inducing. However, I am not native English speaker and the database is quite large, so it is likely I have missed something. If you find any unsuitable words, I will be happy to hear from you.
+
+If the embedded database does not meet your requirements, you can provide neng with your own word lists. To ensure the accuracy of transformations, I recommend that your custom vocabulary remains a subset of the embedded one.
 
 ## Attributions
 
