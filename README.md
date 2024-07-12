@@ -9,6 +9,8 @@ neng is a Golang package that can generate random English phrases from nouns, ve
 
 If the embedded word database does not meet your requirements, you can provide neng with your own word lists.
 
+Unsuitable for cryptographic applications.
+
 ## Showcase
 
 ```text
