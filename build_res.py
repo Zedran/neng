@@ -26,6 +26,7 @@ REPLACEMENTS   = {
     "noun": {
         "adz"         : "adze",
         "ax"          : "axe",
+        "bacteria"    : "bacterium",
         "cutlas"      : "cutlass",
         "panenthesism": "panentheism",
         "poleax"      : "poleaxe"
