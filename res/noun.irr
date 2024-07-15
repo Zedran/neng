@@ -1,10 +1,14 @@
 abacus,abaci
 abecedarius,abecedarii
 aculeus,aculei
+agora,agorae
 album,albums
+alga,algae
 alms,alms
 alumnus,alumni
+amphora,amphorae
 annum,annums
+antenna,antennae
 antihero,antiheroes
 apoapsis,apoapsides
 asparagus,asparagus
@@ -22,9 +26,11 @@ caiman,caimans
 caladium,caladiums
 calculus,calculi
 capsicum,capsicums
+cathedra,cathedrae
 ceras,cerata
 chassis,chassis
 checksum,checksums
+chela,chelae
 child,children
 choragus,choragi
 chum,chums
@@ -55,6 +61,7 @@ echo,echoes
 eidos,eidoi
 elk,elk
 emeritus,emeriti
+encyclopedia,encyclopediae
 eparch,eparchs
 ephemeris,ephemerides
 ephemeron,ephemera
@@ -90,6 +97,7 @@ ironworks,ironworks
 jorum,jorums
 kuvasz,kuvaszok
 kylix,kylikes
+lacuna,lacunae
 larva,larvae
 lazybones,lazybones
 lignum,lignums
@@ -117,6 +125,7 @@ origanum,origanums
 ottoman,ottomans
 ox,oxen
 pampas,pampas
+panacea,panaceae
 paparazzo,paparazzi
 papyrus,papyri
 patriarch,patriarchs
@@ -128,13 +137,16 @@ pibroch,pibrochs
 platy,platys
 plum,plums
 potato,potatoes
+programma,programmata
 proof,proofs
 pyxis,pyxides
 radius,radii
 rendezvous,rendezvous
 roof,roofs
+rotunda,rotundae
 saltworks,saltworks
 sarcophagus,sarcophagi
+schema,schemata
 scrum,scrums
 scyphus,scyphi
 series,series
@@ -145,6 +157,8 @@ slum,slums
 sobersides,sobersides
 species,species
 starets,startsy
+stemma,stemmata
+stigma,stigmata
 stomach,stomachs
 strum,strums
 stylus,styli
@@ -156,7 +170,9 @@ sunroof,sunroofs
 superficies,superficies
 surf,surfs
 swine,swine
+syntagma,syntagmata
 terminus,termini
+tessera,tesserae
 thesaurus,thesauri
 thrum,thrums
 tomato,tomatoes
@@ -169,6 +185,7 @@ tournedos,tournedos
 triptych,triptychs
 trombone,trombones
 trout,trout
+tuna,tuna
 turf,turfs
 vellum,vellums
 violin,violins
