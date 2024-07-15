@@ -27,6 +27,8 @@ REPLACEMENTS   = {
         "adz"         : "adze",
         "ax"          : "axe",
         "bacteria"    : "bacterium",
+        "breakax"     : "breakaxe",
+        "broadax"     : "broadaxe",
         "cutlas"      : "cutlass",
         "panenthesism": "panentheism",
         "poleax"      : "poleaxe"
