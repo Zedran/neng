@@ -73,20 +73,20 @@ Princeton University and LICENSEE agrees to preserve same.
 
 ### Modifications
 
-`adj.irr` and `adj.suf` were manually constructed using their respective source files. Automated formatting via the `build_res.py` script was applied to the remaining source files. Below is the summary of the procedure:
+`adj.irr` and `adj.suf` were manually constructed using their respective source files. Automated formatting via the [build_res.py](./build_res.py) script was applied to the remaining source files. Below is the summary of the procedure:
 
-1. Remove license text from the beginning of the file
-2. Extract words from the surrounding metadata
-3. Remove single-letter words
-4. Remove entries consisting of multiple words
-5. Remove proper nouns and adjectives derived from them
-6. Remove all of the content within the parentheses
-7. Remove duplicate words
-8. Remove compound words
-9. Remove words containing numbers
-10. Remove words containing apostrophes
-11. Append missing irregular verbs (found in `res/verb.irr`) to the verb list
-12. Filter mature and controversial language. Filter files were created with [better_profanity](https://github.com/snguyenthanh/better_profanity) Python package and then edited manually to include more words and remove false positives
-13. Sort word lists alphabetically
+1. Remove license text from the beginning of the file.
+2. Extract words from the surrounding metadata.
+3. Remove single-letter words.
+4. Remove entries consisting of multiple words.
+5. Remove proper nouns and adjectives derived from them.
+6. Remove all of the content within the parentheses.
+7. Remove duplicate words.
+8. Remove compound words.
+9. Remove words containing numbers.
+10. Remove words containing apostrophes.
+11. If any irregular verbs found in `res/verb.irr` are missing from `res/verb`, add them to the main list.
+12. Filter mature and controversial language. Filter files were created with [better_profanity](https://github.com/snguyenthanh/better_profanity) Python package and then edited manually to include more words and remove false positives.
+13. Sort word lists alphabetically.
 14. Change spelling of the following words:
     * `noun`: `cutlas -> cutlass`
