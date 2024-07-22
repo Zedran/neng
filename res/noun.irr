@@ -34,7 +34,6 @@ chela,chelae
 child,children
 choragus,choragi
 chum,chums
-coif,coifs
 colloquy,colloquies
 colossus,colossi
 commons,commons
@@ -49,7 +48,6 @@ cyclops,cyclopes
 deer,deer
 die,dice
 diptych,diptychs
-disproof,disproofs
 dolman,dolmans
 domino,dominoes
 dominus,domini
@@ -91,6 +89,7 @@ harmonium,harmoniums
 headquarters,headquarters
 hierarch,hierarchs
 hippopotamus,hippopotami
+hoof,hooves
 hum,hums
 ibex,ibex
 ides,ides
@@ -102,7 +101,6 @@ lacuna,lacunae
 larva,larvae
 lazybones,lazybones
 lignum,lignums
-lilyturf,lilyturfs
 liman,limans
 linoleum,linoleums
 loch,lochs
@@ -140,11 +138,9 @@ platy,platys
 plum,plums
 potato,potatoes
 programma,programmata
-proof,proofs
 pyxis,pyxides
 radius,radii
 rendezvous,rendezvous
-roof,roofs
 rotunda,rotundae
 roux,roux
 saltworks,saltworks
@@ -169,14 +165,13 @@ subgenus,subgenera
 subspecies,subspecies
 sugarplum,sugarplums
 sum,sums
-sunroof,sunroofs
 superficies,superficies
-surf,surfs
 swine,swine
 syntagma,syntagmata
 terminus,termini
 tessera,tesserae
 thesaurus,thesauri
+thief,thieves
 thrips,thrips
 thrum,thrums
 tidytips,tidytips
@@ -192,11 +187,10 @@ triptych,triptychs
 trombone,trombones
 trout,trout
 tuna,tuna
-turf,turfs
 vellum,vellums
 violin,violins
 volcano,volcanoes
-waterproof,waterproofs
 waterworks,waterworks
 wheat,wheat
+zarf,zarfs
 zero,zeroes

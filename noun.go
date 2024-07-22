@@ -53,7 +53,7 @@ func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
 		}
 		return noun + "es"
 	case 'f':
-		if !strings.HasSuffix(noun, "ff") {
+		if endsWithAny(noun, []string{"leaf", "elf", "arf", "alf", "wolf", "loaf"}) {
 			return noun[:len(noun)-1] + "ves"
 		}
 	case 'x':
