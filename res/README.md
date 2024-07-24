@@ -19,3 +19,9 @@
 ## Filters
 
 Files in `filters` directory contain words from WordNet database that are excluded from the embedded lists. Each filter is named after the main list file to which it is applied.
+
+## Misc
+
+| File name           | Contents                 |
+|:--------------------|:-------------------------|
+| `replacements.json` | List of spelling changes |

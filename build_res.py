@@ -7,6 +7,7 @@ and formats them for use with neng.
 
 from argparse         import ArgumentParser
 from better_profanity import profanity
+from json             import load
 from os.path          import exists
 from re               import findall
 from sys              import exit
@@ -22,21 +23,12 @@ WORDS_COLUMN   =  4
 SOURCE_FILES   = ("data.adj", "data.adv", "data.noun", "data.verb")
 VERB_IRR_FILE  = "verb.irr"
 
-REPLACEMENTS   = {
-    "noun": {
-        "adz"         : "adze",
-        "ax"          : "axe",
-        "bacteria"    : "bacterium",
-        "breakax"     : "breakaxe",
-        "broadax"     : "broadaxe",
-        "cutlas"      : "cutlass",
-        "panenthesism": "panentheism",
-        "poleax"      : "poleaxe"
-    },
-    "verb": {
-        "poleax"      : "poleaxe"
-    }
-}
+try:
+    with open("res/misc/replacements.json", mode='r') as jf:
+        REPLACEMENTS = load(jf)
+except Exception as e:
+    print(e)
+    exit(1)
 
 
 parser = ArgumentParser(

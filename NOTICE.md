@@ -88,4 +88,4 @@ Princeton University and LICENSEE agrees to preserve same.
 11. If any irregular verbs found in `res/verb.irr` are missing from `res/verb`, add them to the main list.
 12. Filter mature and controversial language. Filter files were created with [better_profanity](https://github.com/snguyenthanh/better_profanity) Python package and then edited manually to include more words and remove false positives.
 13. Sort word lists alphabetically.
-14. Change spelling of the selected words. To review the modifications, refer to the [`REPLACEMENTS` dictionary in the build_res.py script](./build_res.py#L25).
+14. Change spelling of the selected words. To review the modifications, refer to [res/misc/replacements.json](./res/misc/replacements.json).
