@@ -5,9 +5,16 @@
         "bacteria"        : "bacterium",
         "breakax"         : "breakaxe",
         "broadax"         : "broadaxe",
+        "crenelation"     : "crenellation",
         "cutlas"          : "cutlass",
+        "ern"             : "erne",
         "panenthesism"    : "panentheism",
-        "poleax"          : "poleaxe"
+        "poleax"          : "poleaxe",
+        "preterit"        : "preterite",
+        "raveling"        : "ravelling",
+        "sherbert"        : "sherbet",
+        "tamal"           : "tamale",
+        "tepee"           : "teepee"
     },
     "verb": {
         "poleax"          : "poleaxe"
