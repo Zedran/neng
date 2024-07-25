@@ -7,9 +7,9 @@ This software incorporates materials licensed by third parties.
 ### Source
 
 * Wiktionary. Category: English countable nouns. Available at https://en.wiktionary.org/wiki/Category:English_countable_nouns \[2024-06-03] Wikimedia Foundation. 2022.
+* Wiktionary. Category: English uncomparable adjectives. Available at https://en.wiktionary.org/wiki/Category:English_uncomparable_adjectives \[2024-07-25] Wikimedia Foundation. 2022.
 * Wiktionary. Category: English uncomparable adverbs. Available at https://en.wiktionary.org/wiki/Category:English_uncomparable_adverbs \[2024-07-25] Wikimedia Foundation. 2022.
 * Wiktionary. Category: English uncountable nouns. Available at https://en.wiktionary.org/wiki/Category:English_uncountable_nouns \[2024-06-03] Wikimedia Foundation. 2022.
-* Wiktionary. Category: Non-comparable adjectives. Available at https://simple.wiktionary.org/w/index.php?title=Category:Non-comparable_adjectives&pagefrom=functionless#mw-pages \[2024-05-21] Wikimedia Foundation. 2006.
 
 ### License
 
@@ -18,8 +18,8 @@ This software incorporates materials licensed by third parties.
 ### Used material
 
 * Page titles in the "English countable nouns" and "English uncountable nouns" categories were used to compile `res/noun.unc`.
+* Page titles in the "English uncomparable adjectives" category were used to compile `res/adj.ncmp`.
 * Page titles in the "English uncomparable adverbs" category were used to compile `res/adv.ncmp`.
-* Page titles in the "Non-comparable adjectives" category were used to compile `res/adj.ncmp`.
 
 ## WordNet
 
