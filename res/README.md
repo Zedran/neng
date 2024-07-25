@@ -6,9 +6,10 @@
 |:-----------|:--------------------------------------------|
 | `adj`      | Main list of adjectives                     |
 | `adj.irr`  | Adjectives with irregular graded forms      |
-| `adj.ncmp` | Non-comparable adjectives and adverbs       |
+| `adj.ncmp` | Non-comparable adjectives                   |
 | `adj.suf`  | Adjectives graded with suffixes (-er, -est) |
 | `adv`      | Main list of adverbs                        |
+| `adv.ncmp` | Non-comparable adverbs                      |
 | `noun`     | Main list of nouns                          |
 | `noun.irr` | Nouns with irregular plural forms           |
 | `noun.plo` | Nouns that only have plural form            |

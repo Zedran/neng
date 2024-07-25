@@ -28,6 +28,9 @@ type Generator struct {
 	// Non-comparable adjectives
 	adjNC []string
 
+	// Non-comparable adverbs
+	advNC []string
+
 	// Plural-only nouns
 	nounsPlO []string
 
@@ -211,8 +214,12 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 	}
 
 	switch wc {
-	case WC_ADJECTIVE, WC_ADVERB:
+	case WC_ADJECTIVE:
 		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && slices.Contains(gen.adjNC, word) {
+			return "", errNonComparable
+		}
+	case WC_ADVERB:
+		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && slices.Contains(gen.advNC, word) {
 			return "", errNonComparable
 		}
 	case WC_NOUN:
@@ -290,8 +297,15 @@ func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod
 		return gen.Transform(randItem(items), wc, mods...)
 	}
 
+	var ncmpList []string
+	if wc == WC_ADJECTIVE {
+		ncmpList = gen.adjNC
+	} else {
+		ncmpList = gen.advNC
+	}
+
 	for i := 0; i < gen.iterLimit; i++ {
-		if a := randItem(items); !slices.Contains(gen.adjNC, a) {
+		if a := randItem(items); !slices.Contains(ncmpList, a) {
 			return gen.Transform(a, wc, mods...)
 		}
 	}
@@ -394,6 +408,11 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 	}
 
 	gen.adjNC, err = loadWords("res/adj.ncmp")
+	if err != nil {
+		return nil, err
+	}
+
+	gen.advNC, err = loadWords("res/adv.ncmp")
 	if err != nil {
 		return nil, err
 	}

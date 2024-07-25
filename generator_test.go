@@ -92,6 +92,8 @@ func TestGenerator_Transform(t *testing.T) {
 		{"Uncountable noun + MOD_PLURAL", "aa", []Mod{MOD_PLURAL}, WC_NOUN, false},
 		{"Non-comparable adj + MOD_COMPARATIVE", "own", []Mod{MOD_COMPARATIVE}, WC_ADJECTIVE, false},
 		{"Non-comparable adj + MOD_SUPERLATIVE", "own", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, false},
+		{"Non-comparable adv + MOD_COMPARATIVE", "cryptographically", []Mod{MOD_COMPARATIVE}, WC_ADVERB, false},
+		{"Non-comparable adv + MOD_SUPERLATIVE", "cryptographically", []Mod{MOD_SUPERLATIVE}, WC_ADVERB, false},
 		{"Noun in adj.ncmp + MOD_SUPERLATIVE", "arctic", []Mod{MOD_PLURAL}, WC_NOUN, true},
 		{"Verb in adj.ncmp + MOD_PLURAL", "present", []Mod{MOD_PRESENT_SIMPLE, MOD_PLURAL}, WC_VERB, true},
 		{"Adj in noun.unc + MOD_SUPERLATIVE", "cool", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, true},
@@ -116,7 +118,7 @@ func TestGenerator_Transform(t *testing.T) {
 
 /* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
 func TestGenerator_generateModifier(t *testing.T) {
-	gen, err := NewGenerator([]string{"bottomless"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"}, 10)
+	gen, err := NewGenerator([]string{"bottomless"}, []string{"cryptographically"}, []string{"snowfall"}, []string{"stash"}, 10)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -131,6 +133,18 @@ func TestGenerator_generateModifier(t *testing.T) {
 
 	if a, err := gen.Adjective(MOD_SUPERLATIVE); err == nil {
 		t.Errorf("Failed for superlative: non-comparable adjective was not rejected. Adjective returned: %s", a)
+	}
+
+	if _, err = gen.Adverb(); err != nil {
+		t.Errorf("Failed for positive: non-comparable adverb was rejected: %s", err.Error())
+	}
+
+	if a, err := gen.Adverb(MOD_COMPARATIVE); err == nil {
+		t.Errorf("Failed for comparative: non-comparable adverb was not rejected. Adverb returned: %s", a)
+	}
+
+	if a, err := gen.Adverb(MOD_SUPERLATIVE); err == nil {
+		t.Errorf("Failed for superlative: non-comparable adverb was not rejected. Adverb returned: %s", a)
 	}
 }
 
