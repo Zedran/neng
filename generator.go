@@ -99,7 +99,7 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 		excluded = gen.nounsPlO
 	}
 
-	for i := 0; i < gen.iterLimit; i++ {
+	for range gen.iterLimit {
 		if n := randItem(gen.nouns); !slices.Contains(excluded, n) {
 			return gen.Transform(n, WC_NOUN, mods...)
 		}
@@ -304,7 +304,7 @@ func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod
 		ncmpList = gen.advNC
 	}
 
-	for i := 0; i < gen.iterLimit; i++ {
+	for range gen.iterLimit {
 		if a := randItem(items); !slices.Contains(ncmpList, a) {
 			return gen.Transform(a, wc, mods...)
 		}
