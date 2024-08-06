@@ -166,17 +166,6 @@ def get_mature_language(lines: [str]) -> [str]:
     return censored
 
 
-def load_file(path: str) -> [str]:
-    """Loads lines from the file at path."""
-
-    try:
-        with open(path, mode='r') as f:
-            return [ln.strip('\r').strip('\n') for ln in f.readlines()]
-    except FileNotFoundError:
-        print(f"{path} does not exist")
-        exit(1)
-
-
 def load_filter_file(path: str) -> [str]:
     """
     Attempts to load filter at path. If it does not exist, attempts to load automatically generated filter file ('path.auto').
@@ -241,7 +230,7 @@ if __name__ == "__main__":
             print(f"{new_path:<10} exists, skipping.")
             continue
 
-        lines = load_file(path)
+        lines = utils.load_file(path)
 
         lines = strip_license(lines)
         lines = filter_metadata(lines)
