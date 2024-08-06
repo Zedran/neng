@@ -24,7 +24,7 @@ SOURCE_FILES   = ("data.adj", "data.adv", "data.noun", "data.verb")
 VERB_IRR_FILE  = "verb.irr"
 
 try:
-    with open("res/misc/replacements.json", mode='r') as jf:
+    with open(f"{RES_DIR}/misc/replacements.json", mode='r') as jf:
         REPLACEMENTS = load(jf)
 except Exception as e:
     print(e)
