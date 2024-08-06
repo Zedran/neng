@@ -12,6 +12,7 @@ from os.path          import exists
 from re               import findall
 from sys              import exit
 
+import utils
 
 RES_DIR        = "res"
 FILTER_DIR     = RES_DIR + "/filters"
@@ -59,23 +60,13 @@ def append_missing_verbirr(lines: [str]) -> [str]:
 def filter_apostrophes(lines: [str]) -> [str]:
     """Removes words containing apostrophes."""
 
-    filtered = []
-    for ln in lines:
-        if ln.find("'") == -1:
-            filtered.append(ln)
-
-    return filtered
+    return utils.filter_containing(lines, "'")
 
 
 def filter_compound_words(lines: [str]) -> [str]:
     """Removes compound words as they are mostly an adjective-noun pair."""
 
-    filtered = []
-    for ln in lines:
-        if ln.find('-') == -1:
-            filtered.append(ln)
-
-    return filtered
+    return utils.filter_containing(lines, '-')
 
 
 def filter_duplicates(lines: [str]) -> [str]:
@@ -113,12 +104,7 @@ def filter_multiword_entries(lines: [str]) -> [str]:
     in the generator and it is difficult to assess them automatically.
     """
 
-    filtered = []
-    for ln in lines:
-        if ln.find('_') == -1:
-            filtered.append(ln)
-
-    return filtered
+    return utils.filter_containing(lines, "_")
 
 
 def filter_parentheses(lines: [str]) -> [str]:
