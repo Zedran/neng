@@ -3,7 +3,7 @@ def filter_containing(lines: [str], char: str) -> [str]:
 
     filtered = []
     for ln in lines:
-        if ln.find(char) == -1:
+        if char not in ln:
             filtered.append(ln)
 
     return filtered
