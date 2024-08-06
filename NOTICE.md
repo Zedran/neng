@@ -75,7 +75,7 @@ Princeton University and LICENSEE agrees to preserve same.
 
 ### Modifications
 
-`adj.irr` and `adj.suf` were manually constructed using their respective source files. Automated formatting via the [build_res.py](./build_res.py) script was applied to the remaining source files. Below is the summary of the procedure:
+`adj.irr` and `adj.suf` were manually constructed using their respective source files. Automated formatting via the [build_res.py](./scripts/build_res.py) script was applied to the remaining source files. Below is the summary of the procedure:
 
 1. Remove license text from the beginning of the file.
 2. Extract words from the surrounding metadata.
