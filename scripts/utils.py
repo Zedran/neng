@@ -18,3 +18,12 @@ def load_file(path: str) -> [str]:
     except FileNotFoundError:
         print(f"{path} does not exist")
         exit(1)
+
+
+def write_file(path: str, lines: [str]):
+    """Sorts lines alphabetically and writes them to the file at path."""
+
+    lines.sort()
+
+    with open(path, mode='w') as f:
+        f.write('\n'.join(lines))

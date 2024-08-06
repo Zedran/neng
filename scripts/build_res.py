@@ -211,15 +211,6 @@ def strip_license(lines: [str]) -> str:
     return lines[LICENSE_OFFSET:]
 
 
-def write_file(path: str, lines: [str]):
-    """Sorts lines alphabetically and writes them to the file at path."""
-
-    lines.sort()
-
-    with open(path, mode='w') as f:
-        f.write('\n'.join(lines))
-
-
 if __name__ == "__main__":
     for file in SOURCE_FILES:
         path      = f"{ORIG_DIR}/{file}"
@@ -253,13 +244,13 @@ if __name__ == "__main__":
             censored = get_mature_language(lines)
 
             fname = f"{FILTER_DIR}/{new_fname}.filter.auto"
-            write_file(fname, censored)
+            utils.write_file(fname, censored)
 
             print(f"'{fname}' generated. Review and rename it '{fname.strip(".auto")}' or leave it as is and run the script again with '-m' to apply it.")
         elif args.filter_mature:
             censored = load_filter_file(f"{FILTER_DIR}/{new_fname}.filter")
             lines    = censor_lines(lines, censored)
 
-            write_file(new_path, lines)
+            utils.write_file(new_path, lines)
         else:
-            write_file(new_path, lines)
+            utils.write_file(new_path, lines)
