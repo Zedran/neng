@@ -2,7 +2,7 @@
 
 """
 This script extracts words from a WordNet database file
-and formats them for use with neng.
+and formats them for the build_embed.py script.
 """
 
 from argparse         import ArgumentParser
