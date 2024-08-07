@@ -6,6 +6,9 @@ var (
 	// Error returned by NewGenerator if nonpositive iterLimit is specified
 	errBadIterLimit error = errors.New("iteration limit equal or lower than 0")
 
+	// Error returned by NewWord if any of the word list lines are incorrectly formatted
+	errBadWordList error = errors.New("word list file is incorrectly formatted")
+
 	// Error returned by NewGenerator if one or more of the user-provided lists are nil
 	errEmptyLists error = errors.New("one or more of the provided word lists are nil")
 
