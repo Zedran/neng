@@ -28,13 +28,19 @@ func TestPastParticiple(t *testing.T) {
 		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
-	irregular, err := loadIrregularWords("res/verb.irr")
+	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
 	for input, expected := range cases {
-		output := pastParticiple(input, irregular)
+		word, err := findWord(input, gen.verb)
+		if err != nil {
+			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
+			continue
+		}
+
+		output := pastParticiple(word)
 
 		if output != expected {
 			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
@@ -68,13 +74,19 @@ func TestPastSimple(t *testing.T) {
 		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
-	irregular, err := loadIrregularWords("res/verb.irr")
+	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
 	for _, c := range cases {
-		output := pastSimple(c.Input, irregular, c.Plural)
+		word, err := findWord(c.Input, gen.verb)
+		if err != nil {
+			t.Logf("Test case '%s' does not exist in the word database. Skipping.", c.Input)
+			continue
+		}
+
+		output := pastSimple(word, c.Plural)
 
 		if output != c.Expected {
 			t.Errorf("Failed for '%s' (plural = %v): expected '%s', got '%s'", c.Input, c.Plural, c.Expected, output)

@@ -169,17 +169,16 @@ func handleVVL(verb, tenseEnding string) string {
 }
 
 /* Returns Past Participle form of a verb. */
-func pastParticiple(verb string, verbsIrr [][]string) string {
-	if verb == "be" {
+func pastParticiple(word *word) string {
+	if word.t == wt_irregular {
+		return (*word.irr)[1]
+	}
+
+	if word.word == "be" {
 		return "been"
 	}
 
-	verbLine := findIrregular(verb, verbsIrr)
-	if verbLine != nil {
-		return verbLine[2]
-	}
-
-	return pastRegular(verb)
+	return pastRegular(word.word)
 }
 
 /* Appends past tense suffix to a regular verb. */
@@ -226,8 +225,12 @@ func pastRegular(verb string) string {
 }
 
 /* Returns Past Simple form of a verb. */
-func pastSimple(verb string, verbsIrr [][]string, plural bool) string {
-	if verb == "be" {
+func pastSimple(word *word, plural bool) string {
+	if word.t == wt_irregular {
+		return (*word.irr)[0]
+	}
+
+	if word.word == "be" {
 		if plural {
 			return "were"
 		}
@@ -235,12 +238,7 @@ func pastSimple(verb string, verbsIrr [][]string, plural bool) string {
 		return "was"
 	}
 
-	verbLine := findIrregular(verb, verbsIrr)
-	if verbLine != nil {
-		return verbLine[1]
-	}
-
-	return pastRegular(verb)
+	return pastRegular(word.word)
 }
 
 /* Returns Present Simple form of a verb. */
