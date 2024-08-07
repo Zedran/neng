@@ -255,7 +255,7 @@ Generates a single random verb and transforms it according to mods.
 Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
-	return gen.Transform(randItem(gen.verbs), WC_VERB, mods...)
+	return gen.Transform(randItem(gen.verb), WC_VERB, mods...)
 }
 
 /*
