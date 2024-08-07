@@ -240,6 +240,12 @@ func (gen *Generator) Transform(word *word, wc WordClass, mods ...Mod) (string, 
 		}
 	}
 
+	if len(w) == 0 {
+		// If no mods other than case transformation
+		// are requested, w remains empty
+		w = word.word
+	}
+
 	if caseTransformation != nil {
 		w = caseTransformation(w)
 	}
