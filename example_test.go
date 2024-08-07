@@ -13,20 +13,6 @@ func ExampleDefaultGenerator() {
 	fmt.Println(phrase)
 }
 
-func ExampleNewGenerator() {
-	gen, _ := neng.NewGenerator(
-		[]string{"big"},      // adjectives
-		[]string{"nicely"},   // adverbs
-		[]string{"snowfall"}, // nouns
-		[]string{"stash"},    // verbs
-		neng.DEFAULT_ITER_LIMIT,
-	)
-
-	phrase, _ := gen.Phrase("a %a %n")
-	fmt.Println(phrase)
-	// Output: a big snowfall
-}
-
 func ExampleGenerator_Adjective() {
 	gen, _ := neng.DefaultGenerator()
 
@@ -53,21 +39,6 @@ func ExampleGenerator_Phrase() {
 
 	phrase, _ := gen.Phrase("%tpn %Npv %n")
 	fmt.Println(phrase)
-}
-
-func ExampleGenerator_Transform() {
-	var (
-		gen, _   = neng.DefaultGenerator()
-		word, _  = gen.Verb()
-		modified string
-	)
-
-	fmt.Println(word)
-
-	for _, mod := range []neng.Mod{neng.MOD_PRESENT_SIMPLE, neng.MOD_PAST_SIMPLE, neng.MOD_PAST_PARTICIPLE, neng.MOD_GERUND} {
-		modified, _ = gen.Transform(word, neng.WC_VERB, mod)
-		fmt.Println(modified)
-	}
 }
 
 func ExampleGenerator_Verb() {
