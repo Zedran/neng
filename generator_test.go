@@ -113,7 +113,7 @@ func TestGenerator_Transform(t *testing.T) {
 		case WC_VERB:
 			list = gen.verb
 		default:
-			t.Fatalf("Failed for '%s': unknown WordClass: '%d'", c.wc)
+			t.Fatalf("Failed for '%s': unknown WordClass: '%d'", c.description, c.wc)
 		}
 
 		word, err := findWord(c.word, list)
