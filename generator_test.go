@@ -7,7 +7,7 @@ Tests whether Generator.Noun correctly skips uncountable nouns in presence of MO
 and plural-only nouns in absence of plural modifier.
 */
 func TestGenerator_Noun(t *testing.T) {
-	gen, err := NewGenerator([]string{"big"}, []string{"nicely"}, []string{"binoculars"}, []string{"stash"}, 10)
+	gen, err := NewGenerator([][]byte{[]byte("big 3")}, [][]byte{[]byte("nicely 0")}, [][]byte{[]byte("binoculars 2")}, [][]byte{[]byte("stash 0")}, 10)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -20,7 +20,7 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Errorf("Failed for plural: plural-only noun was rejected: %s", err.Error())
 	}
 
-	gen.nouns = []string{"boldness"}
+	gen.noun = []*word{&word{irr: nil, t: 5, word: "boldness"}}
 
 	if n, err := gen.Noun(MOD_PLURAL); err == nil {
 		t.Errorf("Failed for plural: uncountable noun was not rejected. Noun returned: %s", n)

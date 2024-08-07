@@ -67,16 +67,16 @@ Returns an error if:
 - iteration limit is reached while attempting to generate a countable noun
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
-	var excluded []string
+	var excluded wordType
 
 	if slices.Contains(mods, MOD_PLURAL) {
-		excluded = gen.nounsUnc
+		excluded = wt_uncountable
 	} else {
-		excluded = gen.nounsPlO
+		excluded = wt_plural_only
 	}
 
 	for range gen.iterLimit {
-		if n := randItem(gen.nouns); !slices.Contains(excluded, n) {
+		if n := randItem(gen.noun); n.t != excluded {
 			return gen.Transform(n, WC_NOUN, mods...)
 		}
 	}
