@@ -1,6 +1,7 @@
 package neng
 
 import (
+	"bytes"
 	"math/rand/v2"
 	"strings"
 )
@@ -97,33 +98,30 @@ func getSequence(s string) string {
 	return seq.String()
 }
 
-/*
-Calls loadWords to read lines from efs, splits those lines into slices of word forms
-and returns [lines][forms]string.
-*/
-func loadIrregularWords(path string) ([][]string, error) {
-	lines, err := loadWords(path)
-	if err != nil {
-		return nil, err
-	}
-
-	wordsIrr := make([][]string, len(lines))
-
-	for i, ln := range lines {
-		wordsIrr[i] = strings.Split(ln, ",")
-	}
-
-	return wordsIrr, nil
-}
-
-/* Loads a word list from path. Returns error if the file is not found. */
-func loadWords(path string) ([]string, error) {
+/* Loads a word list from the embedded path. Returns error if the file is not found. */
+func loadLines(path string) ([][]byte, error) {
 	stream, err := efs.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	return strings.Split(string(stream), "\n"), nil
+	return bytes.Split(stream, []byte("\n")), nil
+}
+
+/* Parses the loaded word list into a slice of word struct pointers. Relays error from NewWord (line formatting). */
+func parseLines(lines [][]byte) ([]*word, error) {
+	words := make([]*word, len(lines))
+
+	for i, ln := range lines {
+		w, err := NewWord(ln)
+		if err != nil {
+			return nil, err
+		}
+
+		words[i] = w
+	}
+
+	return words, nil
 }
 
 /* Returns a random item from s. */
