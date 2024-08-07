@@ -2,6 +2,7 @@ package neng
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 )
@@ -14,6 +15,17 @@ type testCasePlural struct {
 	Input    string `json:"input"`
 	Expected string `json:"expected"`
 	Plural   bool   `json:"plural"`
+}
+
+/* Returns a pointer to word struct found in words or an error if it does not exists. */
+func findWord(query string, words []*word) (*word, error) {
+	for _, w := range words {
+		if w.word == query {
+			return w, nil
+		}
+	}
+
+	return nil, errors.New("findWord: not found")
 }
 
 /* Extracts []testCasePlural from a test data file. */

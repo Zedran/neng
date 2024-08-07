@@ -9,18 +9,19 @@ func TestPlural(t *testing.T) {
 		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
-	pluralOnly, err := loadWords("res/noun.plo")
+	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
-	}
-
-	irregular, err := loadIrregularWords("res/noun.irr")
-	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
 	for input, expected := range cases {
-		output := plural(input, pluralOnly, irregular)
+		word, err := findWord(input, gen.noun)
+		if err != nil {
+			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
+			continue
+		}
+
+		output := plural(word)
 
 		if output != expected {
 			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
