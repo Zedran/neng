@@ -43,7 +43,7 @@ Returns an error if:
 - iteration limit is reached while attempting to generate a comparable adjective
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
-	return gen.generateModifier(gen.adjectives, WC_ADJECTIVE, mods...)
+	return gen.generateModifier(gen.adj, WC_ADJECTIVE, mods...)
 }
 
 /*
@@ -55,7 +55,7 @@ Returns an error if:
 - iteration limit is reached while attempting to generate a comparable adverb
 */
 func (gen *Generator) Adverb(mods ...Mod) (string, error) {
-	return gen.generateModifier(gen.adverbs, WC_ADVERB, mods...)
+	return gen.generateModifier(gen.adv, WC_ADVERB, mods...)
 }
 
 /*
@@ -268,20 +268,13 @@ Returns an error if:
 - an incompatible Mod is received (relays from Generator.Transform)
 - Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
 */
-func (gen *Generator) generateModifier(items []string, wc WordClass, mods ...Mod) (string, error) {
+func (gen *Generator) generateModifier(items []*word, wc WordClass, mods ...Mod) (string, error) {
 	if !slices.Contains(mods, MOD_COMPARATIVE) && !slices.Contains(mods, MOD_SUPERLATIVE) {
 		return gen.Transform(randItem(items), wc, mods...)
 	}
 
-	var ncmpList []string
-	if wc == WC_ADJECTIVE {
-		ncmpList = gen.adjNC
-	} else {
-		ncmpList = gen.advNC
-	}
-
 	for range gen.iterLimit {
-		if a := randItem(items); !slices.Contains(ncmpList, a) {
+		if a := randItem(items); a.t != wt_uncomparable {
 			return gen.Transform(a, wc, mods...)
 		}
 	}

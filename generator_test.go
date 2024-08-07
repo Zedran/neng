@@ -118,7 +118,7 @@ func TestGenerator_Transform(t *testing.T) {
 
 /* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
 func TestGenerator_generateModifier(t *testing.T) {
-	gen, err := NewGenerator([]string{"bottomless"}, []string{"cryptographically"}, []string{"snowfall"}, []string{"stash"}, 10)
+	gen, err := NewGenerator([][]byte{[]byte("bottomless 4")}, [][]byte{[]byte("cryptographically 4")}, [][]byte{[]byte("snowfall 0")}, [][]byte{[]byte("stash 0")}, 10)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}

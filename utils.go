@@ -124,7 +124,7 @@ func parseLines(lines [][]byte) ([]*word, error) {
 	return words, nil
 }
 
-/* Returns a random item from s. */
-func randItem(s []string) string {
+/* Returns a random word from s. */
+func randItem(s []*word) *word {
 	return s[rand.IntN(len(s))]
 }
