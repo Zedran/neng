@@ -184,22 +184,18 @@ Returns an error if:
 - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
 - transformation into plural form is requested for an uncountable noun
 */
-func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string, error) {
+func (gen *Generator) Transform(word *word, wc WordClass, mods ...Mod) (string, error) {
 	if !wc.CompatibleWith(mods...) {
 		return "", errIncompatible
 	}
 
 	switch wc {
-	case WC_ADJECTIVE:
-		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && slices.Contains(gen.adjNC, word) {
-			return "", errNonComparable
-		}
-	case WC_ADVERB:
-		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && slices.Contains(gen.advNC, word) {
+	case WC_ADJECTIVE, WC_ADVERB:
+		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && word.t == wt_uncomparable {
 			return "", errNonComparable
 		}
 	case WC_NOUN:
-		if slices.Contains(mods, MOD_PLURAL) && slices.Contains(gen.nounsUnc, word) {
+		if slices.Contains(mods, MOD_PLURAL) && word.t == wt_uncountable {
 			return "", errUncountable
 		}
 	}
@@ -207,6 +203,7 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 	var (
 		caseTransformation func(string) string
 		pluralMod          bool
+		w                  string
 	)
 
 	// Ensure MOD_PLURAL is processed first
@@ -215,19 +212,23 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 	for _, m := range mods {
 		switch m {
 		case MOD_PLURAL:
+			if wc == WC_NOUN {
+				w = plural(word)
+				continue
+			}
 			pluralMod = true
 		case MOD_GERUND:
-			word = gerund(word)
+			w = gerund(word.word)
 		case MOD_PRESENT_SIMPLE:
-			word = presentSimple(word, pluralMod)
+			w = presentSimple(word.word, pluralMod)
 		case MOD_PAST_SIMPLE:
-			word = pastSimple(word, gen.verbsIrr, pluralMod)
+			w = pastSimple(word, pluralMod)
 		case MOD_PAST_PARTICIPLE:
-			word = pastParticiple(word, gen.verbsIrr)
+			w = pastParticiple(word)
 		case MOD_COMPARATIVE:
-			word = comparative(word, gen.adjIrr, gen.adjSuf)
+			w = comparative(word)
 		case MOD_SUPERLATIVE:
-			word = superlative(word, gen.adjIrr, gen.adjSuf)
+			w = superlative(word)
 		case MOD_CASE_LOWER:
 			caseTransformation = gen.caser.toLower
 		case MOD_CASE_TITLE:
@@ -239,15 +240,11 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 		}
 	}
 
-	if pluralMod && wc != WC_VERB {
-		word = plural(word, gen.nounsPlO, gen.nounsIrr)
-	}
-
 	if caseTransformation != nil {
-		word = caseTransformation(word)
+		w = caseTransformation(w)
 	}
 
-	return word, nil
+	return w, nil
 }
 
 /*

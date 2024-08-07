@@ -101,7 +101,28 @@ func TestGenerator_Transform(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		out, err := gen.Transform(c.word, c.wc, c.mods...)
+		var list []*word
+
+		switch c.wc {
+		case WC_ADJECTIVE:
+			list = gen.adj
+		case WC_ADVERB:
+			list = gen.adv
+		case WC_NOUN:
+			list = gen.noun
+		case WC_VERB:
+			list = gen.verb
+		default:
+			t.Fatalf("Failed for '%s': unknown WordClass: '%d'", c.wc)
+		}
+
+		word, err := findWord(c.word, list)
+		if err != nil {
+			t.Logf("Test case '%s' does not exist in the word database. Skipping.", c.word)
+			continue
+		}
+
+		out, err := gen.Transform(word, c.wc, c.mods...)
 
 		switch c.goodCase {
 		case true:
