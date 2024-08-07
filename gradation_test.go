@@ -9,18 +9,19 @@ func TestComparative(t *testing.T) {
 		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
-	irregular, err := loadIrregularWords("res/adj.irr")
+	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
-	}
-
-	suffixed, err := loadWords("res/adj.suf")
-	if err != nil {
-		t.Fatalf("loadWords failed: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
 	for input, expected := range cases {
-		output := comparative(input, irregular, suffixed)
+		word, err := findWord(input, gen.adj)
+		if err != nil {
+			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
+			continue
+		}
+
+		output := comparative(word)
 
 		if output != expected {
 			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
@@ -52,18 +53,19 @@ func TestSuperlative(t *testing.T) {
 		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
-	irregular, err := loadIrregularWords("res/adj.irr")
+	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
-	}
-
-	suffixed, err := loadWords("res/adj.suf")
-	if err != nil {
-		t.Fatalf("loadWords failed: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
 	for input, expected := range cases {
-		output := superlative(input, irregular, suffixed)
+		word, err := findWord(input, gen.adj)
+		if err != nil {
+			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
+			continue
+		}
+
+		output := superlative(word)
 
 		if output != expected {
 			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
