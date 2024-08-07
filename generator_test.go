@@ -33,7 +33,7 @@ func TestGenerator_Noun(t *testing.T) {
 
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
 func TestGenerator_Phrase(t *testing.T) {
-	gen, err := NewGenerator([]string{"big"}, []string{"nicely"}, []string{"snowfall"}, []string{"stash"}, DEFAULT_ITER_LIMIT)
+	gen, err := NewGenerator([][]byte{[]byte("big 3")}, [][]byte{[]byte("nicely 0")}, [][]byte{[]byte("snowfall 0")}, [][]byte{[]byte("stash 0")}, DEFAULT_ITER_LIMIT)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
