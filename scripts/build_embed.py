@@ -107,7 +107,7 @@ def _load_irregular(fname: str) -> {}:
     irr = {}
     for w in utils.load_file(f"{RES_DIR}/{fname}"):
         s = w.split(',', maxsplit=1)
-        irr[s[0]] = s[1]
+        irr[s[0]] = s[1].replace(' ', '_', -1)
 
     return irr
 

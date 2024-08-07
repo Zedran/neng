@@ -16,6 +16,7 @@ func TestNewWord(t *testing.T) {
 	cases := []testCase{
 		{true, "word 0", &word{nil, 0, "word"}},                                  // Regular
 		{true, "word 1 f1,f2,f3", &word{&[]string{"f1", "f2", "f3"}, 1, "word"}}, // Irregular
+		{true, "word 1 f1a_b,f2", &word{&[]string{"f1a b", "f2"}, 1, "word"}},    // Multi-word irregular
 		{true, "word 2", &word{nil, 2, "word"}},                                  // Plural-only
 		{true, "word 3", &word{nil, 3, "word"}},                                  // Suffixed
 		{true, "word 4", &word{nil, 4, "word"}},                                  // Uncomparable

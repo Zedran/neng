@@ -75,8 +75,11 @@ func NewWord(line []byte) (*word, error) {
 		return nil, errBadWordList
 	}
 
+	// Split multi-word entry (replace underscore with space - "a_b" -> "a b")
+	multiWord := bytes.Replace(s[2], []byte("_"), []byte(" "), -1)
+
 	// Split the third, comma-separated field
-	irr := bytes.Split(s[2], []byte(","))
+	irr := bytes.Split(multiWord, []byte(","))
 
 	if len(irr) < 1 {
 		// At least one irregular form is required
