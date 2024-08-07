@@ -10,41 +10,17 @@ const DEFAULT_ITER_LIMIT int = 1000
 
 /* Generates random phrases or words. */
 type Generator struct {
-	// Main list of adjectives
-	adjectives []string
+	// List of adjectives
+	adj []*word
 
-	// Main list of adverbs
-	adverbs []string
+	// List of adverbs
+	adv []*word
 
-	// Main list of nouns
-	nouns []string
+	// List of nouns
+	noun []*word
 
-	// Main list of verbs
-	verbs []string
-
-	// Adjectives that are graded by adding suffix (-er, -est)
-	adjSuf []string
-
-	// Non-comparable adjectives
-	adjNC []string
-
-	// Non-comparable adverbs
-	advNC []string
-
-	// Plural-only nouns
-	nounsPlO []string
-
-	// Uncountable nouns
-	nounsUnc []string
-
-	// Irregularly graded adjectives
-	adjIrr [][]string
-
-	// Nouns with irregular plural forms
-	nounsIrr [][]string
-
-	// Irregular verbs
-	verbsIrr [][]string
+	// List of verbs
+	verb []*word
 
 	// Case transformation handler
 	caser *caser
@@ -336,22 +312,22 @@ func (gen *Generator) getGenerator(flag rune) func(...Mod) (string, error) {
 
 /* Returns a new Generator with default word lists. */
 func DefaultGenerator() (*Generator, error) {
-	a, err := loadWords("res/adj")
+	a, err := loadLines("embed/adj")
 	if err != nil {
 		return nil, err
 	}
 
-	m, err := loadWords("res/adv")
+	m, err := loadLines("embed/adv")
 	if err != nil {
 		return nil, err
 	}
 
-	n, err := loadWords("res/noun")
+	n, err := loadLines("embed/noun")
 	if err != nil {
 		return nil, err
 	}
 
-	v, err := loadWords("res/verb")
+	v, err := loadLines("embed/verb")
 	if err != nil {
 		return nil, err
 	}
@@ -375,7 +351,7 @@ approximately 10,000 adjectives, of which 700 are non-comparable, and 24,000 nou
 with 1,700 being uncountable. Given these numbers, it is unlikely that the iterLimit
 will be reached.
 */
-func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, error) {
+func NewGenerator(adj, adv, noun, verb [][]byte, iterLimit int) (*Generator, error) {
 	if iterLimit <= 0 {
 		return nil, errBadIterLimit
 	}
@@ -388,51 +364,27 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 		err error
 
 		gen = Generator{
-			adjectives: adj,
-			adverbs:    adv,
-			nouns:      noun,
-			verbs:      verb,
-			caser:      newCaser(),
-			iterLimit:  iterLimit,
+			caser:     newCaser(),
+			iterLimit: iterLimit,
 		}
 	)
 
-	gen.adjIrr, err = loadIrregularWords("res/adj.irr")
+	gen.adj, err = parseLines(adj)
 	if err != nil {
 		return nil, err
 	}
 
-	gen.adjSuf, err = loadWords("res/adj.suf")
+	gen.adv, err = parseLines(adv)
 	if err != nil {
 		return nil, err
 	}
 
-	gen.adjNC, err = loadWords("res/adj.ncmp")
+	gen.noun, err = parseLines(noun)
 	if err != nil {
 		return nil, err
 	}
 
-	gen.advNC, err = loadWords("res/adv.ncmp")
-	if err != nil {
-		return nil, err
-	}
-
-	gen.nounsPlO, err = loadWords("res/noun.plo")
-	if err != nil {
-		return nil, err
-	}
-
-	gen.nounsUnc, err = loadWords("res/noun.unc")
-	if err != nil {
-		return nil, err
-	}
-
-	gen.nounsIrr, err = loadIrregularWords("res/noun.irr")
-	if err != nil {
-		return nil, err
-	}
-
-	gen.verbsIrr, err = loadIrregularWords("res/verb.irr")
+	gen.verb, err = parseLines(verb)
 	if err != nil {
 		return nil, err
 	}
