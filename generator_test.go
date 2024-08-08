@@ -61,7 +61,7 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Errorf("Failed for plural: plural-only noun was rejected: %s", err.Error())
 	}
 
-	gen.noun = []*word{&word{irr: nil, t: 5, word: "boldness"}}
+	gen.noun = []*word{{irr: nil, t: 5, word: "boldness"}}
 
 	if n, err := gen.Noun(MOD_PLURAL); err == nil {
 		t.Errorf("Failed for plural: uncountable noun was not rejected. Noun returned: %s", n)
