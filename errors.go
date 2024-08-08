@@ -27,11 +27,17 @@ var (
 	// Error returned by Generator.Transform, if non-comparable adjective or adverb is received along with gradation modifier
 	errNonComparable error = errors.New("gradation requested, but the provided word is non-comparable")
 
+	// Returned by Generator.Find if the specified word is not found
+	errNotFound error = errors.New("query not found")
+
 	// Error returned by Generator.Transform, if uncountable noun is received along with pluralization modifier
 	errUncountable error = errors.New("pluralization requested, but the provided word is uncountable")
 
 	// Error returned by Generator.Transform, if undefined modifier value is received, e.g. Mod(123)
 	errUndefinedMod error = errors.New("undefined modifier")
+
+	// Error returned by Generator.Find, if undefined WordClass value is received, e.g. WordClass(123)
+	errUndefinedWordClass error = errors.New("undefined WordClass")
 
 	// Error returned by Generator.Phrase, if pattern contains undefined escaped character
 	errUnknownCommand error = errors.New("unknown command specified")

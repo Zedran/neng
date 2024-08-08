@@ -2,6 +2,47 @@ package neng
 
 import "testing"
 
+/* Tests whether Generator.Find correctly returns found words or errors upon failure. */
+func TestGenerator_Find(t *testing.T) {
+	type testCase struct {
+		good  bool
+		wc    WordClass
+		query string
+	}
+
+	testCases := []testCase{
+		{true, WC_ADJECTIVE, "big"},         // existing adjective
+		{true, WC_ADVERB, "nicely"},         // existing adverb
+		{true, WC_NOUN, "snowfall"},         // existing noun
+		{true, WC_VERB, "stash"},            // existing verb
+		{false, WC_NOUN, "box"},             // missing noun
+		{false, WC_NOUN, "big"},             // missing "noun", present in other lists
+		{false, WordClass(255), "snowfall"}, // undefined WordClass
+	}
+
+	gen, err := NewGenerator([][]byte{[]byte("big 3")}, [][]byte{[]byte("nicely 0")}, [][]byte{[]byte("snowfall 0")}, [][]byte{[]byte("stash 0")}, DEFAULT_ITER_LIMIT)
+	if err != nil {
+		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+	}
+
+	for _, c := range testCases {
+		out, err := gen.Find(c.query, c.wc)
+
+		if c.good {
+			switch true {
+			case err != nil:
+				t.Errorf("Failed for case %v: error returned: '%s'", c, err.Error())
+			case out.word != c.query:
+				t.Errorf("Failed for case %v: expected word '%s', found '%s'", c, c.query, out.word)
+			}
+		} else {
+			if err == nil {
+				t.Errorf("Failed for case %v: no error returned, got %v", c, out)
+			}
+		}
+	}
+}
+
 /*
 Tests whether Generator.Noun correctly skips uncountable nouns in presence of MOD_PLURAL
 and plural-only nouns in absence of plural modifier.
@@ -68,12 +109,53 @@ func TestGenerator_Phrase(t *testing.T) {
 }
 
 /*
-Tests whether the Generator.Transform correctly returns errIncompatible, errNonComparable and errUncountable.
+Tests basic dispatching done by Generator.Transform. More detailed tests are performed for Generator.TransformWord,
+which receives input from Generator.Transform.
+*/
+func TestGenerator_Transform(t *testing.T) {
+	type testCase struct {
+		good     bool
+		word     string
+		expected string
+		wc       WordClass
+	}
+
+	testCases := []testCase{
+		{true, "word", "word", WC_NOUN},    // Existing
+		{false, "theta", "theta", WC_NOUN}, // Non-existent
+	}
+
+	gen, err := DefaultGenerator()
+	if err != nil {
+		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+	}
+
+	for _, c := range testCases {
+		out, err := gen.Transform(c.word, c.wc)
+
+		if c.good {
+			if err != nil {
+				t.Errorf("Failed for '%v': error returned: '%s'", c, err.Error())
+			}
+
+			if out != c.expected {
+				t.Errorf("Failed for '%v': got '%s' - expected '%s'", c, out, c.expected)
+			}
+		} else {
+			if err == nil {
+				t.Errorf("Failed for '%v': error not returned", c)
+			}
+		}
+	}
+}
+
+/*
+Tests whether the Generator.TransformWord correctly returns errIncompatible, errNonComparable and errUncountable.
 errIncompatible should be returned if the requested modification is incompatible with a given WordClass.
 errNonComparable should only be returned if gradation was requested for non-comparable adjective or adverb and
 errUncountable should only be returned if pluralization was requested for an uncountable noun.
 */
-func TestGenerator_Transform(t *testing.T) {
+func TestGenerator_TransformWord(t *testing.T) {
 	type testCase struct {
 		description string
 		word        string
@@ -101,28 +183,13 @@ func TestGenerator_Transform(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		var list []*word
-
-		switch c.wc {
-		case WC_ADJECTIVE:
-			list = gen.adj
-		case WC_ADVERB:
-			list = gen.adv
-		case WC_NOUN:
-			list = gen.noun
-		case WC_VERB:
-			list = gen.verb
-		default:
-			t.Fatalf("Failed for '%s': unknown WordClass: '%d'", c.description, c.wc)
-		}
-
-		word, err := findWord(c.word, list)
+		word, err := gen.Find(c.word, c.wc)
 		if err != nil {
 			t.Logf("Test case '%s' does not exist in the word database. Skipping.", c.word)
 			continue
 		}
 
-		out, err := gen.Transform(word, c.wc, c.mods...)
+		out, err := gen.TransformWord(word, c.wc, c.mods...)
 
 		switch c.goodCase {
 		case true:

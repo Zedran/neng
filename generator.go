@@ -59,6 +59,35 @@ func (gen *Generator) Adverb(mods ...Mod) (string, error) {
 }
 
 /*
+Searches the word list for the specified query. Returns an error if no word
+is found or if an unknown WordClass is passed to the function.
+*/
+func (gen *Generator) Find(query string, wc WordClass) (*word, error) {
+	var list []*word
+
+	switch wc {
+	case WC_ADJECTIVE:
+		list = gen.adj
+	case WC_ADVERB:
+		list = gen.adv
+	case WC_NOUN:
+		list = gen.noun
+	case WC_VERB:
+		list = gen.verb
+	default:
+		return nil, errUndefinedWordClass
+	}
+
+	for _, w := range list {
+		if w.word == query {
+			return w, nil
+		}
+	}
+
+	return nil, errNotFound
+}
+
+/*
 Generates a single random noun and transforms it according to mods.
 
 Returns an error if:
@@ -77,7 +106,7 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 
 	for range gen.iterLimit {
 		if n := randItem(gen.noun); n.t != excluded {
-			return gen.Transform(n, WC_NOUN, mods...)
+			return gen.TransformWord(n, WC_NOUN, mods...)
 		}
 	}
 
@@ -171,9 +200,36 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 }
 
 /*
-Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
+Searches for the specified word and, if found, calls Generator.TransformWord to transform it.
 
 Assumes the following about the 'word' argument:
+- Word is lower case (irrelevant if case transformation is requested)
+- Adjectives and adverbs are in their positive forms
+- Nouns are in their singular forms
+- Verbs are in their infinitive forms
+
+Returns an error if:
+- word of the WordClass wc does not exist in the database
+- specified WordClass value of the word is unknown
+
+Relays an error from Generator.Transform if:
+- WordClass of the word is not compatible with any Mod in mods
+- transformation into comparative or superlative form is requested for non-comparable adjective or adverb
+- transformation into plural form is requested for an uncountable noun
+*/
+func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string, error) {
+	w, err := gen.Find(word, wc)
+	if err != nil {
+		return "", err
+	}
+
+	return gen.TransformWord(w, wc, mods...)
+}
+
+/*
+Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
+
+Assumes the following about the 'word' field of the 'word' argument:
 - Word is lower case (irrelevant if case transformation is requested)
 - Adjectives and adverbs are in their positive forms
 - Nouns are in their singular forms
@@ -184,7 +240,7 @@ Returns an error if:
 - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
 - transformation into plural form is requested for an uncountable noun
 */
-func (gen *Generator) Transform(word *word, wc WordClass, mods ...Mod) (string, error) {
+func (gen *Generator) TransformWord(word *word, wc WordClass, mods ...Mod) (string, error) {
 	if !wc.CompatibleWith(mods...) {
 		return "", errIncompatible
 	}
@@ -258,27 +314,25 @@ Generates a single random verb and transforms it according to mods.
 Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
-	return gen.Transform(randItem(gen.verb), WC_VERB, mods...)
+	return gen.TransformWord(randItem(gen.verb), WC_VERB, mods...)
 }
 
 /*
 A common method used to generate adjectives (noun modifiers) and adverbs (verb modifiers).
-Returns error if Generator.iterLimit is reached while attempting to generate a comparable
-adjective or adverb. Relays errUndefinedMod from Generator.Transform.
 
 Returns an error if:
-- an undefined Mod is received (relays from Generator.Transform)
-- an incompatible Mod is received (relays from Generator.Transform)
+- an undefined Mod is received (relays from Generator.TransformWord)
+- an incompatible Mod is received (relays from Generator.TransformWord)
 - Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
 */
 func (gen *Generator) generateModifier(items []*word, wc WordClass, mods ...Mod) (string, error) {
 	if !slices.Contains(mods, MOD_COMPARATIVE) && !slices.Contains(mods, MOD_SUPERLATIVE) {
-		return gen.Transform(randItem(items), wc, mods...)
+		return gen.TransformWord(randItem(items), wc, mods...)
 	}
 
 	for range gen.iterLimit {
 		if a := randItem(items); a.t != wt_uncomparable {
-			return gen.Transform(a, wc, mods...)
+			return gen.TransformWord(a, wc, mods...)
 		}
 	}
 
