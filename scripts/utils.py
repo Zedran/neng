@@ -20,10 +20,11 @@ def load_file(path: str) -> [str]:
         exit(1)
 
 
-def write_file(path: str, lines: [str]):
+def write_file(path: str, sort: bool, lines: [str]):
     """Sorts lines alphabetically and writes them to the file at path."""
 
-    lines.sort()
+    if sort:
+        lines.sort()
 
     with open(path, mode='w') as f:
         f.write('\n'.join(lines))

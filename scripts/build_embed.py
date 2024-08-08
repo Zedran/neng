@@ -59,7 +59,7 @@ def build_noun():
 
         embed.append(f"{n} {int(t.value)}{' ' + irr[n] if t == W_TYPE.IRREGULAR else ''}")
 
-    utils.write_file(f"{EMBED_DIR}/noun", embed)
+    utils.write_file(f"{EMBED_DIR}/noun", False, embed)
 
 def build_verb():
     """Builds the embedded "verb" file."""
@@ -72,7 +72,7 @@ def build_verb():
         t = W_TYPE.IRREGULAR if v in irr else W_TYPE.REGULAR
         embed.append(f"{v} {int(t.value)}{' ' + irr[v] if t == W_TYPE.IRREGULAR else ''}")
 
-    utils.write_file(f"{EMBED_DIR}/verb", embed)
+    utils.write_file(f"{EMBED_DIR}/verb", False, embed)
 
 
 def _build_modifier(words_fname: str):
@@ -98,7 +98,7 @@ def _build_modifier(words_fname: str):
 
         embed.append(f"{w} {int(t.value)}{' ' + irr[w] if t == W_TYPE.IRREGULAR else ''}")
 
-    utils.write_file(f"{EMBED_DIR}/{words_fname}", embed)
+    utils.write_file(f"{EMBED_DIR}/{words_fname}", False, embed)
 
 
 def _load_irregular(fname: str) -> {}:
