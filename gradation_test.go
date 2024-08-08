@@ -15,7 +15,7 @@ func TestComparative(t *testing.T) {
 	}
 
 	for input, expected := range cases {
-		word, err := findWord(input, gen.adj)
+		word, err := gen.Find(input, WC_ADJECTIVE)
 		if err != nil {
 			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
 			continue
@@ -59,7 +59,7 @@ func TestSuperlative(t *testing.T) {
 	}
 
 	for input, expected := range cases {
-		word, err := findWord(input, gen.adj)
+		word, err := gen.Find(input, WC_ADJECTIVE)
 		if err != nil {
 			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
 			continue

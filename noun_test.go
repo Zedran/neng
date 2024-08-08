@@ -15,7 +15,7 @@ func TestPlural(t *testing.T) {
 	}
 
 	for input, expected := range cases {
-		word, err := findWord(input, gen.noun)
+		word, err := gen.Find(input, WC_NOUN)
 		if err != nil {
 			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
 			continue

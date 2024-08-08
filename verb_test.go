@@ -34,7 +34,7 @@ func TestPastParticiple(t *testing.T) {
 	}
 
 	for input, expected := range cases {
-		word, err := findWord(input, gen.verb)
+		word, err := gen.Find(input, WC_VERB)
 		if err != nil {
 			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
 			continue
@@ -80,7 +80,7 @@ func TestPastSimple(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		word, err := findWord(c.Input, gen.verb)
+		word, err := gen.Find(c.Input, WC_VERB)
 		if err != nil {
 			t.Logf("Test case '%s' does not exist in the word database. Skipping.", c.Input)
 			continue
