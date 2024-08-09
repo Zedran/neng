@@ -2,3 +2,6 @@ res/wordnet/
 scripts/__pycache__/
 
 res/filters/*.auto
+
+coverage.html
+coverage.out
