@@ -57,7 +57,7 @@ def build_noun():
         else:
             t = W_TYPE.REGULAR
 
-        embed.append(f"{n} {int(t.value)}{' ' + irr[n] if t == W_TYPE.IRREGULAR else ''}")
+        embed.append(f"{int(t.value)}{n}{',' + irr[n] if t == W_TYPE.IRREGULAR else ''}")
 
     utils.write_file(f"{EMBED_DIR}/noun", False, embed)
 
@@ -70,7 +70,7 @@ def build_verb():
     embed = []
     for v in verb:
         t = W_TYPE.IRREGULAR if v in irr else W_TYPE.REGULAR
-        embed.append(f"{v} {int(t.value)}{' ' + irr[v] if t == W_TYPE.IRREGULAR else ''}")
+        embed.append(f"{int(t.value)}{v}{',' + irr[v] if t == W_TYPE.IRREGULAR else ''}")
 
     utils.write_file(f"{EMBED_DIR}/verb", False, embed)
 
@@ -96,7 +96,7 @@ def _build_modifier(words_fname: str):
         else:
             t = W_TYPE.REGULAR
 
-        embed.append(f"{w} {int(t.value)}{' ' + irr[w] if t == W_TYPE.IRREGULAR else ''}")
+        embed.append(f"{int(t.value)}{w}{',' + irr[w] if t == W_TYPE.IRREGULAR else ''}")
 
     utils.write_file(f"{EMBED_DIR}/{words_fname}", False, embed)
 
@@ -107,7 +107,7 @@ def _load_irregular(fname: str) -> {}:
     irr = {}
     for w in utils.load_file(f"{RES_DIR}/{fname}"):
         s = w.split(',', maxsplit=1)
-        irr[s[0]] = s[1].replace(' ', '_', -1)
+        irr[s[0]] = s[1]
 
     return irr
 

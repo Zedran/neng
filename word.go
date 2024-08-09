@@ -45,58 +45,71 @@ type word struct {
 
 /* Parses a single word list line into a new word struct. Returns an error if malformed line is encountered. */
 func NewWord(line []byte) (*word, error) {
-	var w word
-
-	// Split a line into separate, space separated fields
-	s := bytes.Split(line, []byte(" "))
-
-	if len(s) < 2 || len(s[1]) != 1 {
-		// If the line contains less than 2 fields
-		// or the second field is not one byte long,
-		// the input is malformed
+	if len(line) < 2 {
+		// Line must contain at least two characters:
+		// - a single digit denoting a type
+		// - a word at least one character in length
 		return nil, errBadWordList
 	}
 
-	// Assign the word to the struct field
-	w.word = string(s[0])
+	w := word{
+		// Read the wordType by subtracting ASCII zero from the first byte
+		t: wordType(line[0] - 48),
+	}
 
-	// Retrieve WordType by subtracting ASCII zero
-	// from the second field
-	w.t = wordType(s[1][0] - 48)
+	if w.t < wt_regular || w.t > wt_uncountable {
+		// Type must be within range of defined wordType values.
+		// Coincidentally, this expression returns an error
+		// if a comma begins the line.
+		return nil, errBadWordList
+	}
 
 	if w.t != wt_irregular {
-		// Regular words do not require further processing
-		w.irr = nil
+		// Words other than irregular require no further processing
+		// Assign value to word field - from index 1 to the end of the line
+		w.word = string(line[1:])
 		return &w, nil
 	}
 
-	if len(s) < 3 {
-		// Irregular words require the third field to be present
+	// Find the first comma
+	c1 := bytes.IndexByte(line, ',')
+
+	if c1 <= 1 || c1 == len(line)-1 {
+		// -1 - No comma, there must be at least one in irregular word's line
+		//  0 - Checked above already, comma cannot begin the line
+		//  1 - If the first comma is found at index 1, the word
+		//      has the length of zero
+		// or - Comma cannot end the line
 		return nil, errBadWordList
 	}
 
-	// Split multi-word entry (replace underscore with space - "a_b" -> "a b")
-	multiWord := bytes.Replace(s[2], []byte("_"), []byte(" "), -1)
+	// Assign value to word field - from index 1 to the first comma
+	w.word = string(line[1:c1])
 
-	// Split the third, comma-separated field
-	irr := bytes.Split(multiWord, []byte(","))
+	c1++
+	// Find a second comma.
+	// Substring operation - counts from the first comma,
+	// not from the beginning of a line
+	c2 := bytes.IndexByte(line[c1:], ',')
 
-	if len(irr) < 1 {
-		// At least one irregular form is required
+	if c2 == -1 {
+		// If there is no second comma, the word has only one irregular form
+		// The condition above ensures it is not zero-length by this point
+		// (comma does not end the line)
+		w.irr = &[]string{string(line[c1:])}
+
+		return &w, nil
+	}
+
+	c2 += c1
+
+	if c2 == len(line)-1 {
+		// Comma at the end of the line means the second word is zero-length
 		return nil, errBadWordList
 	}
 
-	slice := make([]string, len(irr))
-
-	for i := range slice {
-		if len(irr[i]) == 0 {
-			return nil, errBadWordList
-		}
-
-		slice[i] = string(irr[i])
-	}
-
-	w.irr = &slice
+	// Assign both irregular forms to a word
+	w.irr = &[]string{string(line[c1:c2]), string(line[c2+1:])}
 
 	return &w, nil
 }

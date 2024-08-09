@@ -20,7 +20,7 @@ func TestGenerator_Find(t *testing.T) {
 		{false, WordClass(255), "snowfall"}, // undefined WordClass
 	}
 
-	gen, err := NewGenerator([][]byte{[]byte("big 3")}, [][]byte{[]byte("nicely 0")}, [][]byte{[]byte("snowfall 0")}, [][]byte{[]byte("stash 0")}, DEFAULT_ITER_LIMIT)
+	gen, err := NewGenerator([][]byte{[]byte("3big")}, [][]byte{[]byte("0nicely")}, [][]byte{[]byte("0snowfall")}, [][]byte{[]byte("0stash")}, DEFAULT_ITER_LIMIT)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -48,7 +48,7 @@ Tests whether Generator.Noun correctly skips uncountable nouns in presence of MO
 and plural-only nouns in absence of plural modifier.
 */
 func TestGenerator_Noun(t *testing.T) {
-	gen, err := NewGenerator([][]byte{[]byte("big 3")}, [][]byte{[]byte("nicely 0")}, [][]byte{[]byte("binoculars 2")}, [][]byte{[]byte("stash 0")}, 10)
+	gen, err := NewGenerator([][]byte{[]byte("3big")}, [][]byte{[]byte("0nicely")}, [][]byte{[]byte("2binoculars")}, [][]byte{[]byte("0stash")}, 10)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -74,7 +74,7 @@ func TestGenerator_Noun(t *testing.T) {
 
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
 func TestGenerator_Phrase(t *testing.T) {
-	gen, err := NewGenerator([][]byte{[]byte("big 3")}, [][]byte{[]byte("nicely 0")}, [][]byte{[]byte("snowfall 0")}, [][]byte{[]byte("stash 0")}, DEFAULT_ITER_LIMIT)
+	gen, err := NewGenerator([][]byte{[]byte("3big")}, [][]byte{[]byte("0nicely")}, [][]byte{[]byte("0snowfall")}, [][]byte{[]byte("0stash")}, DEFAULT_ITER_LIMIT)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -206,7 +206,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 
 /* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
 func TestGenerator_generateModifier(t *testing.T) {
-	gen, err := NewGenerator([][]byte{[]byte("bottomless 4")}, [][]byte{[]byte("cryptographically 4")}, [][]byte{[]byte("snowfall 0")}, [][]byte{[]byte("stash 0")}, 10)
+	gen, err := NewGenerator([][]byte{[]byte("4bottomless")}, [][]byte{[]byte("4cryptographically")}, [][]byte{[]byte("0snowfall")}, [][]byte{[]byte("0stash")}, 10)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -245,7 +245,7 @@ func TestNewGenerator(t *testing.T) {
 	}
 
 	var (
-		good  = [][]byte{[]byte("word 0")}
+		good  = [][]byte{[]byte("0word")}
 		empty = [][]byte{}
 	)
 
