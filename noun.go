@@ -3,7 +3,7 @@ package neng
 import "strings"
 
 /* Returns plural form of a noun. */
-func plural(word *word) string {
+func plural(word *Word) string {
 	if word.t == WT_PLURAL_ONLY {
 		return word.word
 	}

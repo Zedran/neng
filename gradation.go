@@ -3,7 +3,7 @@ package neng
 import "strings"
 
 /* Returns comparative form of an adjective or an adverb (good -> better). */
-func comparative(word *word) string {
+func comparative(word *Word) string {
 	if word.t == WT_IRREGULAR {
 		return (*word.irr)[0]
 	}
@@ -37,7 +37,7 @@ func sufGrad(a, suf string) string {
 }
 
 /* Returns superlative form of an adjective or an adverb (good -> best). */
-func superlative(word *word) string {
+func superlative(word *Word) string {
 	if word.t == WT_IRREGULAR {
 		return (*word.irr)[1]
 	}

@@ -32,7 +32,7 @@ const (
 )
 
 /* Constitutes a single word list entry. */
-type word struct {
+type Word struct {
 	// A slice of irregular forms or nil
 	irr *[]string
 
@@ -44,7 +44,7 @@ type word struct {
 }
 
 /* Parses a single word list line into a new word struct. Returns an error if malformed line is encountered. */
-func NewWord(line []byte) (*word, error) {
+func NewWord(line []byte) (*Word, error) {
 	if len(line) < 2 {
 		// Line must contain at least two characters:
 		// - a single digit denoting a type
@@ -52,7 +52,7 @@ func NewWord(line []byte) (*word, error) {
 		return nil, errBadWordList
 	}
 
-	w := word{
+	w := Word{
 		// Read the wordType by subtracting ASCII zero from the first byte
 		t: WordType(line[0] - 48),
 	}

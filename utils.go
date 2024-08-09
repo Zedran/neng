@@ -98,8 +98,8 @@ func loadLines(path string) ([][]byte, error) {
 }
 
 /* Parses the loaded word list into a slice of word struct pointers. Relays error from NewWord (line formatting). */
-func parseLines(lines [][]byte) ([]*word, error) {
-	words := make([]*word, len(lines))
+func parseLines(lines [][]byte) ([]*Word, error) {
+	words := make([]*Word, len(lines))
 
 	for i, ln := range lines {
 		w, err := NewWord(ln)
@@ -114,6 +114,6 @@ func parseLines(lines [][]byte) ([]*word, error) {
 }
 
 /* Returns a random word from s. */
-func randItem(s []*word) *word {
+func randItem(s []*Word) *Word {
 	return s[rand.IntN(len(s))]
 }

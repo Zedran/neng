@@ -10,19 +10,19 @@ func TestNewWord(t *testing.T) {
 	type testCase struct {
 		good     bool
 		line     string
-		expected *word
+		expected *Word
 	}
 
 	cases := []testCase{
-		{true, "0word", &word{nil, 0, "word"}},                               // Regular
-		{true, "1word,f2", &word{&[]string{"f2"}, 1, "word"}},                // Irregular, one form
-		{true, "1word,f2,f3", &word{&[]string{"f2", "f3"}, 1, "word"}},       // Irregular, two forms
-		{true, "1word,f1a b,f2", &word{&[]string{"f1a b", "f2"}, 1, "word"}}, // Multi-word irregular
-		{true, "2word", &word{nil, 2, "word"}},                               // Plural-only
-		{true, "3word", &word{nil, 3, "word"}},                               // Suffixed
-		{true, "4word", &word{nil, 4, "word"}},                               // Uncomparable
-		{true, "5word", &word{nil, 5, "word"}},                               // Uncountable
-		{false, "6word", &word{nil, 5, "word"}},                              // Type value out of defined range for wordType
+		{true, "0word", &Word{nil, 0, "word"}},                               // Regular
+		{true, "1word,f2", &Word{&[]string{"f2"}, 1, "word"}},                // Irregular, one form
+		{true, "1word,f2,f3", &Word{&[]string{"f2", "f3"}, 1, "word"}},       // Irregular, two forms
+		{true, "1word,f1a b,f2", &Word{&[]string{"f1a b", "f2"}, 1, "word"}}, // Multi-word irregular
+		{true, "2word", &Word{nil, 2, "word"}},                               // Plural-only
+		{true, "3word", &Word{nil, 3, "word"}},                               // Suffixed
+		{true, "4word", &Word{nil, 4, "word"}},                               // Uncomparable
+		{true, "5word", &Word{nil, 5, "word"}},                               // Uncountable
+		{false, "6word", &Word{nil, 5, "word"}},                              // Type value out of defined range for wordType
 		{false, "", nil},                                                     // Error: empty line
 		{false, "0", nil},                                                    // Error: type field only, regular
 		{false, "1", nil},                                                    // Error: type field only, irregular

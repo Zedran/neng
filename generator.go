@@ -11,16 +11,16 @@ const DEFAULT_ITER_LIMIT int = 1000
 /* Generates random phrases or words. */
 type Generator struct {
 	// List of adjectives
-	adj []*word
+	adj []*Word
 
 	// List of adverbs
-	adv []*word
+	adv []*Word
 
 	// List of nouns
-	noun []*word
+	noun []*Word
 
 	// List of verbs
-	verb []*word
+	verb []*Word
 
 	// Case transformation handler
 	caser *caser
@@ -62,8 +62,8 @@ func (gen *Generator) Adverb(mods ...Mod) (string, error) {
 Searches the word list for the specified query. Returns an error if no word
 is found or if an unknown WordClass is passed to the function.
 */
-func (gen *Generator) Find(query string, wc WordClass) (*word, error) {
-	var list []*word
+func (gen *Generator) Find(query string, wc WordClass) (*Word, error) {
+	var list []*Word
 
 	switch wc {
 	case WC_ADJECTIVE:
@@ -240,7 +240,7 @@ Returns an error if:
 - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
 - transformation into plural form is requested for an uncountable noun
 */
-func (gen *Generator) TransformWord(word *word, wc WordClass, mods ...Mod) (string, error) {
+func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (string, error) {
 	if !wc.CompatibleWith(mods...) {
 		return "", errIncompatible
 	}
@@ -325,7 +325,7 @@ Returns an error if:
 - an incompatible Mod is received (relays from Generator.TransformWord)
 - Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
 */
-func (gen *Generator) generateModifier(items []*word, wc WordClass, mods ...Mod) (string, error) {
+func (gen *Generator) generateModifier(items []*Word, wc WordClass, mods ...Mod) (string, error) {
 	if !slices.Contains(mods, MOD_COMPARATIVE) && !slices.Contains(mods, MOD_SUPERLATIVE) {
 		return gen.TransformWord(randItem(items), wc, mods...)
 	}
