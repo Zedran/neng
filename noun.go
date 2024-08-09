@@ -4,11 +4,11 @@ import "strings"
 
 /* Returns plural form of a noun. */
 func plural(word *word) string {
-	if word.t == wt_plural_only {
+	if word.t == WT_PLURAL_ONLY {
 		return word.word
 	}
 
-	if word.t == wt_irregular {
+	if word.t == WT_IRREGULAR {
 		return (*word.irr)[0]
 	}
 

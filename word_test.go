@@ -45,7 +45,7 @@ func TestNewWord(t *testing.T) {
 				t.Errorf("Failed for case %v: expected word '%s', got '%s'", c, c.expected.word, out.word)
 			case out.t != c.expected.t:
 				t.Errorf("Failed for case %v: expected type '%d', got '%d'", c, c.expected.t, out.t)
-			case out.t == wt_irregular:
+			case out.t == WT_IRREGULAR:
 				if out.irr == nil || !slices.Equal(*out.irr, *c.expected.irr) {
 					t.Errorf("Failed for case %v: slices are not equal, expected %v, got %v", c, c.expected.irr, out.irr)
 				}

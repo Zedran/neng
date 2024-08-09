@@ -3,32 +3,32 @@ package neng
 import "bytes"
 
 // Indicates a specific transformation constraint of a word
-type wordType uint8
+type WordType uint8
 
 const (
 	// A regular word
 	// adj, adv - forms comparative and superlative by adding 'more' to it
 	// noun     - can be both singular and plural
 	// verb     - a regular verb
-	wt_regular wordType = iota
+	WT_REGULAR WordType = iota
 
 	// An irregular word, has its own special forms for:
 	// adj, adv - comparative, superlative
 	// noun     - plural
 	// verb     - Past Simple, Past Participle
-	wt_irregular
+	WT_IRREGULAR
 
 	// A plural-only noun (e.g. scissors)
-	wt_plural_only
+	WT_PLURAL_ONLY
 
 	// Adjective or adverb graded by appending '-er' and '-est' suffixes
-	wt_suffixed
+	WT_SUFFIXED
 
 	// Uncomparable adjective or adverb
-	wt_uncomparable
+	WT_UNCOMPARABLE
 
 	// Uncountable noun
-	wt_uncountable
+	WT_UNCOUNTABLE
 )
 
 /* Constitutes a single word list entry. */
@@ -37,7 +37,7 @@ type word struct {
 	irr *[]string
 
 	// Word type
-	t wordType
+	t WordType
 
 	// Word from the list
 	word string
@@ -54,17 +54,17 @@ func NewWord(line []byte) (*word, error) {
 
 	w := word{
 		// Read the wordType by subtracting ASCII zero from the first byte
-		t: wordType(line[0] - 48),
+		t: WordType(line[0] - 48),
 	}
 
-	if w.t < wt_regular || w.t > wt_uncountable {
+	if w.t < WT_REGULAR || w.t > WT_UNCOUNTABLE {
 		// Type must be within range of defined wordType values.
 		// Coincidentally, this expression returns an error
 		// if a comma begins the line.
 		return nil, errBadWordList
 	}
 
-	if w.t != wt_irregular {
+	if w.t != WT_IRREGULAR {
 		// Words other than irregular require no further processing
 		// Assign value to word field - from index 1 to the end of the line
 		w.word = string(line[1:])
