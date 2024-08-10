@@ -401,7 +401,7 @@ approximately 10,000 adjectives, of which 700 are non-comparable, and 24,000 nou
 with 1,700 being uncountable. Given these numbers, it is unlikely that the iterLimit
 will be reached.
 */
-func NewGenerator(adj, adv, noun, verb [][]byte, iterLimit int) (*Generator, error) {
+func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, error) {
 	if iterLimit <= 0 {
 		return nil, errBadIterLimit
 	}

@@ -1,7 +1,6 @@
 package neng
 
 import (
-	"bytes"
 	"math/rand/v2"
 	"strings"
 )
@@ -88,17 +87,17 @@ func getSequence(s string) string {
 }
 
 /* Loads a word list from the embedded path. Returns error if the file is not found. */
-func loadLines(path string) ([][]byte, error) {
+func loadLines(path string) ([]string, error) {
 	stream, err := efs.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	return bytes.Split(stream, []byte("\n")), nil
+	return strings.Split(string(stream), "\n"), nil
 }
 
 /* Parses the loaded word list into a slice of word struct pointers. Relays error from NewWord (line formatting). */
-func parseLines(lines [][]byte) ([]*Word, error) {
+func parseLines(lines []string) ([]*Word, error) {
 	words := make([]*Word, len(lines))
 
 	for i, ln := range lines {

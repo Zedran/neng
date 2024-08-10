@@ -1,6 +1,6 @@
 package neng
 
-import "bytes"
+import "strings"
 
 /* Constitutes a single word list entry. */
 type Word struct {
@@ -15,7 +15,7 @@ type Word struct {
 }
 
 /* Parses a single word list line into a new word struct. Returns an error if malformed line is encountered. */
-func NewWord(line []byte) (*Word, error) {
+func NewWord(line string) (*Word, error) {
 	if len(line) < 2 {
 		// Line must contain at least two characters:
 		// - a single digit denoting a type
@@ -38,12 +38,12 @@ func NewWord(line []byte) (*Word, error) {
 	if w.t != WT_IRREGULAR {
 		// Words other than irregular require no further processing
 		// Assign value to word field - from index 1 to the end of the line
-		w.word = string(line[1:])
+		w.word = line[1:]
 		return &w, nil
 	}
 
 	// Find the first comma
-	c1 := bytes.IndexByte(line, ',')
+	c1 := strings.IndexByte(line, ',')
 
 	if c1 <= 1 || c1 == len(line)-1 {
 		// -1 - No comma, there must be at least one in irregular word's line
@@ -55,19 +55,19 @@ func NewWord(line []byte) (*Word, error) {
 	}
 
 	// Assign value to word field - from index 1 to the first comma
-	w.word = string(line[1:c1])
+	w.word = line[1:c1]
 
 	c1++
 	// Find a second comma.
 	// Substring operation - counts from the first comma,
 	// not from the beginning of a line
-	c2 := bytes.IndexByte(line[c1:], ',')
+	c2 := strings.IndexByte(line[c1:], ',')
 
 	if c2 == -1 {
 		// If there is no second comma, the word has only one irregular form
 		// The condition above ensures it is not zero-length by this point
 		// (comma does not end the line)
-		w.irr = &[]string{string(line[c1:])}
+		w.irr = &[]string{line[c1:]}
 
 		return &w, nil
 	}
@@ -80,7 +80,7 @@ func NewWord(line []byte) (*Word, error) {
 	}
 
 	// Assign both irregular forms to a word
-	w.irr = &[]string{string(line[c1:c2]), string(line[c2+1:])}
+	w.irr = &[]string{line[c1:c2], line[c2+1:]}
 
 	return &w, nil
 }

@@ -35,7 +35,7 @@ func TestNewWord(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		out, err := NewWord([]byte(c.line))
+		out, err := NewWord(c.line)
 
 		if c.good {
 			switch true {

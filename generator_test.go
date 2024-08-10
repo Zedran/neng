@@ -19,8 +19,7 @@ func TestGenerator_Find(t *testing.T) {
 		{false, WC_NOUN, "big"},             // missing "noun", present in other lists
 		{false, WordClass(255), "snowfall"}, // undefined WordClass
 	}
-
-	gen, err := NewGenerator([][]byte{[]byte("3big")}, [][]byte{[]byte("0nicely")}, [][]byte{[]byte("0snowfall")}, [][]byte{[]byte("0stash")}, DEFAULT_ITER_LIMIT)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -48,7 +47,7 @@ Tests whether Generator.Noun correctly skips uncountable nouns in presence of MO
 and plural-only nouns in absence of plural modifier.
 */
 func TestGenerator_Noun(t *testing.T) {
-	gen, err := NewGenerator([][]byte{[]byte("3big")}, [][]byte{[]byte("0nicely")}, [][]byte{[]byte("2binoculars")}, [][]byte{[]byte("0stash")}, 10)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -74,7 +73,7 @@ func TestGenerator_Noun(t *testing.T) {
 
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
 func TestGenerator_Phrase(t *testing.T) {
-	gen, err := NewGenerator([][]byte{[]byte("3big")}, [][]byte{[]byte("0nicely")}, [][]byte{[]byte("0snowfall")}, [][]byte{[]byte("0stash")}, DEFAULT_ITER_LIMIT)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -206,7 +205,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 
 /* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
 func TestGenerator_generateModifier(t *testing.T) {
-	gen, err := NewGenerator([][]byte{[]byte("4bottomless")}, [][]byte{[]byte("4cryptographically")}, [][]byte{[]byte("0snowfall")}, [][]byte{[]byte("0stash")}, 10)
+	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -239,14 +238,14 @@ func TestGenerator_generateModifier(t *testing.T) {
 /* Tests NewGenerator function. Fails if providing an empty list, nil or an invalid iterLimit value does not trigger an error. */
 func TestNewGenerator(t *testing.T) {
 	type testCase struct {
-		adj, adv, noun, verb [][]byte
+		adj, adv, noun, verb []string
 		iterLimit            int
 		goodCase             bool
 	}
 
 	var (
-		good  = [][]byte{[]byte("0word")}
-		empty = [][]byte{}
+		good  = []string{"0word"}
+		empty = []string{}
 	)
 
 	cases := []testCase{
