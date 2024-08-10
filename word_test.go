@@ -16,6 +16,8 @@ func TestNewWord(t *testing.T) {
 	cases := []testCase{
 		{true, "0word", &Word{nil, 0, "word"}},                               // Regular
 		{true, "1word,f2", &Word{&[]string{"f2"}, 1, "word"}},                // Irregular, one form
+		{true, "1word,f", &Word{&[]string{"f"}, 1, "word"}},                  // One-letter irregular form
+		{true, "1word,f,f", &Word{&[]string{"f", "f"}, 1, "word"}},           // One-letter irregular forms
 		{true, "1word,f2,f3", &Word{&[]string{"f2", "f3"}, 1, "word"}},       // Irregular, two forms
 		{true, "1word,f1a b,f2", &Word{&[]string{"f1a b", "f2"}, 1, "word"}}, // Multi-word irregular
 		{true, "2word", &Word{nil, 2, "word"}},                               // Plural-only
