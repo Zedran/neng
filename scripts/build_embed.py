@@ -57,7 +57,7 @@ def build_noun():
         else:
             t = W_TYPE.REGULAR
 
-        embed.append(f"{int(t.value)}{n}{',' + irr[n] if t == W_TYPE.IRREGULAR else ''}")
+        embed.append(_build_line(t, n, irr))
 
     utils.write_file(f"{EMBED_DIR}/noun", False, embed)
 
@@ -70,9 +70,15 @@ def build_verb():
     embed = []
     for v in verb:
         t = W_TYPE.IRREGULAR if v in irr else W_TYPE.REGULAR
-        embed.append(f"{int(t.value)}{v}{',' + irr[v] if t == W_TYPE.IRREGULAR else ''}")
+        embed.append(_build_line(t, v, irr))
 
     utils.write_file(f"{EMBED_DIR}/verb", False, embed)
+
+
+def _build_line(t: W_TYPE, word: str, irr: [str]) -> str:
+    """A helper function that builds a single line of the embedded file."""
+
+    return f"{int(t.value)}{word}{',' + irr[word] if t == W_TYPE.IRREGULAR else ''}"
 
 
 def _build_modifier(words_fname: str):
@@ -96,7 +102,7 @@ def _build_modifier(words_fname: str):
         else:
             t = W_TYPE.REGULAR
 
-        embed.append(f"{int(t.value)}{w}{',' + irr[w] if t == W_TYPE.IRREGULAR else ''}")
+        embed.append(_build_line(t, w, irr))
 
     utils.write_file(f"{EMBED_DIR}/{words_fname}", False, embed)
 
