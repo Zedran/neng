@@ -112,7 +112,7 @@ func parseLines(lines []string) ([]*Word, error) {
 	return words, nil
 }
 
-/* Returns a random word from s. */
-func randItem(s []*Word) *Word {
-	return s[rand.IntN(len(s))]
+/* Returns a random index [0, length). Does not check for 0 - NewGenerator does not allow empty slices. */
+func randIndex(length int) int {
+	return rand.IntN(length)
 }

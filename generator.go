@@ -105,7 +105,7 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 	}
 
 	for range gen.iterLimit {
-		if n := randItem(gen.noun); n.t != excluded {
+		if n := gen.noun[randIndex(len(gen.noun))]; n.t != excluded {
 			return gen.TransformWord(n, WC_NOUN, mods...)
 		}
 	}
@@ -314,7 +314,7 @@ Generates a single random verb and transforms it according to mods.
 Returns an error if an undefined Mod is received.
 */
 func (gen *Generator) Verb(mods ...Mod) (string, error) {
-	return gen.TransformWord(randItem(gen.verb), WC_VERB, mods...)
+	return gen.TransformWord(gen.verb[randIndex(len(gen.verb))], WC_VERB, mods...)
 }
 
 /*
@@ -335,11 +335,11 @@ func (gen *Generator) generateModifier(wc WordClass, mods ...Mod) (string, error
 	}
 
 	if !slices.Contains(mods, MOD_COMPARATIVE) && !slices.Contains(mods, MOD_SUPERLATIVE) {
-		return gen.TransformWord(randItem(items), wc, mods...)
+		return gen.TransformWord(items[randIndex(len(items))], wc, mods...)
 	}
 
 	for range gen.iterLimit {
-		if a := randItem(items); a.t != WT_UNCOMPARABLE {
+		if a := items[randIndex(len(items))]; a.t != WT_UNCOMPARABLE {
 			return gen.TransformWord(a, wc, mods...)
 		}
 	}
