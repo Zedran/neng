@@ -126,7 +126,7 @@ func TestGenerator_Transform(t *testing.T) {
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
 	for _, c := range testCases {
@@ -165,7 +165,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
 	cases := []testCase{
