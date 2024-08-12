@@ -11,14 +11,15 @@ func TestGenerator_Find(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		{true, WC_ADJECTIVE, "big"},         // existing adjective
-		{true, WC_ADVERB, "nicely"},         // existing adverb
-		{true, WC_NOUN, "snowfall"},         // existing noun
-		{true, WC_VERB, "stash"},            // existing verb
-		{false, WC_NOUN, "box"},             // missing noun
-		{false, WC_NOUN, "big"},             // missing "noun", present in other lists
-		{false, WordClass(255), "snowfall"}, // undefined WordClass
+		{true, WC_ADJECTIVE, "big"},         // Rxisting adjective
+		{true, WC_ADVERB, "nicely"},         // Existing adverb
+		{true, WC_NOUN, "snowfall"},         // Existing noun
+		{true, WC_VERB, "stash"},            // Existing verb
+		{false, WC_NOUN, "box"},             // Missing noun
+		{false, WC_NOUN, "big"},             // Missing "noun", present in other lists
+		{false, WordClass(255), "snowfall"}, // Undefined WordClass
 	}
+
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
@@ -93,9 +94,9 @@ func TestGenerator_Phrase(t *testing.T) {
 	}
 
 	errCases := []string{
-		"",     // pattern is empty
-		"abc%", // escape character at pattern termination
-		"%q",   // unknown command
+		"",     // Pattern is empty
+		"abc%", // Escape character at pattern termination
+		"%q",   // Unknown command
 		"%cn",  // WordClass-Mod incompatibility
 	}
 
@@ -235,7 +236,7 @@ func TestGenerator_generateModifier(t *testing.T) {
 	}
 }
 
-/* Tests NewGenerator function. Fails if providing an empty list, nil or an invalid iterLimit value does not trigger an error. */
+/* Tests NewGenerator function. Fails if it does not return an error upon receiving an empty list, nil or invalid iterLimit value. */
 func TestNewGenerator(t *testing.T) {
 	type testCase struct {
 		adj, adv, noun, verb []string
@@ -249,7 +250,7 @@ func TestNewGenerator(t *testing.T) {
 	)
 
 	cases := []testCase{
-		{good, good, good, good, 1, true},               // Words present in every slice
+		{good, good, good, good, 1, true},               // Lines present in every slice
 		{good, good, nil, good, 1, false},               // nil pointer
 		{empty, good, good, good, 1, false},             // No adjectives
 		{good, empty, good, good, 1, false},             // No adverbs
