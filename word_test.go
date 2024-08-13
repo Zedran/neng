@@ -25,6 +25,9 @@ func TestNewWord(t *testing.T) {
 		{true, "4word", &Word{nil, 4, "word"}},                               // Uncomparable
 		{true, "5word", &Word{nil, 5, "word"}},                               // Uncountable
 		{false, "6word", &Word{nil, 5, "word"}},                              // Type value out of defined range for wordType
+		{false, "0word,f", nil},                                              // Error: Non-irregular with one irregular forms
+		{false, "0word,f,f", nil},                                            // Error: Non-irregular with two irregular forms
+		{false, "0word,", nil},                                               // Error: Non-irregular with comma at the end of the line
 		{false, "", nil},                                                     // Error: empty line
 		{false, "0", nil},                                                    // Error: type field only, regular
 		{false, "1", nil},                                                    // Error: type field only, irregular

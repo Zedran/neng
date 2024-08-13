@@ -35,15 +35,19 @@ func NewWord(line string) (*Word, error) {
 		return nil, errBadWordList
 	}
 
+	// Find the first comma
+	c1 := strings.IndexByte(line, ',')
+
 	if w.t != WT_IRREGULAR {
-		// Words other than irregular require no further processing
+		// Words other than irregular require no further processing,
+		// other than checking for the presence of irregular forms
+		if c1 != -1 {
+			return nil, errBadWordList
+		}
 		// Assign value to word field - from index 1 to the end of the line
 		w.word = line[1:]
 		return &w, nil
 	}
-
-	// Find the first comma
-	c1 := strings.IndexByte(line, ',')
 
 	if c1 <= 1 || c1 == len(line)-1 {
 		// -1 - No comma, there must be at least one in irregular word's line
