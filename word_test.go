@@ -37,6 +37,7 @@ func TestNewWord(t *testing.T) {
 		{false, "1word", nil},                                                // Error: irregular without forms field
 		{false, "1word,", nil},                                               // Error: one zero-length irregular form
 		{false, "1word,,", nil},                                              // Error: two zero-length irregular forms
+		{false, "1word,f2,f3,f4", nil},                                       // Error: too many irregular forms
 	}
 
 	for _, c := range cases {

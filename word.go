@@ -78,8 +78,9 @@ func NewWord(line string) (*Word, error) {
 
 	c2 += c1
 
-	if c2 == len(line)-1 {
+	if c2 == len(line)-1 || strings.IndexByte(line[c2+1:], ',') != -1 {
 		// Comma at the end of the line means the second word is zero-length
+		// or - more commas mean more irregular forms - two at most are allowed
 		return nil, errBadWordList
 	}
 
