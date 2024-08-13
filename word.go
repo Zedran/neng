@@ -39,9 +39,8 @@ func NewWord(line string) (*Word, error) {
 	c1 := strings.IndexByte(line, ',')
 
 	if w.t != WT_IRREGULAR {
-		// Words other than irregular require no further processing,
-		// other than checking for the presence of irregular forms
 		if c1 != -1 {
+			// Only irregular words can have irregular forms
 			return nil, errBadWordList
 		}
 		// Assign value to word field - from index 1 to the end of the line
