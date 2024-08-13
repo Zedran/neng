@@ -6,6 +6,8 @@ from the lists built by build_res.py.
 """
 
 import enum
+import os
+import sys
 import utils
 
 
@@ -119,6 +121,14 @@ def _load_irregular(fname: str) -> {}:
 
 
 if __name__ == "__main__":
+    try:
+        os.mkdir(EMBED_DIR)
+    except FileExistsError:
+        pass
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
     build_adj()
     build_adv()
     build_noun()
