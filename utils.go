@@ -1,6 +1,7 @@
 package neng
 
 import (
+	"fmt"
 	"math/rand/v2"
 	"strings"
 )
@@ -103,7 +104,7 @@ func parseLines(lines []string) ([]*Word, error) {
 	for i, ln := range lines {
 		w, err := NewWord(ln)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("%d '%s' - incorrect format", i, ln)
 		}
 
 		words[i] = w

@@ -1,6 +1,7 @@
 package neng
 
 import (
+	"fmt"
 	"slices"
 	"strings"
 )
@@ -429,22 +430,22 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 
 	gen.adj, err = parseLines(adj)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("adj:%w", err)
 	}
 
 	gen.adv, err = parseLines(adv)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("adv:%w", err)
 	}
 
 	gen.noun, err = parseLines(noun)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("noun:%w", err)
 	}
 
 	gen.verb, err = parseLines(verb)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("verb:%w", err)
 	}
 
 	return &gen, nil
