@@ -24,17 +24,17 @@ func TestNewWord(t *testing.T) {
 		{true, "3word", &Word{nil, 3, "word"}},                               // Suffixed
 		{true, "4word", &Word{nil, 4, "word"}},                               // Uncomparable
 		{true, "5word", &Word{nil, 5, "word"}},                               // Uncountable
-		{false, "6word", &Word{nil, 5, "word"}},                              // Type value out of defined range for wordType
+		{false, "6word", &Word{nil, 5, "word"}},                              // Error: Type value out of defined range for FormType
 		{false, "0word,f", nil},                                              // Error: Non-irregular with one irregular forms
 		{false, "0word,f,f", nil},                                            // Error: Non-irregular with two irregular forms
 		{false, "0word,", nil},                                               // Error: Non-irregular with comma at the end of the line
 		{false, "", nil},                                                     // Error: empty line
-		{false, "0", nil},                                                    // Error: type field only, regular
-		{false, "1", nil},                                                    // Error: type field only, irregular
-		{false, "word", nil},                                                 // Error: no type field at the beginning of the line
+		{false, "0", nil},                                                    // Error: FormType field only, regular
+		{false, "1", nil},                                                    // Error: FormType field only, irregular
+		{false, "word", nil},                                                 // Error: no FormType field at the beginning of the line
 		{false, "1,f1,f2", nil},                                              // Error: no word
-		{false, ",f1", nil},                                                  // Error: no type, no word, just an irregular form
-		{false, "1word", nil},                                                // Error: irregular without forms field
+		{false, ",f1", nil},                                                  // Error: no FormType, no word, just an irregular form
+		{false, "1word", nil},                                                // Error: irregular without irregular forms
 		{false, "1word,", nil},                                               // Error: one zero-length irregular form
 		{false, "1word,,", nil},                                              // Error: two zero-length irregular forms
 		{false, "1word,f2,f3,f4", nil},                                       // Error: too many irregular forms
