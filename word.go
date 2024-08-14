@@ -7,8 +7,8 @@ type Word struct {
 	// A slice of irregular forms or nil
 	irr *[]string
 
-	// Word type
-	t WordType
+	// Form type
+	ft FormType
 
 	// Word from the list
 	word string
@@ -24,11 +24,11 @@ func NewWord(line string) (*Word, error) {
 	}
 
 	w := Word{
-		// Read the wordType by subtracting ASCII zero from the first byte
-		t: WordType(line[0] - 48),
+		// Read the FormType by subtracting ASCII zero from the first byte
+		ft: FormType(line[0] - 48),
 	}
 
-	if w.t < WT_REGULAR || w.t > WT_UNCOUNTABLE {
+	if w.ft < FT_REGULAR || w.ft > FT_UNCOUNTABLE {
 		// Type must be within range of defined wordType values.
 		// Coincidentally, this expression returns an error
 		// if a comma begins the line.
@@ -38,7 +38,7 @@ func NewWord(line string) (*Word, error) {
 	// Find the first comma
 	c1 := strings.IndexByte(line, ',')
 
-	if w.t != WT_IRREGULAR {
+	if w.ft != FT_IRREGULAR {
 		if c1 != -1 {
 			// Only irregular words can have irregular forms
 			return nil, errBadWordList

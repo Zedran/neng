@@ -49,9 +49,9 @@ func TestNewWord(t *testing.T) {
 				t.Errorf("Failed for case %v: error returned: '%s'", c, err.Error())
 			case out.word != c.expected.word:
 				t.Errorf("Failed for case %v: expected word '%s', got '%s'", c, c.expected.word, out.word)
-			case out.t != c.expected.t:
-				t.Errorf("Failed for case %v: expected type '%d', got '%d'", c, c.expected.t, out.t)
-			case out.t == WT_IRREGULAR:
+			case out.ft != c.expected.ft:
+				t.Errorf("Failed for case %v: expected FormType '%d', got '%d'", c, c.expected.ft, out.ft)
+			case out.ft == FT_IRREGULAR:
 				if out.irr == nil || !slices.Equal(*out.irr, *c.expected.irr) {
 					t.Errorf("Failed for case %v: slices are not equal, expected %v, got %v", c, c.expected.irr, out.irr)
 				}

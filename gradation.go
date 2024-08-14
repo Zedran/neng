@@ -4,11 +4,11 @@ import "strings"
 
 /* Returns comparative form of an adjective or an adverb (good -> better). */
 func comparative(word *Word) string {
-	if word.t == WT_IRREGULAR {
+	if word.ft == FT_IRREGULAR {
 		return (*word.irr)[0]
 	}
 
-	if word.t == WT_SUFFIXED {
+	if word.ft == FT_SUFFIXED {
 		return sufGrad(word.word, "er")
 	}
 
@@ -38,11 +38,11 @@ func sufGrad(a, suf string) string {
 
 /* Returns superlative form of an adjective or an adverb (good -> best). */
 func superlative(word *Word) string {
-	if word.t == WT_IRREGULAR {
+	if word.ft == FT_IRREGULAR {
 		return (*word.irr)[1]
 	}
 
-	if word.t == WT_SUFFIXED {
+	if word.ft == FT_SUFFIXED {
 		return sufGrad(word.word, "est")
 	}
 

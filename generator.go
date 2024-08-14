@@ -97,16 +97,16 @@ Returns an error if:
 - iteration limit is reached while attempting to generate a countable noun
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
-	var excluded WordType
+	var excluded FormType
 
 	if slices.Contains(mods, MOD_PLURAL) {
-		excluded = WT_UNCOUNTABLE
+		excluded = FT_UNCOUNTABLE
 	} else {
-		excluded = WT_PLURAL_ONLY
+		excluded = FT_PLURAL_ONLY
 	}
 
 	for range gen.iterLimit {
-		if n := gen.noun[randIndex(len(gen.noun))]; n.t != excluded {
+		if n := gen.noun[randIndex(len(gen.noun))]; n.ft != excluded {
 			return gen.TransformWord(n, WC_NOUN, mods...)
 		}
 	}
@@ -248,11 +248,11 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (stri
 
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
-		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && word.t == WT_UNCOMPARABLE {
+		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && word.ft == FT_UNCOMPARABLE {
 			return "", errNonComparable
 		}
 	case WC_NOUN:
-		if slices.Contains(mods, MOD_PLURAL) && word.t == WT_UNCOUNTABLE {
+		if slices.Contains(mods, MOD_PLURAL) && word.ft == FT_UNCOUNTABLE {
 			return "", errUncountable
 		}
 	}
@@ -340,7 +340,7 @@ func (gen *Generator) generateModifier(wc WordClass, mods ...Mod) (string, error
 	}
 
 	for range gen.iterLimit {
-		if a := items[randIndex(len(items))]; a.t != WT_UNCOMPARABLE {
+		if a := items[randIndex(len(items))]; a.ft != FT_UNCOMPARABLE {
 			return gen.TransformWord(a, wc, mods...)
 		}
 	}
