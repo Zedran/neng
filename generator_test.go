@@ -277,3 +277,61 @@ func TestNewGenerator(t *testing.T) {
 		}
 	}
 }
+
+/* Tests NewGeneratorFromWord ensuring that the intended checks correctly trigger errors. */
+func TestNewGeneratorFromWord(t *testing.T) {
+	type testCase struct {
+		adj, adv, noun, verb []*Word
+		iterLimit            int
+		safe                 bool
+		goodCase             bool
+	}
+
+	w, err := NewWord("0word")
+	if err != nil {
+		t.Fatalf("Failed: NewWord returned an error: %s", err.Error())
+	}
+
+	badW := &Word{ft: 255, irr: &[]string{"too", "many", "forms"}, word: ""}
+
+	var (
+		good   = []*Word{w, w}
+		empty  = []*Word{}
+		hasNil = []*Word{w, nil}
+		hasBad = []*Word{w, badW}
+	)
+
+	cases := []testCase{
+		{good, good, good, good, 1, true, true},               // Lines present in every slice
+		{good, good, good, hasNil, 1, false, true},            // One of the slices contains nil, but safe is false
+		{good, empty, good, good, 1, false, true},             // One of the slices is empty, but safe is false
+		{good, hasBad, good, good, 1, true, true},             // One of the slices has an invalid element, safe is true
+		{good, hasBad, good, good, 1, false, true},            // One of the slices has an invalid element, safe is false
+		{good, good, nil, good, 1, true, false},               // Error: nil pointer
+		{empty, good, good, good, 1, true, false},             // Error: No adjectives
+		{good, empty, good, good, 1, true, false},             // Error: No adverbs
+		{good, good, empty, good, 1, true, false},             // Error: No nouns
+		{good, good, good, empty, 1, true, false},             // Error: No verbs
+		{empty, empty, empty, empty, 1, true, false},          // Error: Empty slices only
+		{nil, nil, nil, nil, DEFAULT_ITER_LIMIT, true, false}, // Error: nil pointers only
+		{good, good, good, good, 0, true, false},              // Error: iterLimit == 0
+		{good, good, good, good, -5, true, false},             // Error: Negative iterLimit
+		{good, good, good, good, -5, false, false},            // Error: Negative iterLimit, safe is false
+		{good, good, good, hasNil, 1, true, false},            // Error: One of the slices contains nil
+	}
+
+	for i, c := range cases {
+		_, err := NewGeneratorFromWord(c.adj, c.adv, c.noun, c.verb, c.iterLimit, c.safe)
+
+		switch c.goodCase {
+		case true:
+			if err != nil {
+				t.Errorf("Failed for case %d: NewGenerator returned an error: %v", i, err)
+			}
+		default:
+			if err == nil {
+				t.Errorf("Failed for case '%d': NewGenerator did not return an error.", i)
+			}
+		}
+	}
+}

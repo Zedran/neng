@@ -450,3 +450,40 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 
 	return &gen, nil
 }
+
+/*
+Returns Generator created using the provided lists of Word structs and iterLimit. Returns an error
+if any of the lists is empty or contains a nil pointer. It is assumed that Word structs are created
+using one of the safe constructors, therefore their validity is not verified.
+If safe is false, this function skips word list checks.
+*/
+func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool) (*Generator, error) {
+	if iterLimit <= 0 {
+		return nil, errBadIterLimit
+	}
+
+	if safe {
+		for _, wordList := range [][]*Word{adj, adv, noun, verb} {
+			if len(wordList) == 0 {
+				return nil, errEmptyLists
+			}
+
+			for _, w := range wordList {
+				if w == nil {
+					return nil, errBadWordList
+				}
+			}
+		}
+	}
+
+	gen := Generator{
+		adj:       adj,
+		adv:       adv,
+		noun:      noun,
+		verb:      verb,
+		caser:     newCaser(),
+		iterLimit: iterLimit,
+	}
+
+	return &gen, nil
+}
