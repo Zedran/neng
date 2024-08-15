@@ -14,6 +14,11 @@ type Word struct {
 	word string
 }
 
+/* Returns the unmodified word. */
+func (w *Word) Word() string {
+	return w.word
+}
+
 /* Parses a single word list line into a new word struct. Returns an error if malformed line is encountered. */
 func NewWord(line string) (*Word, error) {
 	if len(line) < 2 {
