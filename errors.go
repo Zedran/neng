@@ -15,6 +15,9 @@ var (
 	// Error returned by Generator.Phrase, if pattern is empty
 	errEmptyPattern error = errors.New("provided pattern is empty")
 
+	// Error returned from NewWordFromParams, if word parameter is an empty string
+	errEmptyWord error = errors.New("provided word is an empty string")
+
 	// Error returned by Generator.Phrase, if pattern ends with '%'
 	errEscapedStrTerm error = errors.New("escape character at pattern termination")
 
@@ -24,14 +27,23 @@ var (
 	// Error returned by Generator.Adjective or Generator.Adverb if iteration limit is reached while searching for comparable word
 	errIterLimit error = errors.New("iteration limit reached while trying to draw a valid comparative adjective or adverb")
 
+	// Error returned from NewWordFromParams, if ft == FT_IRREGULAR and irr has incorrect length or any of its elements is an empty string
+	errMalformedIrr error = errors.New("irregular forms slice is empty, too long, or contains an empty string")
+
 	// Error returned by Generator.Transform, if non-comparable adjective or adverb is received along with gradation modifier
 	errNonComparable error = errors.New("gradation requested, but the provided word is non-comparable")
+
+	// Error returned if non-nil slice is passed as irr parameter to NewWordsFromPar, but FormType != FT_IRREGULAR
+	errNonIrregular error = errors.New("attempt to assign irregular forms, but Word is not irregular")
 
 	// Returned by Generator.Find if the specified word is not found
 	errNotFound error = errors.New("query not found")
 
 	// Error returned by Generator.Transform, if uncountable noun is received along with pluralization modifier
 	errUncountable error = errors.New("pluralization requested, but the provided word is uncountable")
+
+	// Error returned from NewWordFromParams, if undefined FormType is passed as ft parameter
+	errUndefinedFormType error = errors.New("undefined FormType")
 
 	// Error returned by Generator.Transform, if undefined modifier value is received, e.g. Mod(123)
 	errUndefinedMod error = errors.New("undefined modifier")

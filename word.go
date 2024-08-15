@@ -88,3 +88,40 @@ func NewWord(line string) (*Word, error) {
 
 	return &w, nil
 }
+
+/*
+Returns Word struct built from the specified parameters, or error, if the following conditions are not met:
+  - word must be at least 1 character long
+  - ft must be in range of the defined values
+  - for irregular words, the length of irr must be 1 or 2 and the elements cannot be empty strings
+  - for non-irregular words, irr must be empty
+*/
+func NewWordFromParams(word string, ft FormType, irr []string) (*Word, error) {
+	if len(word) == 0 {
+		return nil, errEmptyWord
+	}
+
+	if ft < FT_REGULAR || ft > FT_UNCOUNTABLE {
+		return nil, errUndefinedFormType
+	}
+
+	var pIrr *[]string
+
+	if ft == FT_IRREGULAR {
+		if len(irr) != 1 && len(irr) != 2 {
+			return nil, errMalformedIrr
+		}
+
+		for _, e := range irr {
+			if len(e) == 0 {
+				return nil, errMalformedIrr
+			}
+		}
+
+		pIrr = &irr
+	} else if len(irr) > 0 {
+		return nil, errNonIrregular
+	}
+
+	return &Word{irr: pIrr, ft: ft, word: word}, nil
+}

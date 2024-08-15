@@ -63,3 +63,57 @@ func TestNewWord(t *testing.T) {
 		}
 	}
 }
+
+/* Tests whether NewWordFromParams enforces the designed limitations. */
+func TestNewWordFromParams(t *testing.T) {
+	type testCase struct {
+		good     bool
+		word     string
+		ft       FormType
+		irr      []string
+		expected *Word
+	}
+
+	w := "word"
+
+	cases := []testCase{
+		{true, w, FT_REGULAR, nil, &Word{nil, FT_REGULAR, w}},                                                     // Regular
+		{true, w, FT_IRREGULAR, []string{"f1"}, &Word{&[]string{"f1"}, FT_IRREGULAR, w}},                          // Irregular, one form
+		{true, w, FT_IRREGULAR, []string{"f1", "f2"}, &Word{&[]string{"f1", "f2"}, FT_IRREGULAR, w}},              // Irregular, two forms
+		{true, w, FT_PLURAL_ONLY, nil, &Word{nil, FT_PLURAL_ONLY, w}},                                             // Plural-only
+		{true, w, FT_SUFFIXED, nil, &Word{nil, FT_SUFFIXED, w}},                                                   // Suffixed
+		{true, w, FT_UNCOMPARABLE, nil, &Word{nil, FT_UNCOMPARABLE, w}},                                           // Uncomparable
+		{true, w, FT_UNCOUNTABLE, nil, &Word{nil, FT_UNCOUNTABLE, w}},                                             // Uncountable
+		{false, w, FT_IRREGULAR, []string{"f1", "f2", "f3"}, &Word{&[]string{"f1", "f2", "f3"}, FT_IRREGULAR, w}}, // Error: too many forms
+		{false, w, FT_SUFFIXED, []string{"f1"}, &Word{nil, FT_SUFFIXED, w}},                                       // Error: irregular forms for non-irregular
+		{false, w, FT_IRREGULAR, []string{}, nil},                                                                 // Error: empty slice for irregular
+		{false, w, FT_IRREGULAR, nil, nil},                                                                        // Error: nil slice for irregular
+	}
+
+	for i, c := range cases {
+		out, err := NewWordFromParams(c.word, c.ft, c.irr)
+
+		if c.good {
+			switch true {
+			case err != nil:
+				t.Errorf("Failed for case %d: error returned: '%s'", i, err.Error())
+			case out.word != c.expected.word:
+				t.Errorf("Failed for case %d: expected word '%s', got '%s'", i, c.expected.word, out.word)
+			case out.ft != c.expected.ft:
+				t.Errorf("Failed for case %d: expected FormType '%d', got '%d'", i, c.expected.ft, out.ft)
+			case out.ft == FT_IRREGULAR:
+				if out.irr == nil || !slices.Equal(*out.irr, *c.expected.irr) {
+					t.Errorf("Failed for case %d: slices are not equal, expected %v, got %v", i, c.expected.irr, out.irr)
+				}
+			case out.ft != FT_IRREGULAR:
+				if out.irr != nil {
+					t.Errorf("Failed for case %d: irregular slice assigned to non-irregular", i)
+				}
+			}
+		} else {
+			if err == nil {
+				t.Errorf("Failed for case %d: no error returned, got %v", i, out)
+			}
+		}
+	}
+}
