@@ -4,11 +4,11 @@ import "strings"
 
 /* Constitutes a single word list entry. */
 type Word struct {
-	// A slice of irregular forms or nil
-	irr *[]string
-
 	// Form type
 	ft FormType
+
+	// A slice of irregular forms or nil
+	irr *[]string
 
 	// Word from the list
 	word string
@@ -128,5 +128,5 @@ func NewWordFromParams(word string, ft FormType, irr []string) (*Word, error) {
 		return nil, errNonIrregular
 	}
 
-	return &Word{irr: pIrr, ft: ft, word: word}, nil
+	return &Word{ft: ft, irr: pIrr, word: word}, nil
 }
