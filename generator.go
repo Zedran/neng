@@ -39,9 +39,9 @@ type Generator struct {
 Generates a single random adjective and transforms it according to mods.
 
 Returns an error if:
-- an undefined Mod is received (relays from Generator.Transform)
-- an incompatible Mod is received (relays from Generator.Transform)
-- iteration limit is reached while attempting to generate a comparable adjective
+  - an undefined Mod is received (relays from Generator.Transform)
+  - an incompatible Mod is received (relays from Generator.Transform)
+  - iteration limit is reached while attempting to generate a comparable adjective
 */
 func (gen *Generator) Adjective(mods ...Mod) (string, error) {
 	return gen.generateModifier(WC_ADJECTIVE, mods...)
@@ -51,9 +51,9 @@ func (gen *Generator) Adjective(mods ...Mod) (string, error) {
 Generates a single random adverb and transforms it according to mods.
 
 Returns an error if:
-- an undefined Mod is received (relays from Generator.Transform)
-- an incompatible Mod is received (relays from Generator.Transform)
-- iteration limit is reached while attempting to generate a comparable adverb
+  - an undefined Mod is received (relays from Generator.Transform)
+  - an incompatible Mod is received (relays from Generator.Transform)
+  - iteration limit is reached while attempting to generate a comparable adverb
 */
 func (gen *Generator) Adverb(mods ...Mod) (string, error) {
 	return gen.generateModifier(WC_ADVERB, mods...)
@@ -92,9 +92,9 @@ func (gen *Generator) Find(query string, wc WordClass) (*Word, error) {
 Generates a single random noun and transforms it according to mods.
 
 Returns an error if:
-- an undefined Mod is received (relays from Generator.Transform)
-- an incompatible Mod is received (relays from Generator.Transform)
-- iteration limit is reached while attempting to generate a countable noun
+  - an undefined Mod is received (relays from Generator.Transform)
+  - an incompatible Mod is received (relays from Generator.Transform)
+  - iteration limit is reached while attempting to generate a countable noun
 */
 func (gen *Generator) Noun(mods ...Mod) (string, error) {
 	var excluded FormType
@@ -204,19 +204,19 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 Searches for the specified word and, if found, calls Generator.TransformWord to transform it.
 
 Assumes the following about the 'word' argument:
-- Word is lower case (irrelevant if case transformation is requested)
-- Adjectives and adverbs are in their positive forms
-- Nouns are in their singular forms
-- Verbs are in their infinitive forms
+  - Word is lower case (irrelevant if case transformation is requested)
+  - Adjectives and adverbs are in their positive forms
+  - Nouns are in their singular forms
+  - Verbs are in their infinitive forms
 
 Returns an error if:
-- word of the WordClass wc does not exist in the database
-- specified WordClass value of the word is unknown
+  - word of the WordClass wc does not exist in the database
+  - specified WordClass value of the word is unknown
 
-Relays an error from Generator.Transform if:
-- WordClass of the word is not compatible with any Mod in mods
-- transformation into comparative or superlative form is requested for non-comparable adjective or adverb
-- transformation into plural form is requested for an uncountable noun
+Relays an error from Generator.TransformWord if:
+  - WordClass of the word is not compatible with any Mod in mods
+  - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
+  - transformation into plural form is requested for an uncountable noun
 */
 func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string, error) {
 	w, err := gen.Find(word, wc)
@@ -231,15 +231,15 @@ func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string,
 Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
 
 Assumes the following about the 'word' field of the 'word' argument:
-- Word is lower case (irrelevant if case transformation is requested)
-- Adjectives and adverbs are in their positive forms
-- Nouns are in their singular forms
-- Verbs are in their infinitive forms
+  - Word is lower case (irrelevant if case transformation is requested)
+  - Adjectives and adverbs are in their positive forms
+  - Nouns are in their singular forms
+  - Verbs are in their infinitive forms
 
 Returns an error if:
-- WordClass of the word is not compatible with any Mod in mods
-- transformation into comparative or superlative form is requested for non-comparable adjective or adverb
-- transformation into plural form is requested for an uncountable noun
+  - WordClass of the word is not compatible with any Mod in mods
+  - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
+  - transformation into plural form is requested for an uncountable noun
 */
 func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (string, error) {
 	if !wc.CompatibleWith(mods...) {
@@ -322,9 +322,9 @@ func (gen *Generator) Verb(mods ...Mod) (string, error) {
 A common method used to generate adjectives (noun modifiers) and adverbs (verb modifiers).
 
 Returns an error if:
-- an undefined Mod is received (relays from Generator.TransformWord)
-- an incompatible Mod is received (relays from Generator.TransformWord)
-- Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
+  - an undefined Mod is received (relays from Generator.TransformWord)
+  - an incompatible Mod is received (relays from Generator.TransformWord)
+  - Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
 */
 func (gen *Generator) generateModifier(wc WordClass, mods ...Mod) (string, error) {
 	var items []*Word
@@ -400,15 +400,15 @@ or if any of the elements is incorrectly formatted.
 
 Line structure:
 
-<FormType><word>[,irr1][,irr2]
+	<FormType><word>[,irr1][,irr2]
 
-FormType         : a single digit
-Word             : the word itself, at least one character long
+Base:
+  - FormType         - a single digit
+  - Word             - the word itself, at least one character long
 
 If FormType == FT_IRREGULAR:
-
-Irregular form 1 : separated from the word by a comma
-Irregular form 2 : separated from the first irregular form by a comma
+  - Irregular form 1 - separated from the word by a comma
+  - Irregular form 2 - separated from the first irregular form by a comma
 
 Like the word, irregular forms must be at least one character long.
 

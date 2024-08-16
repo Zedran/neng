@@ -23,8 +23,8 @@ func (w *Word) Word() string {
 func NewWord(line string) (*Word, error) {
 	if len(line) < 2 {
 		// Line must contain at least two characters:
-		// - a single digit denoting a type
-		// - a word at least one character in length
+		//   - a single digit denoting a type
+		//   - a word at least one character in length
 		return nil, errBadWordList
 	}
 
