@@ -395,7 +395,22 @@ func DefaultGenerator() (*Generator, error) {
 }
 
 /*
-Initializes a new Generator with provided lists. Returns an error if any of the lists is empty.
+Initializes a new Generator with provided lists. Returns an error if any of the lists is empty
+or if any of the elements is incorrectly formatted.
+
+Line structure:
+
+<FormType><word>[,irr1][,irr2]
+
+FormType         : a single digit
+Word             : the word itself, at least one character long
+
+If FormType == FT_IRREGULAR:
+
+Irregular form 1 : separated from the word by a comma
+Irregular form 2 : separated from the first irregular form by a comma
+
+Like the word, irregular forms must be at least one character long.
 
 iterLimit is a safeguard for Generator.Adjective, Generator.Adverb and Generator.Noun methods.
 In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, those methods generate a word
