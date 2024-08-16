@@ -24,7 +24,7 @@ func TestNewWord(t *testing.T) {
 		{true, "3word", &Word{3, nil, "word"}},                               // Suffixed
 		{true, "4word", &Word{4, nil, "word"}},                               // Uncomparable
 		{true, "5word", &Word{5, nil, "word"}},                               // Uncountable
-		{false, "6word", &Word{5, nil, "word"}},                              // Error: Type value out of defined range for FormType
+		{false, "6word", nil},                                                // Error: Type value out of defined range for FormType
 		{false, "0word,f", nil},                                              // Error: Non-irregular with one irregular forms
 		{false, "0word,f,f", nil},                                            // Error: Non-irregular with two irregular forms
 		{false, "0word,", nil},                                               // Error: Non-irregular with comma at the end of the line
