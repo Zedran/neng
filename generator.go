@@ -79,10 +79,12 @@ func (gen *Generator) Find(query string, wc WordClass) (*Word, error) {
 		return nil, errUndefinedWordClass
 	}
 
-	for _, w := range list {
-		if w.word == query {
-			return w, nil
-		}
+	n, found := slices.BinarySearchFunc(list, query, func(listItem *Word, query string) int {
+		return strings.Compare((*listItem).word, query)
+	})
+
+	if found {
+		return list[n], nil
 	}
 
 	return nil, errNotFound
