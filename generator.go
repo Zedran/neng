@@ -412,7 +412,8 @@ If FormType == FT_IRREGULAR:
   - Irregular form 1 - separated from the word by a comma
   - Irregular form 2 - separated from the first irregular form by a comma
 
-Like the word, irregular forms must be at least one character long.
+Like the word, irregular forms must be at least one character long. All words must be lower case.
+Every slice must be sorted A-Z by word.
 
 iterLimit is a safeguard for Generator.Adjective, Generator.Adverb and Generator.Noun methods.
 In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, those methods generate a word
@@ -470,9 +471,10 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, err
 
 /*
 Returns Generator created using the provided lists of Word structs and iterLimit. Returns an error
-if any of the lists is empty or contains a nil pointer. It is assumed that Word structs are created
-using one of the safe constructors, therefore their validity is not verified.
-If safe is false, this function skips word list checks.
+if any of the lists is empty or contains a nil pointer. If safe is false, empty / nil checks are omitted.
+It is assumed that Word structs are created using one of the safe constructors, therefore their validity
+is not verified. Those constructors do not check word case though - all words should be lower case.
+Every slice must be sorted A-Z by Word.word field.
 */
 func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool) (*Generator, error) {
 	if iterLimit <= 0 {
