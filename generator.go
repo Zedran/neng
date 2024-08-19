@@ -487,10 +487,8 @@ func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool
 				return nil, errEmptyLists
 			}
 
-			for _, w := range wordList {
-				if w == nil {
-					return nil, errBadWordList
-				}
+			if slices.Contains(wordList, nil) {
+				return nil, errBadWordList
 			}
 
 			if !slices.IsSortedFunc(wordList, cmpWord) {
