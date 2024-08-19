@@ -474,7 +474,7 @@ Returns Generator created using the provided lists of Word structs and iterLimit
 if any of the lists is empty or contains a nil pointer. If safe is false, empty / nil checks are omitted.
 It is assumed that Word structs are created using one of the safe constructors, therefore their validity
 is not verified. Those constructors do not check word case though - all words should be lower case.
-Every slice must be sorted A-Z by Word.word field.
+Every slice must be sorted A-Z by Word.word field. If safe is true, the function ensures the correct order.
 */
 func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool) (*Generator, error) {
 	if iterLimit <= 0 {
@@ -491,6 +491,10 @@ func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool
 				if w == nil {
 					return nil, errBadWordList
 				}
+			}
+
+			if !slices.IsSortedFunc(wordList, cmpWord) {
+				slices.SortFunc(wordList, cmpWord)
 			}
 		}
 	}

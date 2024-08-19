@@ -1,6 +1,9 @@
 package neng
 
-import "testing"
+import (
+	"slices"
+	"testing"
+)
 
 /* Tests whether Generator.Find correctly returns found words or errors upon failure. */
 func TestGenerator_Find(t *testing.T) {
@@ -292,13 +295,19 @@ func TestNewGeneratorFromWord(t *testing.T) {
 		t.Fatalf("Failed: NewWord returned an error: %s", err.Error())
 	}
 
-	badW := &Word{ft: 255, irr: &[]string{"too", "many", "forms"}, word: ""}
+	w2, err := NewWord("4a")
+	if err != nil {
+		t.Fatalf("Failed: NewWord returned an error: %s", err.Error())
+	}
+
+	badW := &Word{ft: 255, irr: &[]string{"too", "many", "forms"}, word: "z"}
 
 	var (
 		good   = []*Word{w, w}
 		empty  = []*Word{}
 		hasNil = []*Word{w, nil}
 		hasBad = []*Word{w, badW}
+		unsort = []*Word{w, w2}
 	)
 
 	cases := []testCase{
@@ -307,6 +316,8 @@ func TestNewGeneratorFromWord(t *testing.T) {
 		{good, empty, good, good, 1, false, true},             // One of the slices is empty, but safe is false
 		{good, hasBad, good, good, 1, true, true},             // One of the slices has an invalid element, safe is true
 		{good, hasBad, good, good, 1, false, true},            // One of the slices has an invalid element, safe is false
+		{unsort, good, good, good, 1, true, true},             // Contains unsorted slice, safe is true
+		{unsort, good, good, good, 1, false, true},            // Contains unsorted slice, but safe is false
 		{good, good, nil, good, 1, true, false},               // Error: nil pointer
 		{empty, good, good, good, 1, true, false},             // Error: No adjectives
 		{good, empty, good, good, 1, true, false},             // Error: No adverbs
@@ -328,6 +339,19 @@ func TestNewGeneratorFromWord(t *testing.T) {
 			if err != nil {
 				t.Errorf("Failed for case %d: NewGenerator returned an error: %v", i, err)
 			}
+
+			if c.safe {
+				for _, wl := range [][]*Word{c.adj, c.adv, c.noun, c.verb} {
+					if len(wl) == 0 {
+						t.Errorf("Failed for case %d: NewGenerator allowed empty list", i)
+					}
+
+					if !slices.IsSortedFunc(wl, cmpWord) {
+						t.Errorf("Failed for case %d: NewGenerator did not sort the list (safe == %v)", i, c.safe)
+					}
+				}
+			}
+
 		default:
 			if err == nil {
 				t.Errorf("Failed for case '%d': NewGenerator did not return an error.", i)

@@ -6,6 +6,11 @@ import (
 	"strings"
 )
 
+/* Comparison function for slices.IsSortedFunc and slices.SortFunc calls, Word version. */
+func cmpWord(a, b *Word) int {
+	return strings.Compare(a.word, b.word)
+}
+
 /*
 Returns number of syllables in s given consonant-vowel sequence seq.
 Accuracy of this function is uncertain, especially for borrowed words (cafe).
