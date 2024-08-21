@@ -88,6 +88,10 @@ func TestNewWordFromParams(t *testing.T) {
 		{false, w, FT_SUFFIXED, []string{"f1"}, &Word{FT_SUFFIXED, nil, w}},                                       // Error: irregular forms for non-irregular
 		{false, w, FT_IRREGULAR, []string{}, nil},                                                                 // Error: empty slice for irregular
 		{false, w, FT_IRREGULAR, nil, nil},                                                                        // Error: nil slice for irregular
+		{false, "", FT_REGULAR, nil, nil},                                                                         // Error: empty word
+		{false, w, 255, nil, nil},                                                                                 // Error: undefined FormType
+		{false, w, FT_IRREGULAR, []string{""}, nil},                                                               // Error: first irregular form empty
+		{false, w, FT_IRREGULAR, []string{w, ""}, nil},                                                            // Error: second irregular form empty
 	}
 
 	for i, c := range cases {
