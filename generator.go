@@ -6,7 +6,20 @@ import (
 	"strings"
 )
 
-// Iteration limit used by the default Generator
+// Iteration limit used by DefaultGenerator function. This value can be used as iterLimit parameter
+// in non-default Generator constructors.
+//
+// Iteration limit a safeguard for Generator.Adjective, Generator.Adverb and Generator.Noun methods.
+// In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, those methods generate a word
+// candidate until they find a comparable / countable one or until iteration limit is reached.
+//
+// iterLimit value should be set with regards to the size of your word base
+// and the number of non-comparable adjectives, adverbs and uncountable nouns in it.
+//
+// For example, to meet the default iterLimit of 1,000, the Generator would need to draw
+// a non-comparable or uncountable word 1,000 times in a row. The embedded database contains
+// approximately 10,000 adjectives, of which 2,700 are non-comparable, and 23,000 nouns,
+// with 3,000 being uncountable. Given these numbers, it is unlikely that the iterLimit is reached.
 const DEFAULT_ITER_LIMIT int = 1000
 
 /* Generates random phrases or words. */
@@ -425,18 +438,8 @@ Regardless of safe value:
   - malformed lines trigger an error
   - letter case is not checked
 
-iterLimit is a safeguard for Generator.Adjective, Generator.Adverb and Generator.Noun methods.
-In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, those methods generate a word
-candidate until they find a comparable / countable one or until iteration limit is reached.
-
-iterLimit value should be set with regards to the size of your word base
-and the number of non-comparable adjectives, adverbs and uncountable nouns in it.
-
-For example, to meet the default iterLimit of 1000, the Generator would need to draw
-a non-comparable or uncountable word 1,000 times in a row. The embedded database contains
-approximately 10,000 adjectives, of which 700 are non-comparable, and 24,000 nouns,
-with 1,700 being uncountable. Given these numbers, it is unlikely that the iterLimit
-will be reached.
+iterLimit is an adjustable safety mechanism to prevent inifinite loops during certain transformations.
+For more information, refer to DEFAULT_ITER_LIMIT in the section 'Constants'.
 */
 func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool) (*Generator, error) {
 	wAdj, err := parseLines(adj)
@@ -468,6 +471,8 @@ if any of the lists is empty or contains a nil pointer. If safe is false, empty 
 It is assumed that Word structs are created using one of the safe constructors, therefore their validity
 is not verified. Those constructors do not check word case though - all words should be lower case.
 Every slice must be sorted A-Z by Word.word field. If safe is true, the function ensures the correct order.
+iterLimit is an adjustable safety mechanism to prevent inifinite loops during certain transformations.
+For more information, refer to DEFAULT_ITER_LIMIT in the section 'Constants'.
 */
 func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool) (*Generator, error) {
 	if iterLimit <= 0 {
