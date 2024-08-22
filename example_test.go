@@ -104,6 +104,7 @@ func ExampleNewGenerator() {
 		[]string{"0moon"},      // Nouns
 		[]string{"0exist"},     // Verbs
 		2,                      // iterLimit
+		false,                  // No need for sorting and length checks in this case
 	)
 
 	adj, _ := gen.Adjective()

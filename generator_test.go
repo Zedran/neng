@@ -23,7 +23,7 @@ func TestGenerator_Find(t *testing.T) {
 		{false, WordClass(255), "snowfall"}, // Undefined WordClass
 	}
 
-	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -51,7 +51,7 @@ Tests whether Generator.Noun correctly skips uncountable nouns in presence of MO
 and plural-only nouns in absence of plural modifier.
 */
 func TestGenerator_Noun(t *testing.T) {
-	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10, false)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -77,7 +77,7 @@ func TestGenerator_Noun(t *testing.T) {
 
 /* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
 func TestGenerator_Phrase(t *testing.T) {
-	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -209,7 +209,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 
 /* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
 func TestGenerator_generateModifier(t *testing.T) {
-	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10)
+	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10, false)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
@@ -239,34 +239,49 @@ func TestGenerator_generateModifier(t *testing.T) {
 	}
 }
 
-/* Tests NewGenerator function. Fails if it does not return an error upon receiving an empty list, nil or invalid iterLimit value. */
+/*
+Tests NewGenerator function. Fails if it does not return an error upon receiving an empty list, nil or invalid iterLimit value.
+Malformed or empty slice elements trigger an error as well. Takes safe value into account during testing. Slice order is not
+checked - NewGenerator calls NewGeneratorFromWord which handles sorting.
+*/
 func TestNewGenerator(t *testing.T) {
 	type testCase struct {
 		adj, adv, noun, verb []string
 		iterLimit            int
+		safe                 bool
 		goodCase             bool
 	}
 
 	var (
-		good  = []string{"0word"}
-		empty = []string{}
+		empty  = []string{}
+		good   = []string{"0word"}
+		has0   = []string{"0word", ""}
+		hasBad = []string{"1word"}
 	)
 
 	cases := []testCase{
-		{good, good, good, good, 1, true},               // Lines present in every slice
-		{good, good, nil, good, 1, false},               // nil pointer
-		{empty, good, good, good, 1, false},             // No adjectives
-		{good, empty, good, good, 1, false},             // No adverbs
-		{good, good, empty, good, 1, false},             // No nouns
-		{good, good, good, empty, 1, false},             // No verbs
-		{empty, empty, empty, empty, 1, false},          // Empty slices only
-		{nil, nil, nil, nil, DEFAULT_ITER_LIMIT, false}, // nil pointers only
-		{good, good, good, good, 0, false},              // iterLimit == 0
-		{good, good, good, good, -5, false},             // Negative iterLimit
+		{good, good, good, good, 1, true, true},               // Lines present in every slice
+		{empty, good, good, good, 1, false, true},             // Empty list, safe false
+		{good, good, nil, good, 1, false, true},               // nil pointer, safe false
+		{good, good, nil, good, 1, true, false},               // Error: nil pointer, safe true
+		{good, has0, good, good, 1, true, false},              // Error: contains zero-length element, safe true
+		{good, has0, good, good, 1, false, false},             // Error: contains zero-length element, safe false
+		{empty, good, good, good, 1, true, false},             // Error: no adjectives
+		{good, empty, good, good, 1, true, false},             // Error: no adverbs
+		{good, good, empty, good, 1, true, false},             // Error: no nouns
+		{good, good, good, empty, 1, true, false},             // Error: no verbs
+		{empty, empty, empty, empty, 1, true, false},          // Error: empty slices only
+		{nil, nil, nil, nil, DEFAULT_ITER_LIMIT, true, false}, // Error: nil pointers only
+		{good, good, good, good, 0, true, false},              // Error: iterLimit == 0
+		{good, good, good, good, -5, true, false},             // Error: negative iterLimit
+		{hasBad, good, good, good, 1, true, false},            // Error: malformed adjective
+		{good, hasBad, good, good, 1, true, false},            // Error: malformed adverb
+		{good, good, hasBad, good, 1, true, false},            // Error: malformed noun
+		{good, good, good, hasBad, 1, true, false},            // Error: malformed verb
 	}
 
 	for _, c := range cases {
-		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, c.iterLimit)
+		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, c.iterLimit, c.safe)
 
 		switch c.goodCase {
 		case true:

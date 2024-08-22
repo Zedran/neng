@@ -393,7 +393,7 @@ func DefaultGenerator() (*Generator, error) {
 		return nil, err
 	}
 
-	return NewGenerator(a, m, n, v, DEFAULT_ITER_LIMIT)
+	return NewGenerator(a, m, n, v, DEFAULT_ITER_LIMIT, false)
 }
 
 /*
@@ -415,6 +415,16 @@ If FormType == FT_IRREGULAR:
 Like the word, irregular forms must be at least one character long. All words must be lower case.
 Every slice must be sorted A-Z by word.
 
+The safe parameter allows users to bypass word list checks.
+
+If safe is false:
+  - empty or nil slices do not trigger an error
+  - slices are not sorted
+
+Regardless of safe value:
+  - malformed lines trigger an error
+  - letter case is not checked
+
 iterLimit is a safeguard for Generator.Adjective, Generator.Adverb and Generator.Noun methods.
 In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE or MOD_PLURAL, those methods generate a word
 candidate until they find a comparable / countable one or until iteration limit is reached.
@@ -428,45 +438,28 @@ approximately 10,000 adjectives, of which 700 are non-comparable, and 24,000 nou
 with 1,700 being uncountable. Given these numbers, it is unlikely that the iterLimit
 will be reached.
 */
-func NewGenerator(adj, adv, noun, verb []string, iterLimit int) (*Generator, error) {
-	if iterLimit <= 0 {
-		return nil, errBadIterLimit
-	}
-
-	if len(adj) == 0 || len(adv) == 0 || len(noun) == 0 || len(verb) == 0 {
-		return nil, errEmptyLists
-	}
-
-	var (
-		err error
-
-		gen = Generator{
-			caser:     newCaser(),
-			iterLimit: iterLimit,
-		}
-	)
-
-	gen.adj, err = parseLines(adj)
+func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool) (*Generator, error) {
+	wAdj, err := parseLines(adj)
 	if err != nil {
 		return nil, fmt.Errorf("adj:%w", err)
 	}
 
-	gen.adv, err = parseLines(adv)
+	wAdv, err := parseLines(adv)
 	if err != nil {
 		return nil, fmt.Errorf("adv:%w", err)
 	}
 
-	gen.noun, err = parseLines(noun)
+	wNoun, err := parseLines(noun)
 	if err != nil {
 		return nil, fmt.Errorf("noun:%w", err)
 	}
 
-	gen.verb, err = parseLines(verb)
+	wVerb, err := parseLines(verb)
 	if err != nil {
 		return nil, fmt.Errorf("verb:%w", err)
 	}
 
-	return &gen, nil
+	return NewGeneratorFromWord(wAdj, wAdv, wNoun, wVerb, iterLimit, safe)
 }
 
 /*
