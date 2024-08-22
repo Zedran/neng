@@ -123,6 +123,25 @@ func ExampleNewGenerator() {
 	// Uncomparable: iteration limit reached while trying to draw a valid comparative adjective or adverb
 }
 
+func ExampleNewGeneratorFromWord() {
+	a, _ := neng.NewWord("0inclined")
+	m, _ := neng.NewWord("0slowly")
+	n, _ := neng.NewWordFromParams("hometown", 0, nil)
+	v, _ := neng.NewWordFromParams("make", 1, []string{"made", "made"})
+
+	adj := []*neng.Word{a}
+	adv := []*neng.Word{m}
+	noun := []*neng.Word{n}
+	verb := []*neng.Word{v}
+
+	gen, _ := neng.NewGeneratorFromWord(adj, adv, noun, verb, neng.DEFAULT_ITER_LIMIT, true)
+
+	phrase, _ := gen.Phrase("%tm, the %a %n was %2v.")
+	fmt.Println(phrase)
+	// Output:
+	// Slowly, the inclined hometown was made.
+}
+
 func ExampleNewWord() {
 	w, _ := neng.NewWord("1write,wrote,written")
 
