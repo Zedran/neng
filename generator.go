@@ -219,7 +219,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 Searches for the specified word and, if found, calls Generator.TransformWord to transform it.
 
 Assumes the following about the 'word' argument:
-  - Word is lower case (irrelevant if case transformation is requested)
+  - Word is lower case
   - Adjectives and adverbs are in their positive forms
   - Nouns are in their singular forms
   - Verbs are in their infinitive forms
