@@ -182,14 +182,12 @@ func TestGenerator_TransformWord(t *testing.T) {
 		{"Noun in adj.ncmp + MOD_SUPERLATIVE", "arctic", []Mod{MOD_PLURAL}, WC_NOUN, true},
 		{"Verb in adj.ncmp + MOD_PLURAL", "present", []Mod{MOD_PRESENT_SIMPLE, MOD_PLURAL}, WC_VERB, true},
 		{"Adj in noun.unc + MOD_SUPERLATIVE", "cool", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, true},
-		{"Adv in noun.unc + MOD_SUPERLATIVE", "cool", []Mod{MOD_SUPERLATIVE}, WC_ADVERB, true},
 	}
 
 	for _, c := range cases {
 		word, err := gen.Find(c.word, c.wc)
 		if err != nil {
-			t.Logf("Test case '%s' does not exist in the word database. Skipping.", c.word)
-			continue
+			t.Fatalf("'%s' (WordClass %d) does not exist in the word database.", c.word, c.wc)
 		}
 
 		out, err := gen.TransformWord(word, c.wc, c.mods...)
