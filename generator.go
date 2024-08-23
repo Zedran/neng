@@ -263,11 +263,11 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (stri
 
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
-		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && word.ft == FT_NON_COMPARABLE {
+		if word.ft == FT_NON_COMPARABLE && (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) {
 			return "", errNonComparable
 		}
 	case WC_NOUN:
-		if slices.Contains(mods, MOD_PLURAL) && word.ft == FT_UNCOUNTABLE {
+		if word.ft == FT_UNCOUNTABLE && slices.Contains(mods, MOD_PLURAL) {
 			return "", errUncountable
 		}
 	}
