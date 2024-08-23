@@ -263,7 +263,7 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (stri
 
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
-		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && word.ft == FT_UNCOMPARABLE {
+		if (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) && word.ft == FT_NON_COMPARABLE {
 			return "", errNonComparable
 		}
 	case WC_NOUN:
@@ -355,7 +355,7 @@ func (gen *Generator) generateModifier(wc WordClass, mods ...Mod) (string, error
 	}
 
 	for range gen.iterLimit {
-		if a := items[randIndex(len(items))]; a.ft != FT_UNCOMPARABLE {
+		if a := items[randIndex(len(items))]; a.ft != FT_NON_COMPARABLE {
 			return gen.TransformWord(a, wc, mods...)
 		}
 	}

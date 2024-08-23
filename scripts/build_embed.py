@@ -14,12 +14,12 @@ import utils
 class W_TYPE(enum.Enum):
     """Corresponds to neng.WordType type."""
 
-    REGULAR      = 0
-    IRREGULAR    = 1
-    PLURAL_ONLY  = 2
-    SUFFIXED     = 3
-    UNCOMPARABLE = 4
-    UNCOUNTABLE  = 5
+    REGULAR        = 0
+    IRREGULAR      = 1
+    PLURAL_ONLY    = 2
+    SUFFIXED       = 3
+    NON_COMPARABLE = 4
+    UNCOUNTABLE    = 5
 
 
 EMBED_DIR      = "embed"
@@ -98,7 +98,7 @@ def _build_modifier(words_fname: str):
         if w in irr:
             t = W_TYPE.IRREGULAR
         elif w in ncmp:
-            t = W_TYPE.UNCOMPARABLE
+            t = W_TYPE.NON_COMPARABLE
         elif w in suf:
             t = W_TYPE.SUFFIXED
         else:

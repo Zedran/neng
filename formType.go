@@ -22,11 +22,11 @@ const (
 	// Adjective or adverb graded by appending '-er' and '-est' suffixes.
 	FT_SUFFIXED
 
-	// Uncomparable adjective or adverb, does not get picked
+	// Non-comparable adjective or adverb, does not get picked
 	// if MOD_COMPARATIVE or MOD_SUPERLATIVE is requested.
-	// An attempt to grade uncomparable word results
+	// An attempt to grade non-comparable word results
 	// in an error.
-	FT_UNCOMPARABLE
+	FT_NON_COMPARABLE
 
 	// Uncountable noun, does not get picked if MOD_PLURAL was requested.
 	// An attempt to pluralize uncountable noun results in an error.

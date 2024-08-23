@@ -113,14 +113,14 @@ func ExampleNewGenerator() {
 	verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 
 	// Without iterLimit, this call to Adverb would cause an infinite loop,
-	// because the only adverb present in the database is uncomparable.
+	// because the only adverb present in the database is non-comparable.
 	_, err := gen.Adverb(neng.MOD_SUPERLATIVE)
 
 	fmt.Printf("%s %s %s once %s.\n", adv, adj, noun, verb)
-	fmt.Printf("Uncomparable: %v", err)
+	fmt.Printf("Non-comparable: %v", err)
 	// Output:
 	// Optically strong moons once existed.
-	// Uncomparable: iteration limit reached while trying to draw a valid comparative adjective or adverb
+	// Non-comparable: iteration limit reached while trying to draw a valid comparative adjective or adverb
 }
 
 func ExampleNewGeneratorFromWord() {
@@ -163,13 +163,13 @@ func ExampleNewWordFromParams() {
 	// Adjective that forms comparative and superlative by adding '-er' and '-est'
 	sa, _ := neng.NewWordFromParams("strong", neng.FT_SUFFIXED, nil)
 
-	// Uncomparable adjective
-	ua, _ := neng.NewWordFromParams("tenth", neng.FT_UNCOMPARABLE, nil)
+	// Non-comparable adjective
+	na, _ := neng.NewWordFromParams("tenth", neng.FT_NON_COMPARABLE, nil)
 
 	// Uncountable noun
 	un, _ := neng.NewWordFromParams("magnesium", neng.FT_UNCOUNTABLE, nil)
 
-	for _, w := range []*neng.Word{rv, iv, pn, sa, ua, un} {
+	for _, w := range []*neng.Word{rv, iv, pn, sa, na, un} {
 		fmt.Println(w.Word())
 	}
 	// Output:

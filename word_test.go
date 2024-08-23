@@ -22,7 +22,7 @@ func TestNewWord(t *testing.T) {
 		{true, "1word,f1a b,f2", &Word{1, &[]string{"f1a b", "f2"}, "word"}}, // Multi-word irregular
 		{true, "2word", &Word{2, nil, "word"}},                               // Plural-only
 		{true, "3word", &Word{3, nil, "word"}},                               // Suffixed
-		{true, "4word", &Word{4, nil, "word"}},                               // Uncomparable
+		{true, "4word", &Word{4, nil, "word"}},                               // Non-comparable
 		{true, "5word", &Word{5, nil, "word"}},                               // Uncountable
 		{false, "6word", nil},                                                // Error: Type value out of defined range for FormType
 		{false, "0word,f", nil},                                              // Error: Non-irregular with one irregular forms
@@ -82,7 +82,7 @@ func TestNewWordFromParams(t *testing.T) {
 		{true, w, FT_IRREGULAR, []string{"f1", "f2"}, &Word{FT_IRREGULAR, &[]string{"f1", "f2"}, w}},              // Irregular, two forms
 		{true, w, FT_PLURAL_ONLY, nil, &Word{FT_PLURAL_ONLY, nil, w}},                                             // Plural-only
 		{true, w, FT_SUFFIXED, nil, &Word{FT_SUFFIXED, nil, w}},                                                   // Suffixed
-		{true, w, FT_UNCOMPARABLE, nil, &Word{FT_UNCOMPARABLE, nil, w}},                                           // Uncomparable
+		{true, w, FT_NON_COMPARABLE, nil, &Word{FT_NON_COMPARABLE, nil, w}},                                       // Non-comparable
 		{true, w, FT_UNCOUNTABLE, nil, &Word{FT_UNCOUNTABLE, nil, w}},                                             // Uncountable
 		{false, w, FT_IRREGULAR, []string{"f1", "f2", "f3"}, &Word{FT_IRREGULAR, &[]string{"f1", "f2", "f3"}, w}}, // Error: too many forms
 		{false, w, FT_SUFFIXED, []string{"f1"}, &Word{FT_SUFFIXED, nil, w}},                                       // Error: irregular forms for non-irregular
