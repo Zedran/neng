@@ -73,10 +73,16 @@ func (gen *Generator) Adverb(mods ...Mod) (string, error) {
 }
 
 /*
-Searches the word list for the specified query. Returns an error if no word
+Searches the word list for the specified word. Returns an error if no word
 is found or if an unknown WordClass is passed to the function.
+
+Assumes the following about the 'word' argument:
+  - Word is lower case
+  - Adjectives and adverbs are in their positive forms
+  - Nouns are in their singular forms
+  - Verbs are in their base forms
 */
-func (gen *Generator) Find(query string, wc WordClass) (*Word, error) {
+func (gen *Generator) Find(word string, wc WordClass) (*Word, error) {
 	var list []*Word
 
 	switch wc {
@@ -92,8 +98,8 @@ func (gen *Generator) Find(query string, wc WordClass) (*Word, error) {
 		return nil, errUndefinedWordClass
 	}
 
-	n, found := slices.BinarySearchFunc(list, query, func(listItem *Word, query string) int {
-		return strings.Compare((*listItem).word, query)
+	n, found := slices.BinarySearchFunc(list, word, func(listItem *Word, word string) int {
+		return strings.Compare((*listItem).word, word)
 	})
 
 	if found {
