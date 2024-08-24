@@ -36,8 +36,12 @@ func TestPastParticiple(t *testing.T) {
 	for input, expected := range cases {
 		word, err := gen.Find(input, WC_VERB)
 		if err != nil {
-			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
-			continue
+			t.Logf("Test case '%s' does not exist in the word database. Assume it is regular and proceed.", input)
+
+			word, err = NewWordFromParams(input, 0, nil)
+			if err != nil {
+				t.Errorf("Failed for '%s' - error from NewWordFromParams: %v", input, err)
+			}
 		}
 
 		output := pastParticiple(word)
@@ -82,8 +86,12 @@ func TestPastSimple(t *testing.T) {
 	for _, c := range cases {
 		word, err := gen.Find(c.Input, WC_VERB)
 		if err != nil {
-			t.Logf("Test case '%s' does not exist in the word database. Skipping.", c.Input)
-			continue
+			t.Logf("Test case '%s' does not exist in the word database. Assume it is regular and proceed.", c.Input)
+
+			word, err = NewWordFromParams(c.Input, 0, nil)
+			if err != nil {
+				t.Errorf("Failed for '%s' - error from NewWordFromParams: %v", c.Input, err)
+			}
 		}
 
 		output := pastSimple(word, c.Plural)
