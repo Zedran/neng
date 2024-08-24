@@ -147,11 +147,11 @@ Syntax:
 		%N - transforms a verb into its Present Simple form (now)
 		%c - transforms an adjective or an adverb into comparative (better)
 		%g - transforms a verb into gerund
-		%p - transform a noun or a verb (Present Simple) into its plural form
+		%p - transforms a noun or a verb (Present Simple) into its plural form
 		%s - transforms an adjective or an adverb into superlative (best)
-		%l - transform a word to lower case
-		%t - transform a word to Title Case
-		%u - transform a word to UPPER CASE
+		%l - transforms a word to lower case
+		%t - transforms a word to Title Case
+		%u - transforms a word to UPPER CASE
 
 Error is returned if:
   - provided pattern is empty
