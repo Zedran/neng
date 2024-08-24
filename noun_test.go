@@ -17,8 +17,12 @@ func TestPlural(t *testing.T) {
 	for input, expected := range cases {
 		word, err := gen.Find(input, WC_NOUN)
 		if err != nil {
-			t.Logf("Test case '%s' does not exist in the word database. Skipping.", input)
-			continue
+			t.Logf("Test case '%s' does not exist in the word database. Assume it is regular and proceed.", input)
+
+			word, err = NewWordFromParams(input, 0, nil)
+			if err != nil {
+				t.Errorf("Failed for '%s' - error from NewWordFromParams: %v", input, err)
+			}
 		}
 
 		output := plural(word)
