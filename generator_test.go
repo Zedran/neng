@@ -14,7 +14,7 @@ func TestGenerator_Find(t *testing.T) {
 	}
 
 	testCases := []testCase{
-		{true, WC_ADJECTIVE, "big"},         // Rxisting adjective
+		{true, WC_ADJECTIVE, "big"},         // Existing adjective
 		{true, WC_ADVERB, "nicely"},         // Existing adverb
 		{true, WC_NOUN, "snowfall"},         // Existing noun
 		{true, WC_VERB, "stash"},            // Existing verb
