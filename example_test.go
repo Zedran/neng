@@ -120,7 +120,7 @@ func ExampleNewGenerator() {
 	fmt.Printf("Non-comparable: %v", err)
 	// Output:
 	// Optically strong moons once existed.
-	// Non-comparable: iteration limit reached while trying to draw a valid comparative adjective or adverb
+	// Non-comparable: iteration limit reached while trying to draw a comparable or countable word
 }
 
 func ExampleNewGeneratorFromWord() {
