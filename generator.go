@@ -222,7 +222,7 @@ Assumes the following about the 'word' argument:
   - Word is lower case
   - Adjectives and adverbs are in their positive forms
   - Nouns are in their singular forms
-  - Verbs are in their infinitive forms
+  - Verbs are in their base forms
 
 Returns an error if:
   - word of the WordClass wc does not exist in the database
@@ -249,7 +249,7 @@ Assumes the following about the 'word' field of the 'word' argument:
   - Word is lower case (irrelevant if case transformation is requested)
   - Adjectives and adverbs are in their positive forms
   - Nouns are in their singular forms
-  - Verbs are in their infinitive forms
+  - Verbs are in their base forms
 
 Returns an error if:
   - WordClass of the word is not compatible with any Mod in mods

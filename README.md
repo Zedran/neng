@@ -75,7 +75,7 @@ Transformations can only be applied to compatible parts of speech. It is possibl
 * Words are lower case (irrelevant if case transformation is requested)
 * Adjectives and adverbs are in their positive forms
 * Nouns are in their singular forms
-* Verbs are in their infinitive forms
+* Verbs are in their base forms
 
 | Symbol | Compatible with       | Package constant      | Description                |
 |:------:|:---------------------:|:----------------------|:---------------------------|

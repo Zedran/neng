@@ -35,13 +35,13 @@ func ExampleGenerator_Find() {
 
 	verb, _ := gen.Find("go", neng.WC_VERB)
 
-	inf := verb.Word()
+	base := verb.Word()
 	ger, _ := gen.TransformWord(verb, neng.WC_VERB, neng.MOD_GERUND)
 	pas, _ := gen.TransformWord(verb, neng.WC_VERB, neng.MOD_PAST_SIMPLE)
 	pap, _ := gen.TransformWord(verb, neng.WC_VERB, neng.MOD_PAST_PARTICIPLE)
 	prs, _ := gen.TransformWord(verb, neng.WC_VERB, neng.MOD_PRESENT_SIMPLE)
 
-	fmt.Printf("%s:\ng: %s\n2: %s\n3: %s\nN: %s\n", inf, ger, pas, pap, prs)
+	fmt.Printf("%s:\ng: %s\n2: %s\n3: %s\nN: %s\n", base, ger, pas, pap, prs)
 	// Output:
 	// go:
 	// g: going
