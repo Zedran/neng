@@ -1,10 +1,11 @@
-{
-    "good":     "best",
-    "hard":     "hardest",
-    "shy":      "most shy",
-    "sly":      "most sly",
-    "squat":    "squattest",
-    "valuable": "most valuable",
-    "well":     "best",
-    "wry":      "wryest"
-}
+[
+    {"input": "concisely", "word_class": 1, "expected": "most concisely"},
+    {"input": "good",      "word_class": 0, "expected": "best"          },
+    {"input": "hard",      "word_class": 0, "expected": "hardest"       },
+    {"input": "shy",       "word_class": 0, "expected": "most shy"      },
+    {"input": "sly",       "word_class": 0, "expected": "most sly"      },
+    {"input": "squat",     "word_class": 0, "expected": "squattest"     },
+    {"input": "valuable",  "word_class": 0, "expected": "most valuable" },
+    {"input": "well",      "word_class": 1, "expected": "best"          },
+    {"input": "wry",       "word_class": 0, "expected": "wryest"        }
+]
