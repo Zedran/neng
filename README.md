@@ -5,7 +5,7 @@
 
 ## Introduction
 
-neng is a Golang package that can generate random English phrases from nouns, verbs, adverbs and adjectives according to user-specified pattern. It is powered by diverse collection of 42000 words compiled from [WordNet Lexical Database](https://wordnet.princeton.edu). Inspired by Terraria's world name generator, neng is designed to be simple yet versatile name making tool for other projects.
+neng is a Golang package that can generate random English phrases from nouns, verbs, adverbs and adjectives according to user-specified pattern. It is powered by diverse collection of 41000 words compiled from [WordNet Lexical Database](https://wordnet.princeton.edu). Inspired by Terraria's world name generator, neng is designed to be simple yet versatile name making tool for other projects.
 
 Unsuitable for cryptographic applications.
 
@@ -54,6 +54,8 @@ Word   -> Stashing
 
 ## Phrase pattern commands
 
+neng's phrase generation syntax resembles C-style string format specifiers. The user provides a pattern consisting of commands, preceded by the escape character, to insert (and optionally transform) randomly generated words. A regular text can be mixed with command syntax.
+
 **Escape character**: `%`
 
 ### Insertion
@@ -65,6 +67,8 @@ Word   -> Stashing
 | `m`    | `WC_ADVERB`    | Inserts a random adverb    |
 | `n`    | `WC_NOUN`      | Inserts a random noun      |
 | `v`    | `WC_VERB`      | Inserts a random verb      |
+
+`WordClass` values are required by some of the Generator's methods to recognize parts of speech.
 
 ### Transformation
 
@@ -98,7 +102,7 @@ Symbols are used to specify transformation parameters for words within a phrase.
 
 Generator's default vocabulary consists of:
 
-* 24000 nouns
+* 23000 nouns
 * 10000 adjectives
 * 6000 verbs
 * 2000 adverbs
