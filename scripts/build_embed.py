@@ -11,8 +11,8 @@ import sys
 import utils
 
 
-class W_TYPE(enum.Enum):
-    """Corresponds to neng.WordType type."""
+class FORM_TYPE(enum.Enum):
+    """Corresponds to neng.FormType."""
 
     REGULAR        = 0
     IRREGULAR      = 1
@@ -48,16 +48,16 @@ def build_noun():
 
     embed = []
     for n in noun:
-        t: W_TYPE
+        t: FORM_TYPE
 
         if n in irr:
-            t = W_TYPE.IRREGULAR
+            t = FORM_TYPE.IRREGULAR
         elif n in plo:
-            t = W_TYPE.PLURAL_ONLY
+            t = FORM_TYPE.PLURAL_ONLY
         elif n in unc:
-            t = W_TYPE.UNCOUNTABLE
+            t = FORM_TYPE.UNCOUNTABLE
         else:
-            t = W_TYPE.REGULAR
+            t = FORM_TYPE.REGULAR
 
         embed.append(_build_line(t, n, irr))
 
@@ -71,16 +71,16 @@ def build_verb():
 
     embed = []
     for v in verb:
-        t = W_TYPE.IRREGULAR if v in irr else W_TYPE.REGULAR
+        t = FORM_TYPE.IRREGULAR if v in irr else FORM_TYPE.REGULAR
         embed.append(_build_line(t, v, irr))
 
     utils.write_file(f"{EMBED_DIR}/verb", False, embed)
 
 
-def _build_line(t: W_TYPE, word: str, irr: [str]) -> str:
+def _build_line(t: FORM_TYPE, word: str, irr: [str]) -> str:
     """A helper function that builds a single line of the embedded file."""
 
-    return f"{int(t.value)}{word}{',' + irr[word] if t == W_TYPE.IRREGULAR else ''}"
+    return f"{int(t.value)}{word}{',' + irr[word] if t == FORM_TYPE.IRREGULAR else ''}"
 
 
 def _build_modifier(words_fname: str):
@@ -93,16 +93,16 @@ def _build_modifier(words_fname: str):
 
     embed = []
     for w in words:
-        t: W_TYPE
+        t: FORM_TYPE
 
         if w in irr:
-            t = W_TYPE.IRREGULAR
+            t = FORM_TYPE.IRREGULAR
         elif w in ncmp:
-            t = W_TYPE.NON_COMPARABLE
+            t = FORM_TYPE.NON_COMPARABLE
         elif w in suf:
-            t = W_TYPE.SUFFIXED
+            t = FORM_TYPE.SUFFIXED
         else:
-            t = W_TYPE.REGULAR
+            t = FORM_TYPE.REGULAR
 
         embed.append(_build_line(t, w, irr))
 
