@@ -5,6 +5,23 @@ import (
 	"testing"
 )
 
+/*
+Ensures that call to DefaultGenerator does not return an error
+and tests whether word lists of the resulting instance are sorted.
+*/
+func TestDefaultGenerator(t *testing.T) {
+	gen, err := DefaultGenerator()
+	if err != nil {
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+	}
+
+	for i, wl := range [][]*Word{gen.adj, gen.adv, gen.noun, gen.verb} {
+		if !slices.IsSortedFunc(wl, cmpWord) {
+			t.Fatalf("Failed for list %d - not sorted", i)
+		}
+	}
+}
+
 /* Tests whether Generator.Find correctly returns found words or errors upon failure. */
 func TestGenerator_Find(t *testing.T) {
 	type testCase struct {
