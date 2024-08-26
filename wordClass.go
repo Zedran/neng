@@ -2,8 +2,7 @@ package neng
 
 import "slices"
 
-// WordClass type helps Generator.Transform differentiate
-// parts of speech and process them accordingly.
+// WordClass type helps the Generator to differentiate parts of speech.
 type WordClass uint8
 
 const (

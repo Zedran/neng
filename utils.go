@@ -1,9 +1,15 @@
 package neng
 
 import (
+	"fmt"
 	"math/rand/v2"
 	"strings"
 )
+
+/* Comparison function for slices.IsSortedFunc and slices.SortFunc calls, Word version. */
+func cmpWord(a, b *Word) int {
+	return strings.Compare(a.word, b.word)
+}
 
 /*
 Returns number of syllables in s given consonant-vowel sequence seq.
@@ -65,17 +71,6 @@ func endsWithAny(s string, suf []string) bool {
 	return false
 }
 
-/* For irregular words, returns slice with word forms from wordsIrr. For regular words, returns nil. */
-func findIrregular(word string, wordsIrr [][]string) []string {
-	for _, iw := range wordsIrr {
-		if iw[0] == word {
-			return iw
-		}
-	}
-
-	return nil
-}
-
 /* Returns a representation of vowel-consonant sequence in s ('word' == 'cvcc'). */
 func getSequence(s string) string {
 	var (
@@ -97,27 +92,8 @@ func getSequence(s string) string {
 	return seq.String()
 }
 
-/*
-Calls loadWords to read lines from efs, splits those lines into slices of word forms
-and returns [lines][forms]string.
-*/
-func loadIrregularWords(path string) ([][]string, error) {
-	lines, err := loadWords(path)
-	if err != nil {
-		return nil, err
-	}
-
-	wordsIrr := make([][]string, len(lines))
-
-	for i, ln := range lines {
-		wordsIrr[i] = strings.Split(ln, ",")
-	}
-
-	return wordsIrr, nil
-}
-
-/* Loads a word list from path. Returns error if the file is not found. */
-func loadWords(path string) ([]string, error) {
+/* Loads a word list from the embedded path. Returns error if the file is not found. */
+func loadLines(path string) ([]string, error) {
 	stream, err := efs.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -126,7 +102,23 @@ func loadWords(path string) ([]string, error) {
 	return strings.Split(string(stream), "\n"), nil
 }
 
-/* Returns a random item from s. */
-func randItem(s []string) string {
-	return s[rand.IntN(len(s))]
+/* Parses the loaded word list into a slice of word struct pointers. Relays error from NewWord (line formatting). */
+func parseLines(lines []string) ([]*Word, error) {
+	words := make([]*Word, len(lines))
+
+	for i, ln := range lines {
+		w, err := NewWord(ln)
+		if err != nil {
+			return nil, fmt.Errorf("%d '%s' - incorrect format", i, ln)
+		}
+
+		words[i] = w
+	}
+
+	return words, nil
+}
+
+/* Returns a random index [0, length). Does not check for 0 - NewGenerator does not allow empty slices. */
+func randIndex(length int) int {
+	return rand.IntN(length)
 }

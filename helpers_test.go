@@ -46,6 +46,16 @@ func loadTest2DSliceString(fname string) ([][]string, error) {
 	return cases, nil
 }
 
+/* Unmarshals JSON file to an arbitrary data structure. */
+func loadTestData(fname string, v any) error {
+	stream, err := os.ReadFile(filepath.Join(test_data_directory, fname))
+	if err != nil {
+		return err
+	}
+
+	return json.Unmarshal(stream, v)
+}
+
 /* Extracts map[string]int from a test data file. */
 func loadTestMapStringInt(fname string) (map[string]int, error) {
 	stream, err := os.ReadFile(filepath.Join(test_data_directory, fname))

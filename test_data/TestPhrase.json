@@ -17,5 +17,6 @@
     "%pNv %p2v":      "stash stashed",
     "%Nv %n %m":      "stashes snowfall nicely",
     "%Nv %n %cm":     "stashes snowfall more nicely",
-    "the %sa %n":     "the biggest snowfall"
+    "the %sa %n":     "the biggest snowfall",
+    "%a %m %n %v":    "big nicely snowfall stash"
 }

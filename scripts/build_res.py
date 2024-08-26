@@ -2,7 +2,7 @@
 
 """
 This script extracts words from a WordNet database file
-and formats them for use with neng.
+and formats them for the build_embed.py script.
 """
 
 from argparse         import ArgumentParser
@@ -12,6 +12,7 @@ from os.path          import exists
 from re               import findall
 from sys              import exit
 
+import utils
 
 RES_DIR        = "res"
 FILTER_DIR     = RES_DIR + "/filters"
@@ -24,7 +25,7 @@ SOURCE_FILES   = ("data.adj", "data.adv", "data.noun", "data.verb")
 VERB_IRR_FILE  = "verb.irr"
 
 try:
-    with open("res/misc/replacements.json", mode='r') as jf:
+    with open(f"{RES_DIR}/misc/replacements.json", mode='r') as jf:
         REPLACEMENTS = load(jf)
 except Exception as e:
     print(e)
@@ -59,23 +60,13 @@ def append_missing_verbirr(lines: [str]) -> [str]:
 def filter_apostrophes(lines: [str]) -> [str]:
     """Removes words containing apostrophes."""
 
-    filtered = []
-    for ln in lines:
-        if ln.find("'") == -1:
-            filtered.append(ln)
-
-    return filtered
+    return utils.filter_containing(lines, "'")
 
 
 def filter_compound_words(lines: [str]) -> [str]:
     """Removes compound words as they are mostly an adjective-noun pair."""
 
-    filtered = []
-    for ln in lines:
-        if ln.find('-') == -1:
-            filtered.append(ln)
-
-    return filtered
+    return utils.filter_containing(lines, '-')
 
 
 def filter_duplicates(lines: [str]) -> [str]:
@@ -113,12 +104,7 @@ def filter_multiword_entries(lines: [str]) -> [str]:
     in the generator and it is difficult to assess them automatically.
     """
 
-    filtered = []
-    for ln in lines:
-        if ln.find('_') == -1:
-            filtered.append(ln)
-
-    return filtered
+    return utils.filter_containing(lines, "_")
 
 
 def filter_parentheses(lines: [str]) -> [str]:
@@ -180,17 +166,6 @@ def get_mature_language(lines: [str]) -> [str]:
     return censored
 
 
-def load_file(path: str) -> [str]:
-    """Loads lines from the file at path."""
-
-    try:
-        with open(path, mode='r') as f:
-            return [ln.strip('\r').strip('\n') for ln in f.readlines()]
-    except FileNotFoundError:
-        print(f"{path} does not exist")
-        exit(1)
-
-
 def load_filter_file(path: str) -> [str]:
     """
     Attempts to load filter at path. If it does not exist, attempts to load automatically generated filter file ('path.auto').
@@ -236,15 +211,6 @@ def strip_license(lines: [str]) -> str:
     return lines[LICENSE_OFFSET:]
 
 
-def write_file(path: str, lines: [str]):
-    """Sorts lines alphabetically and writes them to the file at path."""
-
-    lines.sort()
-
-    with open(path, mode='w') as f:
-        f.write('\n'.join(lines))
-
-
 if __name__ == "__main__":
     for file in SOURCE_FILES:
         path      = f"{ORIG_DIR}/{file}"
@@ -255,7 +221,7 @@ if __name__ == "__main__":
             print(f"{new_path:<10} exists, skipping.")
             continue
 
-        lines = load_file(path)
+        lines = utils.load_file(path)
 
         lines = strip_license(lines)
         lines = filter_metadata(lines)
@@ -278,13 +244,13 @@ if __name__ == "__main__":
             censored = get_mature_language(lines)
 
             fname = f"{FILTER_DIR}/{new_fname}.filter.auto"
-            write_file(fname, censored)
+            utils.write_file(fname, True, censored)
 
             print(f"'{fname}' generated. Review and rename it '{fname.strip(".auto")}' or leave it as is and run the script again with '-m' to apply it.")
         elif args.filter_mature:
             censored = load_filter_file(f"{FILTER_DIR}/{new_fname}.filter")
             lines    = censor_lines(lines, censored)
 
-            write_file(new_path, lines)
+            utils.write_file(new_path, True, lines)
         else:
-            write_file(new_path, lines)
+            utils.write_file(new_path, True, lines)

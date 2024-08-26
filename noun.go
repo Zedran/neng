@@ -1,20 +1,18 @@
 package neng
 
-import (
-	"slices"
-	"strings"
-)
+import "strings"
 
-/* Returns plural form of a noun given slices of plural-only nouns and irregularly pluralized nouns. */
-func plural(noun string, nounsPlO []string, nounsIrr [][]string) string {
-	if slices.Contains(nounsPlO, noun) {
-		return noun
+/* Returns plural form of a noun. */
+func plural(word *Word) string {
+	if word.ft == FT_PLURAL_ONLY {
+		return word.word
 	}
 
-	nounLine := findIrregular(noun, nounsIrr)
-	if nounLine != nil {
-		return nounLine[1]
+	if word.ft == FT_IRREGULAR {
+		return (*word.irr)[0]
 	}
+
+	noun := word.word
 
 	if endsWithAny(noun, []string{"fish", "ics", "gs", "craft"}) {
 		return noun

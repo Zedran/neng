@@ -38,7 +38,7 @@ func main() {
     verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 
     // Transforming an arbitrary word
-    word, _ := gen.Transform("STASH", neng.WC_VERB, neng.MOD_GERUND, neng.MOD_CASE_LOWER)
+    word, _ := gen.Transform("stash", neng.WC_VERB, neng.MOD_GERUND, neng.MOD_CASE_TITLE)
 
     fmt.Printf("Phrase -> %s\nVerb   -> %s\nWord   -> %s\n", phrase, verb, word)
 }
@@ -49,7 +49,7 @@ func main() {
 ```text
 Phrase -> Serenade perplexes a STRAY SUPERBUG
 Verb   -> share
-Word   -> stashing
+Word   -> Stashing
 ```
 
 ## Phrase pattern commands
@@ -75,7 +75,7 @@ Transformations can only be applied to compatible parts of speech. It is possibl
 * Words are lower case (irrelevant if case transformation is requested)
 * Adjectives and adverbs are in their positive forms
 * Nouns are in their singular forms
-* Verbs are in their infinitive forms
+* Verbs are in their base forms
 
 | Symbol | Compatible with       | Package constant      | Description                |
 |:------:|:---------------------:|:----------------------|:---------------------------|

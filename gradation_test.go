@@ -2,28 +2,42 @@ package neng
 
 import "testing"
 
-/* Tests comparative function. Fails if incorrect comparative form is returned.*/
+/*
+Tests comparative function. Fails if incorrect comparative form is returned.
+If the word does not exist in the database, the test attempts to transform it as FT_REGULAR.
+*/
 func TestComparative(t *testing.T) {
-	cases, err := loadTestMapStringString("TestComparative.json")
-	if err != nil {
+	type testCase struct {
+		Input    string    `json:"input"`
+		WC       WordClass `json:"word_class"`
+		Expected string    `json:"expected"`
+	}
+
+	var cases []testCase
+	if err := loadTestData("TestComparative.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
-	irregular, err := loadIrregularWords("res/adj.irr")
+	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
-	suffixed, err := loadWords("res/adj.suf")
-	if err != nil {
-		t.Fatalf("loadWords failed: %s", err.Error())
-	}
+	for _, c := range cases {
+		word, err := gen.Find(c.Input, c.WC)
+		if err != nil {
+			t.Logf("Test case '%s' (WordClass %d) does not exist in the word database. Assume it is regular and proceed.", c.Input, c.WC)
 
-	for input, expected := range cases {
-		output := comparative(input, irregular, suffixed)
+			word, err = NewWordFromParams(c.Input, 0, nil)
+			if err != nil {
+				t.Errorf("Failed for '%s' - error from NewWordFromParams: %v", c.Input, err)
+			}
+		}
 
-		if output != expected {
-			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
+		output := comparative(word)
+
+		if output != c.Expected {
+			t.Errorf("Failed for '%s': expected '%s', got '%s'", c.Input, c.Expected, output)
 		}
 	}
 }
@@ -45,28 +59,42 @@ func TestSufGrad(t *testing.T) {
 	}
 }
 
-/* Tests superlative function. Fails if incorrect superlative form is returned.*/
+/*
+Tests superlative function. Fails if incorrect superlative form is returned.
+If the word does not exist in the database, the test attempts to transform it as FT_REGULAR.
+*/
 func TestSuperlative(t *testing.T) {
-	cases, err := loadTestMapStringString("TestSuperlative.json")
-	if err != nil {
+	type testCase struct {
+		Input    string    `json:"input"`
+		WC       WordClass `json:"word_class"`
+		Expected string    `json:"expected"`
+	}
+
+	var cases []testCase
+	if err := loadTestData("TestSuperlative.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %s", err.Error())
 	}
 
-	irregular, err := loadIrregularWords("res/adj.irr")
+	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("loadIrregularWords failed: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
 	}
 
-	suffixed, err := loadWords("res/adj.suf")
-	if err != nil {
-		t.Fatalf("loadWords failed: %s", err.Error())
-	}
+	for _, c := range cases {
+		word, err := gen.Find(c.Input, c.WC)
+		if err != nil {
+			t.Logf("Test case '%s' (WordClass %d) does not exist in the word database. Assume it is regular and proceed.", c.Input, c.WC)
 
-	for input, expected := range cases {
-		output := superlative(input, irregular, suffixed)
+			word, err = NewWordFromParams(c.Input, 0, nil)
+			if err != nil {
+				t.Errorf("Failed for '%s' - error from NewWordFromParams: %v", c.Input, err)
+			}
+		}
 
-		if output != expected {
-			t.Errorf("Failed for '%s': expected '%s', got '%s'", input, expected, output)
+		output := superlative(word)
+
+		if output != c.Expected {
+			t.Errorf("Failed for '%s': expected '%s', got '%s'", c.Input, c.Expected, output)
 		}
 	}
 }

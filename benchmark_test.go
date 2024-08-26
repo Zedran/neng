@@ -23,14 +23,21 @@ func BenchmarkTransformAll_Adj(b *testing.B) {
 	b.StopTimer()
 
 	gen, _ := DefaultGenerator()
-	list := gen.adjectives
+
+	list := make([]string, len(gen.adj))
+	for i, w := range gen.adj {
+		list[i] = w.word
+	}
+
 	wc := WC_ADJECTIVE
 
 	b.StartTimer()
 	for range b.N {
 		for _, w := range list {
-			gen.Transform(w, wc, MOD_COMPARATIVE)
-			gen.Transform(w, wc, MOD_SUPERLATIVE)
+			f, _ := gen.Find(w, wc)
+
+			gen.TransformWord(f, wc, MOD_COMPARATIVE)
+			gen.TransformWord(f, wc, MOD_SUPERLATIVE)
 		}
 	}
 }
@@ -39,14 +46,21 @@ func BenchmarkTransformAll_Adv(b *testing.B) {
 	b.StopTimer()
 
 	gen, _ := DefaultGenerator()
-	list := gen.adverbs
+
+	list := make([]string, len(gen.adv))
+	for i, w := range gen.adv {
+		list[i] = w.word
+	}
+
 	wc := WC_ADVERB
 
 	b.StartTimer()
 	for range b.N {
 		for _, w := range list {
-			gen.Transform(w, wc, MOD_COMPARATIVE)
-			gen.Transform(w, wc, MOD_SUPERLATIVE)
+			f, _ := gen.Find(w, wc)
+
+			gen.TransformWord(f, wc, MOD_COMPARATIVE)
+			gen.TransformWord(f, wc, MOD_SUPERLATIVE)
 		}
 	}
 }
@@ -55,13 +69,20 @@ func BenchmarkTransformAll_Noun(b *testing.B) {
 	b.StopTimer()
 
 	gen, _ := DefaultGenerator()
-	list := gen.nouns
+
+	list := make([]string, len(gen.noun))
+	for i, w := range gen.noun {
+		list[i] = w.word
+	}
+
 	wc := WC_NOUN
 
 	b.StartTimer()
 	for range b.N {
 		for _, w := range list {
-			gen.Transform(w, wc, MOD_PLURAL)
+			f, _ := gen.Find(w, wc)
+
+			gen.TransformWord(f, wc, MOD_PLURAL)
 		}
 	}
 }
@@ -70,16 +91,23 @@ func BenchmarkTransformAll_Verb(b *testing.B) {
 	b.StopTimer()
 
 	gen, _ := DefaultGenerator()
-	list := gen.verbs
+
+	list := make([]string, len(gen.verb))
+	for i, w := range gen.verb {
+		list[i] = w.word
+	}
+
 	wc := WC_VERB
 
 	b.StartTimer()
 	for range b.N {
 		for _, w := range list {
-			gen.Transform(w, wc, MOD_PAST_SIMPLE)
-			gen.Transform(w, wc, MOD_PAST_PARTICIPLE)
-			gen.Transform(w, wc, MOD_PRESENT_SIMPLE)
-			gen.Transform(w, wc, MOD_GERUND)
+			f, _ := gen.Find(w, wc)
+
+			gen.TransformWord(f, wc, MOD_PAST_SIMPLE)
+			gen.TransformWord(f, wc, MOD_PAST_PARTICIPLE)
+			gen.TransformWord(f, wc, MOD_PRESENT_SIMPLE)
+			gen.TransformWord(f, wc, MOD_GERUND)
 		}
 	}
 }
@@ -93,8 +121,10 @@ func BenchmarkTransformOne_Adj(b *testing.B) {
 
 	b.StartTimer()
 	for range b.N {
-		gen.Transform(w, wc, MOD_COMPARATIVE)
-		gen.Transform(w, wc, MOD_SUPERLATIVE)
+		f, _ := gen.Find(w, wc)
+
+		gen.TransformWord(f, wc, MOD_COMPARATIVE)
+		gen.TransformWord(f, wc, MOD_SUPERLATIVE)
 	}
 }
 
@@ -107,8 +137,10 @@ func BenchmarkTransformOne_Adv(b *testing.B) {
 
 	b.StartTimer()
 	for range b.N {
-		gen.Transform(w, wc, MOD_COMPARATIVE)
-		gen.Transform(w, wc, MOD_SUPERLATIVE)
+		f, _ := gen.Find(w, wc)
+
+		gen.TransformWord(f, wc, MOD_COMPARATIVE)
+		gen.TransformWord(f, wc, MOD_SUPERLATIVE)
 	}
 }
 
@@ -121,7 +153,9 @@ func BenchmarkTransformOne_Noun(b *testing.B) {
 
 	b.StartTimer()
 	for range b.N {
-		gen.Transform(w, wc, MOD_PLURAL)
+		f, _ := gen.Find(w, wc)
+
+		gen.TransformWord(f, wc, MOD_PLURAL)
 	}
 }
 
@@ -134,9 +168,11 @@ func BenchmarkTransformOne_Verb(b *testing.B) {
 
 	b.StartTimer()
 	for range b.N {
-		gen.Transform(w, wc, MOD_PAST_SIMPLE)
-		gen.Transform(w, wc, MOD_PAST_PARTICIPLE)
-		gen.Transform(w, wc, MOD_PRESENT_SIMPLE)
-		gen.Transform(w, wc, MOD_GERUND)
+		f, _ := gen.Find(w, wc)
+
+		gen.TransformWord(f, wc, MOD_PAST_SIMPLE)
+		gen.TransformWord(f, wc, MOD_PAST_PARTICIPLE)
+		gen.TransformWord(f, wc, MOD_PRESENT_SIMPLE)
+		gen.TransformWord(f, wc, MOD_GERUND)
 	}
 }

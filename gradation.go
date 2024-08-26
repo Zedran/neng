@@ -1,22 +1,18 @@
 package neng
 
-import (
-	"slices"
-	"strings"
-)
+import "strings"
 
 /* Returns comparative form of an adjective or an adverb (good -> better). */
-func comparative(a string, adjIrr [][]string, adjSuf []string) string {
-	aLine := findIrregular(a, adjIrr)
-	if aLine != nil {
-		return aLine[1]
+func comparative(word *Word) string {
+	if word.ft == FT_IRREGULAR {
+		return (*word.irr)[0]
 	}
 
-	if slices.Contains(adjSuf, a) {
-		return sufGrad(a, "er")
+	if word.ft == FT_SUFFIXED {
+		return sufGrad(word.word, "er")
 	}
 
-	return "more " + a
+	return "more " + word.word
 }
 
 /* Returns comparative or superlative form of those adjectives to which suffix is appended during gradation process. */
@@ -41,15 +37,14 @@ func sufGrad(a, suf string) string {
 }
 
 /* Returns superlative form of an adjective or an adverb (good -> best). */
-func superlative(a string, adjIrr [][]string, adjSuf []string) string {
-	aLine := findIrregular(a, adjIrr)
-	if aLine != nil {
-		return aLine[2]
+func superlative(word *Word) string {
+	if word.ft == FT_IRREGULAR {
+		return (*word.irr)[1]
 	}
 
-	if slices.Contains(adjSuf, a) {
-		return sufGrad(a, "est")
+	if word.ft == FT_SUFFIXED {
+		return sufGrad(word.word, "est")
 	}
 
-	return "most " + a
+	return "most " + word.word
 }
