@@ -44,11 +44,10 @@ func TestComparative(t *testing.T) {
 
 /* Tests sufGrad function. Fails if incorrect graded form is returned. */
 func TestSufGrad(t *testing.T) {
-	cases, err := loadTest2DSliceString("TestSufGrad.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	var cases [][]string
+	if err := loadTestData("TestSufGrad.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
-
 	for _, c := range cases {
 		cmp := sufGrad(c[0], "er")
 		sup := sufGrad(c[0], "est")
