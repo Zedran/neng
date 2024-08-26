@@ -4,9 +4,9 @@ import "testing"
 
 /* Tests plural function. Fails if incorrect plural form of a noun is returned. */
 func TestPlural(t *testing.T) {
-	cases, err := loadTestMapStringString("TestPlural.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	var cases map[string]string
+	if err := loadTestData("TestPlural.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	gen, err := DefaultGenerator()

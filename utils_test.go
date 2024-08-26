@@ -21,9 +21,9 @@ func TestCountSyllables(t *testing.T) {
 
 /* Tests getSequence function. */
 func TestGetSequence(t *testing.T) {
-	cases, err := loadTestMapStringString("TestGetSequence.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	var cases map[string]string
+	if err := loadTestData("TestGetSequence.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	for input, expected := range cases {

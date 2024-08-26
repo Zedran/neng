@@ -4,9 +4,9 @@ import "testing"
 
 /* Tests gerund function. Fails if improper gerund form of a verb is returned. */
 func TestGerund(t *testing.T) {
-	cases, err := loadTestMapStringString("TestGerund.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	var cases map[string]string
+	if err := loadTestData("TestGerund.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	for input, expected := range cases {
@@ -23,9 +23,9 @@ Tests pastParticiple function. Fails if improper Past Participle form of a verb 
 Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
 */
 func TestPastParticiple(t *testing.T) {
-	cases, err := loadTestMapStringString("TestPastParticiple.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	var cases map[string]string
+	if err := loadTestData("TestPastParticiple.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	gen, err := DefaultGenerator()
@@ -54,9 +54,9 @@ func TestPastParticiple(t *testing.T) {
 
 /* Tests pastRegular function. Fails if incorrect past tense form of a regular verb is returned. */
 func TestPastRegular(t *testing.T) {
-	cases, err := loadTestMapStringString("TestPastRegular.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	var cases map[string]string
+	if err := loadTestData("TestPastRegular.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	for input, expected := range cases {

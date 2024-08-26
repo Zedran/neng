@@ -99,9 +99,9 @@ func TestGenerator_Phrase(t *testing.T) {
 		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
 	}
 
-	cases, err := loadTestMapStringString("TestPhrase.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	var cases map[string]string
+	if err := loadTestData("TestPhrase.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	for input, expected := range cases {
