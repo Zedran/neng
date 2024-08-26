@@ -38,7 +38,7 @@ func main() {
     verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 
     // Transforming an arbitrary word
-    word, _ := gen.Transform("stash", neng.WC_VERB, neng.MOD_GERUND, neng.MOD_CASE_TITLE)
+    word, _ := gen.Transform("involve", neng.WC_VERB, neng.MOD_GERUND, neng.MOD_CASE_TITLE)
 
     fmt.Printf("Phrase -> %s\nVerb   -> %s\nWord   -> %s\n", phrase, verb, word)
 }
@@ -48,8 +48,8 @@ func main() {
 
 ```text
 Phrase -> Serenade perplexes a STRAY SUPERBUG
-Verb   -> share
-Word   -> Stashing
+Verb   -> shared
+Word   -> Involving
 ```
 
 ## Phrase pattern commands
