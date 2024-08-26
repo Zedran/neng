@@ -73,9 +73,15 @@ Tests pastSimple function. Fails if improper Past Simple form of a verb is retur
 Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
 */
 func TestPastSimple(t *testing.T) {
-	cases, err := loadSliceTestCasePlural("TestPastSimple.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	type testCase struct {
+		Input    string `json:"input"`
+		Expected string `json:"expected"`
+		Plural   bool   `json:"plural"`
+	}
+
+	var cases []testCase
+	if err := loadTestData("TestPastSimple.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	gen, err := DefaultGenerator()
@@ -104,9 +110,15 @@ func TestPastSimple(t *testing.T) {
 
 /* Tests presentSimple function. Fails if improper Present Simple form of a verb is returned. */
 func TestPresentSimple(t *testing.T) {
-	cases, err := loadSliceTestCasePlural("TestPresentSimple.json")
-	if err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+	type testCase struct {
+		Input    string `json:"input"`
+		Expected string `json:"expected"`
+		Plural   bool   `json:"plural"`
+	}
+
+	var cases []testCase
+	if err := loadTestData("TestPresentSimple.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	for _, c := range cases {
