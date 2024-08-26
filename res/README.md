@@ -1,6 +1,8 @@
 # Resource files
 
-## Embedded word list files
+## Main resource files
+
+These files are used to compile the embedded word lists.
 
 | File name  | Contents                                    |
 |:-----------|:--------------------------------------------|
@@ -21,7 +23,7 @@
 
 ## Filters
 
-Files in `filters` directory contain words from WordNet database that are excluded from the embedded lists. Each filter is named after the main list file to which it is applied.
+Files in `filters` directory contain words from WordNet database that are excluded from the main resource files. Each filter is named after the main list file to which it is applied.
 
 ## Misc
 
