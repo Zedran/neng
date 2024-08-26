@@ -1,0 +1,11 @@
+* text=auto
+
+embed/*   text eol=lf
+
+res/adj*  text eol=lf
+res/adv*  text eol=lf
+res/noun* text eol=lf
+res/verb* text eol=lf
+
+*.filter  text eol=lf
+*.json    text eol=lf
