@@ -6,6 +6,5 @@ scripts/__pycache__/
 res/filters/*.auto
 
 TODO.md
-audit_test.go
 coverage.html
 coverage.out
