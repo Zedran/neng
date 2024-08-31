@@ -46,7 +46,7 @@ func TestNewWord(t *testing.T) {
 		if c.good {
 			switch true {
 			case err != nil:
-				t.Errorf("Failed for case %v: error returned: '%s'", c, err.Error())
+				t.Errorf("Failed for case %v: error returned: %v", c, err)
 			case out.word != c.expected.word:
 				t.Errorf("Failed for case %v: expected word '%s', got '%s'", c, c.expected.word, out.word)
 			case out.ft != c.expected.ft:
@@ -100,7 +100,7 @@ func TestNewWordFromParams(t *testing.T) {
 		if c.good {
 			switch true {
 			case err != nil:
-				t.Errorf("Failed for case %d: error returned: '%s'", i, err.Error())
+				t.Errorf("Failed for case %d: error returned: %v", i, err)
 			case out.word != c.expected.word:
 				t.Errorf("Failed for case %d: expected word '%s', got '%s'", i, c.expected.word, out.word)
 			case out.ft != c.expected.ft:

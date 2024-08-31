@@ -12,7 +12,7 @@ and tests whether word lists of the resulting instance are sorted.
 func TestDefaultGenerator(t *testing.T) {
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
 	for i, wl := range [][]*Word{gen.adj, gen.adv, gen.noun, gen.verb} {
@@ -42,7 +42,7 @@ func TestGenerator_Find(t *testing.T) {
 
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false)
 	if err != nil {
-		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
 	for _, c := range testCases {
@@ -51,7 +51,7 @@ func TestGenerator_Find(t *testing.T) {
 		if c.good {
 			switch true {
 			case err != nil:
-				t.Errorf("Failed for case %v: error returned: '%s'", c, err.Error())
+				t.Errorf("Failed for case %v: error returned: %v", c, err)
 			case out.word != c.query:
 				t.Errorf("Failed for case %v: expected word '%s', found '%s'", c, c.query, out.word)
 			}
@@ -70,7 +70,7 @@ and plural-only nouns in absence of plural modifier.
 func TestGenerator_Noun(t *testing.T) {
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10, false)
 	if err != nil {
-		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
 	if n, err := gen.Noun(); err == nil {
@@ -78,7 +78,7 @@ func TestGenerator_Noun(t *testing.T) {
 	}
 
 	if _, err = gen.Noun(MOD_PLURAL); err != nil {
-		t.Errorf("Failed for plural: plural-only noun was rejected: %s", err.Error())
+		t.Errorf("Failed for plural: plural-only noun was rejected: %v", err)
 	}
 
 	gen.noun = []*Word{{ft: FT_UNCOUNTABLE, irr: nil, word: "boldness"}}
@@ -88,7 +88,7 @@ func TestGenerator_Noun(t *testing.T) {
 	}
 
 	if _, err = gen.Noun(); err != nil {
-		t.Errorf("Failed for singular: uncountable noun was rejected: %s", err.Error())
+		t.Errorf("Failed for singular: uncountable noun was rejected: %v", err)
 	}
 }
 
@@ -96,7 +96,7 @@ func TestGenerator_Noun(t *testing.T) {
 func TestGenerator_Phrase(t *testing.T) {
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false)
 	if err != nil {
-		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
 	var cases map[string]string
@@ -107,7 +107,7 @@ func TestGenerator_Phrase(t *testing.T) {
 	for input, expected := range cases {
 		output, err := gen.Phrase(input)
 		if err != nil {
-			t.Errorf("Failed for case '%s': error returned: '%s'", input, err.Error())
+			t.Errorf("Failed for case '%s': error returned: %v", input, err)
 		} else if output != expected {
 			t.Errorf("Failed for case '%s': got '%s', expected '%s'", input, output, expected)
 		}
@@ -147,7 +147,7 @@ func TestGenerator_Transform(t *testing.T) {
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
 	for _, c := range testCases {
@@ -155,7 +155,7 @@ func TestGenerator_Transform(t *testing.T) {
 
 		if c.good {
 			if err != nil {
-				t.Errorf("Failed for '%v': error returned: '%s'", c, err.Error())
+				t.Errorf("Failed for '%v': error returned: %v", c, err)
 			}
 
 			if out != c.expected {
@@ -186,7 +186,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
 	cases := []testCase{
@@ -212,7 +212,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 		switch c.goodCase {
 		case true:
 			if err != nil {
-				t.Errorf("Failed for '%s - %s': error returned: '%s'", c.description, c.word, err.Error())
+				t.Errorf("Failed for '%s - %s': error returned: %v", c.description, c.word, err)
 			}
 		default:
 			if err == nil {
@@ -226,11 +226,11 @@ func TestGenerator_TransformWord(t *testing.T) {
 func TestGenerator_generateModifier(t *testing.T) {
 	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10, false)
 	if err != nil {
-		t.Fatalf("Failed: NewGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
 	if _, err = gen.Adjective(); err != nil {
-		t.Errorf("Failed for positive: non-comparable adjective was rejected: %s", err.Error())
+		t.Errorf("Failed for positive: non-comparable adjective was rejected: %v", err)
 	}
 
 	if a, err := gen.Adjective(MOD_COMPARATIVE); err == nil {
@@ -242,7 +242,7 @@ func TestGenerator_generateModifier(t *testing.T) {
 	}
 
 	if _, err = gen.Adverb(); err != nil {
-		t.Errorf("Failed for positive: non-comparable adverb was rejected: %s", err.Error())
+		t.Errorf("Failed for positive: non-comparable adverb was rejected: %v", err)
 	}
 
 	if a, err := gen.Adverb(MOD_COMPARATIVE); err == nil {
@@ -301,7 +301,7 @@ func TestNewGenerator(t *testing.T) {
 		switch c.goodCase {
 		case true:
 			if err != nil {
-				t.Errorf("Failed for '%v': NewGenerator returned an error: %s", c, err.Error())
+				t.Errorf("Failed for '%v': NewGenerator returned an error: %v", c, err)
 			}
 		default:
 			if err == nil {
@@ -322,12 +322,12 @@ func TestNewGeneratorFromWord(t *testing.T) {
 
 	w, err := NewWord("0word")
 	if err != nil {
-		t.Fatalf("Failed: NewWord returned an error: %s", err.Error())
+		t.Fatalf("Failed: NewWord returned an error: %v", err)
 	}
 
 	w2, err := NewWord("4a")
 	if err != nil {
-		t.Fatalf("Failed: NewWord returned an error: %s", err.Error())
+		t.Fatalf("Failed: NewWord returned an error: %v", err)
 	}
 
 	badW := &Word{ft: 255, irr: &[]string{"too", "many", "forms"}, word: "z"}

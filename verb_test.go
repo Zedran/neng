@@ -30,7 +30,7 @@ func TestPastParticiple(t *testing.T) {
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
 	for input, expected := range cases {
@@ -86,7 +86,7 @@ func TestPastSimple(t *testing.T) {
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
 	for _, c := range cases {

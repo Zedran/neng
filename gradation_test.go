@@ -15,12 +15,12 @@ func TestComparative(t *testing.T) {
 
 	var cases []testCase
 	if err := loadTestData("TestComparative.json", &cases); err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
 	for _, c := range cases {
@@ -71,12 +71,12 @@ func TestSuperlative(t *testing.T) {
 
 	var cases []testCase
 	if err := loadTestData("TestSuperlative.json", &cases); err != nil {
-		t.Fatalf("Failed loading test data: %s", err.Error())
+		t.Fatalf("Failed loading test data: %v", err)
 	}
 
 	gen, err := DefaultGenerator()
 	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %s", err.Error())
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
 	for _, c := range cases {
