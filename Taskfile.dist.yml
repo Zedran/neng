@@ -1,0 +1,94 @@
+version: '3'
+
+output: prefixed
+
+tasks:
+  audit:
+    aliases: [a]
+    desc: Generate files for manual transformation audit
+    cmds:
+      - go test -run=^TestAudit$
+    deps:
+      - test
+    env:
+      AUDIT: 1
+    generates:
+      - audit/*
+    sources:
+      - ./*.go
+      - embed/*
+
+  cover:
+    aliases: [c]
+    desc: Generate test coverage report
+    cmds:
+      - go test -coverprofile=coverage.out
+      - go tool cover -html=coverage.out -o coverage.html
+    generates:
+      - ./coverage.html
+      - ./coverage.out
+    sources:
+      - ./*.go
+      - test_data/*.json
+
+  embed:
+    aliases: [e]
+    desc: Generate embedded files from resources
+    cmds:
+      - python3 ./scripts/build_embed.py
+    deps:
+      - res
+    generates:
+      - embed/*
+    sources:
+      - res/adj*
+      - res/adv*
+      - res/noun*
+      - res/verb*
+      - scripts/build_embed.py
+      - scripts/utils.py
+
+  res:
+    aliases: [r]
+    desc: Generate resources from WordNet lists
+    cmds:
+      - python3 ./scripts/build_res.py -fm
+    generates:
+      - res/adj
+      - res/adv
+      - res/noun
+      - res/verb
+    sources:
+      - res/filters/*
+      - res/misc/*
+      - res/wordnet/data.*
+      - scripts/build_res.py
+      - scripts/utils.py
+
+  test:
+    aliases: [t]
+    desc: Run tests for the package
+    deps:
+      - embed
+    vars:
+      VERBOSE: '{{default "" .VERBOSE}}'
+    cmds:
+      - go test {{.VERBOSE}}
+    sources:
+      - ./*.go
+      - embed/*
+      - test_data/*.json
+
+  testv:
+    aliases: [tv]
+    desc: Run tests with -v flag
+    cmds:
+      - task: test
+        vars: { VERBOSE: '-v' }
+
+  update:
+    aliases: [u]
+    desc: Update dependencies
+    cmds:
+      - go get -u
+      - go mod tidy
