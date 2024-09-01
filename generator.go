@@ -263,6 +263,9 @@ Returns an error if:
   - transformation into plural form is requested for an uncountable noun
 */
 func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (string, error) {
+	slices.Sort(mods)
+	mods = slices.Compact(mods)
+
 	if !wc.CompatibleWith(mods...) {
 		return "", errIncompatible
 	}
@@ -283,9 +286,6 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (stri
 		pluralMod          bool
 		w                  string
 	)
-
-	// Ensure MOD_PLURAL is processed first
-	slices.Sort(mods)
 
 	for _, m := range mods {
 		switch m {
