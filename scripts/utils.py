@@ -26,5 +26,5 @@ def write_file(path: str, sort: bool, lines: [str]):
     if sort:
         lines.sort()
 
-    with open(path, mode='w') as f:
+    with open(path, mode='w', newline='\n') as f:
         f.write('\n'.join(lines))
