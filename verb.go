@@ -190,10 +190,6 @@ func pastParticiple(word *Word) string {
 
 /* Appends past tense suffix to a regular verb. */
 func pastRegular(verb string) string {
-	if slices.Contains([]string{"quiz", "up"}, verb) {
-		return doubleFinal(verb, "ed")
-	}
-
 	switch verb[len(verb)-1] {
 	case 'e':
 		return verb + "d"
@@ -220,6 +216,10 @@ func pastRegular(verb string) string {
 
 	if strings.HasSuffix(verb, "it") {
 		return handleIt(verb, "ed")
+	}
+
+	if verb == "quiz" || verb == "up" {
+		return doubleFinal(verb, "ed")
 	}
 
 	seq := getSequence(verb)
