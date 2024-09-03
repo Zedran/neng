@@ -4,15 +4,14 @@ import "strings"
 
 /* Returns comparative form of an adjective or an adverb (good -> better). */
 func comparative(word *Word) string {
-	if word.ft == FT_IRREGULAR {
+	switch word.ft {
+	case FT_IRREGULAR:
 		return (*word.irr)[0]
-	}
-
-	if word.ft == FT_SUFFIXED {
+	case FT_SUFFIXED:
 		return sufGrad(word.word, "er")
+	default:
+		return "more " + word.word
 	}
-
-	return "more " + word.word
 }
 
 /* Returns comparative or superlative form of those adjectives to which suffix is appended during gradation process. */
@@ -36,13 +35,12 @@ func sufGrad(a, suf string) string {
 
 /* Returns superlative form of an adjective or an adverb (good -> best). */
 func superlative(word *Word) string {
-	if word.ft == FT_IRREGULAR {
+	switch word.ft {
+	case FT_IRREGULAR:
 		return (*word.irr)[1]
-	}
-
-	if word.ft == FT_SUFFIXED {
+	case FT_SUFFIXED:
 		return sufGrad(word.word, "est")
+	default:
+		return "most " + word.word
 	}
-
-	return "most " + word.word
 }
