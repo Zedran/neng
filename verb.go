@@ -15,8 +15,6 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
-	wi := getWordInfo(verb)
-
 	switch verb[len(verb)-1] {
 	case 'e':
 		switch verb[len(verb)-2] {
@@ -26,7 +24,7 @@ func gerund(verb string) string {
 			return verb[:len(verb)-2] + "ying"
 		}
 
-		if strings.HasSuffix(wi.sequence, "cv") && !strings.HasSuffix(verb, "ye") && verb != "ante" {
+		if strings.HasSuffix(getSequence(verb), "cv") && !strings.HasSuffix(verb, "ye") && verb != "ante" {
 			// Remove final 'e' if previous letter is consonant other than 'y' and the verb is not 'ante'
 			return verb[:len(verb)-1] + "ing"
 		}
@@ -35,7 +33,7 @@ func gerund(verb string) string {
 	case 'r':
 		return handleR(verb, "ing")
 	case 'l':
-		if strings.HasSuffix(wi.sequence, "vvc") {
+		if strings.HasSuffix(getSequence(verb), "vvc") {
 			return handleVVL(verb, "ing")
 		}
 	case 's':
@@ -45,6 +43,8 @@ func gerund(verb string) string {
 		}
 		return verb + "ing"
 	}
+
+	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "it") {
 		return handleIt(verb, "ing", wi)
