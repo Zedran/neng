@@ -44,11 +44,11 @@ func gerund(verb string) string {
 		return verb + "ing"
 	}
 
-	wi := getWordInfo(verb)
-
 	if strings.HasSuffix(verb, "it") {
-		return handleIt(verb, "ing", wi)
+		return handleIt(verb, "ing")
 	}
+
+	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
 		return handleCVC(verb, "ing", wi, []string{
@@ -120,8 +120,10 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 }
 
 /* Handles transformation of verbs ending with '-it'. */
-func handleIt(verb, tenseEnding string, wi wordInfo) string {
-	if strings.HasSuffix(wi.sequence, "vvc") {
+func handleIt(verb, tenseEnding string) string {
+	seq := getSequence(verb)
+
+	if strings.HasSuffix(seq, "vvc") {
 		if strings.HasSuffix(verb, "quit") {
 			// The case of 'acquit' and 'quit'
 			return doubleFinal(verb, tenseEnding)
@@ -129,7 +131,7 @@ func handleIt(verb, tenseEnding string, wi wordInfo) string {
 		return verb + tenseEnding
 	}
 
-	if wi.sylCount == 1 {
+	if countSyllables(verb, seq) == 1 {
 		return doubleFinal(verb, tenseEnding)
 	}
 
@@ -211,11 +213,11 @@ func pastRegular(verb string) string {
 		return verb + "ed"
 	}
 
-	wi := getWordInfo(verb)
-
 	if strings.HasSuffix(verb, "it") {
-		return handleIt(verb, "ed", wi)
+		return handleIt(verb, "ed")
 	}
+
+	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(wi.sequence, "cvc") {
 		return handleCVC(verb, "ed", wi, nil)
