@@ -241,7 +241,6 @@ func pastSimple(word *Word, plural bool) string {
 		if plural {
 			return "were"
 		}
-
 		return "was"
 	}
 
