@@ -187,8 +187,6 @@ func pastRegular(verb string) string {
 		return doubleFinal(verb, "ed")
 	}
 
-	wi := getWordInfo(verb)
-
 	switch verb[len(verb)-1] {
 	case 'e':
 		return verb + "d"
@@ -197,11 +195,11 @@ func pastRegular(verb string) string {
 	case 'h', 'w', 'o', 'x', 'a', 'i', 'u':
 		return verb + "ed"
 	case 'l':
-		if strings.HasSuffix(wi.sequence, "vvc") {
+		if strings.HasSuffix(getSequence(verb), "vvc") {
 			return handleVVL(verb, "ed")
 		}
 	case 'y':
-		if strings.HasSuffix(wi.sequence, "v") {
+		if strings.HasSuffix(getSequence(verb), "v") {
 			return verb[:len(verb)-1] + "ied"
 		}
 		return verb + "ed"
@@ -212,6 +210,8 @@ func pastRegular(verb string) string {
 		}
 		return verb + "ed"
 	}
+
+	wi := getWordInfo(verb)
 
 	if strings.HasSuffix(verb, "it") {
 		return handleIt(verb, "ed", wi)
