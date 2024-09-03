@@ -141,7 +141,7 @@ func handleIt(verb, tenseEnding string) string {
 	}
 
 	if endsWithAny(verb, []string{"fit", "mit", "wit"}) {
-		if !slices.Contains([]string{"limit", "profit"}, verb) {
+		if verb != "limit" && verb != "profit" {
 			return doubleFinal(verb, tenseEnding)
 		}
 	}
