@@ -281,7 +281,7 @@ func presentSimple(verb string, plural bool) string {
 		return verb + "es"
 	}
 
-	if endsWithAny(verb, []string{"ch", "sh"}) {
+	if strings.HasSuffix(verb, "ch") || strings.HasSuffix(verb, "sh") {
 		return verb + "es"
 	}
 
