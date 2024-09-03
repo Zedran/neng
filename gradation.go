@@ -23,10 +23,8 @@ func sufGrad(a, suf string) string {
 			return a[:len(a)-2] + "i" + suf
 		}
 		return a[:len(a)-1] + "i" + suf
-
 	case 'b', 'd', 'g', 'm', 'n', 'p', 't':
-		seq := getSequence(a)
-		if strings.HasSuffix(seq, "cvc") {
+		if strings.HasSuffix(getSequence(a), "cvc") {
 			return doubleFinal(a, suf)
 		}
 	case 'e':
