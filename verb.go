@@ -7,11 +7,10 @@ import (
 
 /* Returns gerund form of a verb. */
 func gerund(verb string) string {
-	if slices.Contains([]string{"quiz", "up"}, verb) {
-		return doubleFinal(verb, "ing")
-	}
-
 	if len(verb) <= 2 {
+		if verb == "up" {
+			return doubleFinal(verb, "ing")
+		}
 		return verb + "ing"
 	}
 
@@ -46,6 +45,10 @@ func gerund(verb string) string {
 
 	if strings.HasSuffix(verb, "it") {
 		return handleIt(verb, "ing")
+	}
+
+	if verb == "quiz" {
+		return doubleFinal(verb, "ing")
 	}
 
 	seq := getSequence(verb)
