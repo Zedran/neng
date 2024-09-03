@@ -168,7 +168,7 @@ func handleR(verb, tenseEnding string) string {
 
 /* Handles transformation of verbs ending with vowel-vowel-l sequence. */
 func handleVVL(verb, tenseEnding string) string {
-	if strings.HasSuffix(verb, "uel") || slices.Contains([]string{"victual", "vitriol"}, verb) {
+	if strings.HasSuffix(verb, "uel") || verb == "victual" || verb == "vitriol" {
 		return doubleFinal(verb, tenseEnding)
 	}
 
