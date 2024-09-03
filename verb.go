@@ -48,10 +48,10 @@ func gerund(verb string) string {
 		return handleIt(verb, "ing")
 	}
 
-	wi := getWordInfo(verb)
+	seq := getSequence(verb)
 
-	if strings.HasSuffix(wi.sequence, "cvc") {
-		return handleCVC(verb, "ing", wi, []string{
+	if strings.HasSuffix(seq, "cvc") {
+		return handleCVC(verb, "ing", seq, []string{
 			"beget", "begin", "beset", "forget", "inset", "offset", "overrun",
 			"reset", "sublet", "typeset", "underrun", "upset",
 		})
@@ -67,7 +67,7 @@ Handles past tense and gerund transformations for verbs ending with consonant-vo
   - wi: wordInfo created during earlier processing steps
   - tenseExceptions: tense-specific words whose endings are doubled, regardless of transformation rules based on syllable count and verb endings
 */
-func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) string {
+func handleCVC(verb, tenseEnding string, seq string, tenseExceptions []string) string {
 	if strings.HasSuffix(verb, "c") && verb != "sic" {
 		if strings.HasSuffix(verb, "lyric") {
 			return verb + tenseEnding
@@ -103,14 +103,16 @@ func handleCVC(verb, tenseEnding string, wi wordInfo, tenseExceptions []string) 
 		return doubleFinal(verb, tenseEnding)
 	}
 
-	if wi.sylCount == 2 {
+	sylCount := countSyllables(verb, seq)
+
+	if sylCount == 2 {
 		if endsWithAny(verb, []string{"en", "et", "in", "om", "on"}) {
 			// Do not double the final consonant of bisyllabic verbs with specific endings
 			return verb + tenseEnding
 		}
 	}
 
-	if wi.sylCount > 2 {
+	if sylCount > 2 {
 		// Do not double the final consonant of verbs consisting of more than 2 syllables
 		return verb + tenseEnding
 	}
@@ -217,10 +219,10 @@ func pastRegular(verb string) string {
 		return handleIt(verb, "ed")
 	}
 
-	wi := getWordInfo(verb)
+	seq := getSequence(verb)
 
-	if strings.HasSuffix(wi.sequence, "cvc") {
-		return handleCVC(verb, "ed", wi, nil)
+	if strings.HasSuffix(seq, "cvc") {
+		return handleCVC(verb, "ed", seq, nil)
 	}
 
 	return verb + "ed"
