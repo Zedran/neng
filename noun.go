@@ -4,45 +4,28 @@ import "strings"
 
 /* Returns plural form of a noun. */
 func plural(word *Word) string {
-	if word.ft == FT_PLURAL_ONLY {
-		return word.word
-	}
-
-	if word.ft == FT_IRREGULAR {
+	switch word.ft {
+	case FT_IRREGULAR:
 		return (*word.irr)[0]
+	case FT_PLURAL_ONLY:
+		return word.word
 	}
 
 	noun := word.word
 
-	if endsWithAny(noun, []string{"fish", "ics", "gs", "craft"}) {
-		return noun
-	}
-
-	if endsWithAny(noun, []string{"sh", "ch"}) {
-		return noun + "es"
-	}
-
-	if strings.HasSuffix(noun, "man") {
-		return noun[:len(noun)-2] + "en"
-	}
-
-	if endsWithAny(noun, []string{"life", "knife", "wife"}) {
-		return noun[:len(noun)-2] + "ves"
-	}
-
-	switch noun[len(noun)-2:] {
-	case "um":
-		return noun[:len(noun)-2] + "a"
-	}
-
-	seq := getSequence(noun)
-
 	switch noun[len(noun)-1] {
+	case 'e':
+		if endsWithAny(noun, []string{"life", "knife", "wife"}) {
+			return noun[:len(noun)-2] + "ves"
+		}
 	case 'y':
-		if strings.HasSuffix(seq, "v") {
+		if strings.HasSuffix(getSequence(noun), "v") {
 			return noun[:len(noun)-1] + "ies"
 		}
 	case 's':
+		if endsWithAny(noun, []string{"ics", "gs"}) {
+			return noun
+		}
 		if endsWithAny(noun, []string{"sis", "xis"}) {
 			return noun[:len(noun)-2] + "es"
 		}
@@ -60,10 +43,30 @@ func plural(word *Word) string {
 		}
 		return noun + "es"
 	case 'z':
-		if strings.HasSuffix(seq, "vc") {
+		if strings.HasSuffix(getSequence(noun), "vc") {
 			return doubleFinal(noun, "es")
 		}
 		return noun + "es"
+	}
+
+	switch noun[len(noun)-2:] {
+	case "um":
+		return noun[:len(noun)-2] + "a"
+	case "sh":
+		if strings.HasSuffix(noun, "fish") {
+			return noun
+		}
+		return noun + "es"
+	case "ch":
+		return noun + "es"
+	}
+
+	if strings.HasSuffix(noun, "man") {
+		return noun[:len(noun)-2] + "en"
+	}
+
+	if strings.HasSuffix(noun, "craft") {
+		return noun
 	}
 
 	return noun + "s"
