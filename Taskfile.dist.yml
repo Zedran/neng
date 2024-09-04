@@ -53,6 +53,7 @@ tasks:
     desc: Generate resources from WordNet lists
     cmds:
       - python3 ./scripts/build_res.py -fm
+    ignore_error: true
     generates:
       - res/adj
       - res/adv
