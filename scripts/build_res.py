@@ -246,7 +246,7 @@ if __name__ == "__main__":
             fname = f"{FILTER_DIR}/{new_fname}.filter.auto"
             utils.write_file(fname, True, censored)
 
-            print(f"'{fname}' generated. Review and rename it '{fname.strip(".auto")}' or leave it as is and run the script again with '-m' to apply it.")
+            print(f"'{fname}' generated. Review and rename it to '{fname.strip('.auto')}' or leave it as is and run the script again with '-m' to apply it.")
         elif args.filter_mature:
             censored = load_filter_file(f"{FILTER_DIR}/{new_fname}.filter")
             lines    = censor_lines(lines, censored)
