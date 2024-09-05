@@ -66,6 +66,24 @@ tasks:
       - scripts/build_res.py
       - scripts/utils.py
 
+  source:
+    aliases: [s]
+    desc: Setup WordNet source for task res
+    summary: |
+      Download and unpack the standalone WordNet database v3.1.
+
+      This task is not compatible with Windows command line interfaces.
+      To run it, use Unix-like shell environment, such as Git Bash.
+    cmds:
+      - tar -zxf res/wordnet/wn3.1.dict.tar.gz --strip-components=1 -C res/wordnet/
+    deps:
+      - _dlwnet
+    status:
+      - test -f res/wordnet/data.adj
+      - test -f res/wordnet/data.adv
+      - test -f res/wordnet/data.noun
+      - test -f res/wordnet/data.verb
+
   test:
     aliases: [t]
     desc: Run tests for the package
@@ -93,3 +111,12 @@ tasks:
     cmds:
       - go get -u
       - go mod tidy
+
+  _dlwnet:
+    desc: Internal task that ensures WordNet database tarball is present
+    internal: true
+    cmds:
+      - mkdir -p res/wordnet
+      - curl -so res/wordnet/wn3.1.dict.tar.gz https://wordnetcode.princeton.edu/wn3.1.dict.tar.gz
+    status:
+      - test -f res/wordnet/wn3.1.dict.tar.gz
