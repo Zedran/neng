@@ -72,13 +72,6 @@ neng's phrase generation syntax resembles C-style string format specifiers. The 
 
 ### Transformation
 
-`Generator.Transform` assumes the following about the received words:
-
-* Words are lower case (irrelevant if case transformation is requested)
-* Adjectives and adverbs are in their positive forms
-* Nouns are in their singular forms
-* Verbs are in their base forms
-
 Transformations can only be applied to compatible parts of speech.
 
 | Symbol | Compatible with       | Package constant      | Description                |
