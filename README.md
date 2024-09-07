@@ -89,7 +89,9 @@ Transformations can only be applied to compatible parts of speech.
 
 \*`MOD_PLURAL` is only compatible with verbs when combined with `MOD_PAST_SIMPLE` or `MOD_PRESENT_SIMPLE`.
 
-Symbols are used to specify transformation parameters for words within a phrase. Package constants are designed to work with "single-word" methods.
+Symbols are used to request transformations for words within a phrase. Package constants of type [`Mod`](./mod.go#L4) are designed to work with "single-word" methods.
+
+`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If more than one modifier is specified, the one with lower value is applied.
 
 ## State of the vocabulary
 
