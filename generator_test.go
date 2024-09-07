@@ -190,6 +190,8 @@ func TestGenerator_TransformWord(t *testing.T) {
 	}
 
 	cases := []testCase{
+		{"Undefined mod", "aa", mod_undefined, WC_NOUN, false},
+		{"Undefined mod, non-declared value", "aa", 65536, WC_NOUN, false},
 		{"WordClass-Mod incompatibility", "aa", MOD_COMPARATIVE, WC_NOUN, false},
 		{"Uncountable noun + MOD_PLURAL", "aa", MOD_PLURAL, WC_NOUN, false},
 		{"Non-comparable adj + MOD_COMPARATIVE", "own", MOD_COMPARATIVE, WC_ADJECTIVE, false},
