@@ -73,7 +73,7 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
-	if n, err := gen.Noun(); err == nil {
+	if n, err := gen.Noun(MOD_NONE); err == nil {
 		t.Errorf("Failed for singular: plural-only noun was not rejected. Noun returned: %s", n)
 	}
 
@@ -87,7 +87,7 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Errorf("Failed for plural: uncountable noun was not rejected. Noun returned: %s", n)
 	}
 
-	if _, err = gen.Noun(); err != nil {
+	if _, err = gen.Noun(MOD_NONE); err != nil {
 		t.Errorf("Failed for singular: uncountable noun was rejected: %v", err)
 	}
 }
@@ -151,7 +151,7 @@ func TestGenerator_Transform(t *testing.T) {
 	}
 
 	for _, c := range testCases {
-		out, err := gen.Transform(c.word, c.wc)
+		out, err := gen.Transform(c.word, c.wc, MOD_NONE)
 
 		if c.good {
 			if err != nil {
@@ -179,7 +179,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 	type testCase struct {
 		description string
 		word        string
-		mods        []Mod
+		mods        Mod
 		wc          WordClass
 		goodCase    bool
 	}
@@ -190,15 +190,15 @@ func TestGenerator_TransformWord(t *testing.T) {
 	}
 
 	cases := []testCase{
-		{"WordClass-Mod incompatibility", "aa", []Mod{MOD_COMPARATIVE}, WC_NOUN, false},
-		{"Uncountable noun + MOD_PLURAL", "aa", []Mod{MOD_PLURAL}, WC_NOUN, false},
-		{"Non-comparable adj + MOD_COMPARATIVE", "own", []Mod{MOD_COMPARATIVE}, WC_ADJECTIVE, false},
-		{"Non-comparable adj + MOD_SUPERLATIVE", "own", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, false},
-		{"Non-comparable adv + MOD_COMPARATIVE", "cryptographically", []Mod{MOD_COMPARATIVE}, WC_ADVERB, false},
-		{"Non-comparable adv + MOD_SUPERLATIVE", "cryptographically", []Mod{MOD_SUPERLATIVE}, WC_ADVERB, false},
-		{"Noun in adj.ncmp + MOD_SUPERLATIVE", "arctic", []Mod{MOD_PLURAL}, WC_NOUN, true},
-		{"Verb in adj.ncmp + MOD_PLURAL", "present", []Mod{MOD_PRESENT_SIMPLE, MOD_PLURAL}, WC_VERB, true},
-		{"Adj in noun.unc + MOD_SUPERLATIVE", "cool", []Mod{MOD_SUPERLATIVE}, WC_ADJECTIVE, true},
+		{"WordClass-Mod incompatibility", "aa", MOD_COMPARATIVE, WC_NOUN, false},
+		{"Uncountable noun + MOD_PLURAL", "aa", MOD_PLURAL, WC_NOUN, false},
+		{"Non-comparable adj + MOD_COMPARATIVE", "own", MOD_COMPARATIVE, WC_ADJECTIVE, false},
+		{"Non-comparable adj + MOD_SUPERLATIVE", "own", MOD_SUPERLATIVE, WC_ADJECTIVE, false},
+		{"Non-comparable adv + MOD_COMPARATIVE", "cryptographically", MOD_COMPARATIVE, WC_ADVERB, false},
+		{"Non-comparable adv + MOD_SUPERLATIVE", "cryptographically", MOD_SUPERLATIVE, WC_ADVERB, false},
+		{"Noun in adj.ncmp + MOD_SUPERLATIVE", "arctic", MOD_PLURAL, WC_NOUN, true},
+		{"Verb in adj.ncmp + MOD_PLURAL", "present", MOD_PRESENT_SIMPLE | MOD_PLURAL, WC_VERB, true},
+		{"Adj in noun.unc + MOD_SUPERLATIVE", "cool", MOD_SUPERLATIVE, WC_ADJECTIVE, true},
 	}
 
 	for _, c := range cases {
@@ -207,7 +207,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 			t.Fatalf("'%s' (WordClass %d) does not exist in the word database.", c.word, c.wc)
 		}
 
-		out, err := gen.TransformWord(word, c.wc, c.mods...)
+		out, err := gen.TransformWord(word, c.wc, c.mods)
 
 		switch c.goodCase {
 		case true:
@@ -229,7 +229,7 @@ func TestGenerator_generateModifier(t *testing.T) {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
-	if _, err = gen.Adjective(); err != nil {
+	if _, err = gen.Adjective(MOD_NONE); err != nil {
 		t.Errorf("Failed for positive: non-comparable adjective was rejected: %v", err)
 	}
 
@@ -241,7 +241,7 @@ func TestGenerator_generateModifier(t *testing.T) {
 		t.Errorf("Failed for superlative: non-comparable adjective was not rejected. Adjective returned: %s", a)
 	}
 
-	if _, err = gen.Adverb(); err != nil {
+	if _, err = gen.Adverb(MOD_NONE); err != nil {
 		t.Errorf("Failed for positive: non-comparable adverb was rejected: %v", err)
 	}
 

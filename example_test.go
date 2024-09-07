@@ -23,7 +23,7 @@ func ExampleGenerator_Adjective() {
 func ExampleGenerator_Adverb() {
 	gen, _ := neng.DefaultGenerator()
 
-	adv, _ := gen.Adverb()
+	adv, _ := gen.Adverb(neng.MOD_NONE)
 	fmt.Println(adv)
 }
 
@@ -71,7 +71,7 @@ func ExampleGenerator_Transform() {
 	// because it searches the database for the specified string every time. Refer to Generator.Find
 	// for an example of bulk transformation.
 
-	v, _ := gen.Transform("muffin", neng.WC_NOUN, neng.MOD_PLURAL, neng.MOD_CASE_TITLE)
+	v, _ := gen.Transform("muffin", neng.WC_NOUN, neng.MOD_PLURAL|neng.MOD_CASE_TITLE)
 
 	fmt.Println(v)
 	// Output:
@@ -107,7 +107,7 @@ func ExampleNewGenerator() {
 		false,                  // No need for sorting and length checks in this case
 	)
 
-	adj, _ := gen.Adjective()
+	adj, _ := gen.Adjective(0)
 	adv, _ := gen.Adverb(neng.MOD_CASE_TITLE)
 	noun, _ := gen.Noun(neng.MOD_PLURAL)
 	verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
@@ -184,7 +184,7 @@ func ExampleNewWordFromParams() {
 func ExampleWordClass_CompatibleWith() {
 	wc := neng.WC_VERB
 
-	fmt.Println(wc.CompatibleWith(neng.MOD_PLURAL, neng.MOD_PRESENT_SIMPLE))
+	fmt.Println(wc.CompatibleWith(neng.MOD_PLURAL | neng.MOD_PRESENT_SIMPLE))
 	fmt.Println(wc.CompatibleWith(neng.MOD_PLURAL))
 	// Output:
 	// true
