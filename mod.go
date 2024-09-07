@@ -41,7 +41,11 @@ const (
 	mod_undefined
 )
 
-// Returns true if any of the specified mods are enabled in m.
+/*
+Returns true if any of the specified mods are enabled in m.
+Do not use this method to test for MOD_NONE. Use a simple
+comparison instead.
+*/
 func (m Mod) Enabled(mods Mod) bool {
 	return m&mods != 0
 }
