@@ -97,6 +97,37 @@ func ExampleGenerator_Verb() {
 	fmt.Println(verb)
 }
 
+func ExampleMod_Enabled() {
+	mods := neng.MOD_GERUND | neng.MOD_CASE_UPPER
+
+	fmt.Println(mods.Enabled(neng.MOD_GERUND))
+	fmt.Println(mods.Enabled(neng.MOD_PLURAL))
+
+	// Returns true if any Mod value is enabled
+	fmt.Println(mods.Enabled(neng.MOD_GERUND | neng.MOD_PAST_PARTICIPLE))
+	fmt.Println(mods.Enabled(neng.MOD_COMPARATIVE | neng.MOD_PLURAL))
+
+	// If you need to test for MOD_NONE, use comparison instead of Mod.Enabled
+	fmt.Println(mods == neng.MOD_NONE)
+	// Output:
+	// true
+	// false
+	// true
+	// false
+	// false
+}
+
+func ExampleMod_Undefined() {
+	def := neng.MOD_GERUND
+	ndef := neng.Mod(65536)
+
+	fmt.Println(def.Undefined())
+	fmt.Println(ndef.Undefined())
+	// Output:
+	// false
+	// true
+}
+
 func ExampleNewGenerator() {
 	gen, _ := neng.NewGenerator(
 		[]string{"3strong"},    // Adjectives
