@@ -300,14 +300,14 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string,
 			w = plural(word)
 		}
 	case WC_VERB:
-		if mods.Enabled(MOD_GERUND) {
-			w = gerund(word.word)
-		} else if mods.Enabled(MOD_PAST_SIMPLE) {
+		if mods.Enabled(MOD_PAST_SIMPLE) {
 			w = pastSimple(word, mods.Enabled(MOD_PLURAL))
 		} else if mods.Enabled(MOD_PAST_PARTICIPLE) {
 			w = pastParticiple(word)
 		} else if mods.Enabled(MOD_PRESENT_SIMPLE) {
 			w = presentSimple(word.word, mods.Enabled(MOD_PLURAL))
+		} else if mods.Enabled(MOD_GERUND) {
+			w = gerund(word.word)
 		}
 	}
 
