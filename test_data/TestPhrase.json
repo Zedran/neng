@@ -18,5 +18,10 @@
     "%Nv %n %m":      "stashes snowfall nicely",
     "%Nv %n %cm":     "stashes snowfall more nicely",
     "the %sa %n":     "the biggest snowfall",
-    "%a %m %n %v":    "big nicely snowfall stash"
+    "%a %m %n %v":    "big nicely snowfall stash",
+    "%csa %scm":      "bigger more nicely",
+    "%lgv %lsm":      "stashing most nicely",
+    "%glv %sla":      "stashing biggest",
+    "%g2v %2gv":      "stashed stashed",
+    "%ltun %utn":     "snowfall Snowfall"
 }
