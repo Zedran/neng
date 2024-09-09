@@ -91,7 +91,7 @@ Transformations can only be applied to compatible parts of speech.
 
 Symbols are used to request transformations for words within a phrase. Package constants of type [`Mod`](./mod.go#L4) are designed to work with "single-word" methods.
 
-`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If more than one modifier is specified, the one with lower value is applied.
+`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If multiple modifiers of the same kind are specified, the one with the lowest value is applied. The above-mentioned verb transformations with `MOD_PLURAL` are exceptions to this rule.
 
 ## State of the vocabulary
 
