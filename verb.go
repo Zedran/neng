@@ -70,7 +70,7 @@ Handles past tense and gerund transformations for verbs ending with consonant-vo
   - wi: wordInfo created during earlier processing steps
   - tenseExceptions: tense-specific words whose endings are doubled, regardless of transformation rules based on syllable count and verb endings
 */
-func handleCVC(verb, tenseEnding string, seq string, tenseExceptions []string) string {
+func handleCVC(verb, tenseEnding, seq string, tenseExceptions []string) string {
 	if strings.HasSuffix(verb, "c") && verb != "sic" {
 		if strings.HasSuffix(verb, "lyric") {
 			return verb + tenseEnding
