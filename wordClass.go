@@ -10,7 +10,12 @@ const (
 	WC_VERB
 )
 
-/* Returns true if wc is compatible with all of the received mods. */
+/*
+Returns true if WordClass is compatible with all of the received mods.
+This method tests defined Mod values only - undefined Mod values
+have undefined compatibility. Use Mod.Undefined to ensure that
+all mods are defined.
+*/
 func (wc WordClass) CompatibleWith(mods Mod) bool {
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
