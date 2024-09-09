@@ -7,5 +7,6 @@ scripts/__pycache__/
 res/filters/*.auto
 
 TODO.md
+Taskfile.yml
 coverage.html
 coverage.out
