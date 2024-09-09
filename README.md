@@ -38,7 +38,7 @@ func main() {
     verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 
     // Transforming an arbitrary word
-    word, _ := gen.Transform("involve", neng.WC_VERB, neng.MOD_GERUND, neng.MOD_CASE_TITLE)
+    word, _ := gen.Transform("involve", neng.WC_VERB, neng.MOD_GERUND|neng.MOD_CASE_TITLE)
 
     fmt.Printf("Phrase -> %s\nVerb   -> %s\nWord   -> %s\n", phrase, verb, word)
 }
@@ -89,7 +89,9 @@ Transformations can only be applied to compatible parts of speech.
 
 \*`MOD_PLURAL` is only compatible with verbs when combined with `MOD_PAST_SIMPLE` or `MOD_PRESENT_SIMPLE`.
 
-Symbols are used to specify transformation parameters for words within a phrase. Package constants are designed to work with "single-word" methods.
+Symbols are used to request transformations for words within a phrase. Package constants of type [`Mod`](./mod.go#L4) are designed to work with "single-word" methods.
+
+`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If multiple modifiers of the same kind are specified, the one with the lowest value is applied. The above-mentioned verb transformations with `MOD_PLURAL` are exceptions to this rule.
 
 ## State of the vocabulary
 

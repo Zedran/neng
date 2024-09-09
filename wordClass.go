@@ -1,7 +1,5 @@
 package neng
 
-import "slices"
-
 // WordClass type helps the Generator to differentiate parts of speech.
 type WordClass uint8
 
@@ -12,34 +10,28 @@ const (
 	WC_VERB
 )
 
-/* Returns true if wc is compatible with all of the received mods. */
-func (wc WordClass) CompatibleWith(mods ...Mod) bool {
-	for _, m := range mods {
-		switch m {
+/*
+Returns true if WordClass is compatible with all of the received mods.
+This method tests defined Mod values only - undefined Mod values
+have undefined compatibility. Use Mod.Undefined to ensure that
+all mods are defined.
+*/
+func (wc WordClass) CompatibleWith(mods Mod) bool {
+	switch wc {
+	case WC_ADJECTIVE, WC_ADVERB:
+		if mods.Enabled(MOD_PLURAL | MOD_PAST_SIMPLE | MOD_PAST_PARTICIPLE | MOD_PRESENT_SIMPLE | MOD_GERUND) {
+			return false
+		}
+	case WC_NOUN:
+		if mods.Enabled(MOD_PAST_SIMPLE | MOD_PAST_PARTICIPLE | MOD_PRESENT_SIMPLE | MOD_GERUND | MOD_COMPARATIVE | MOD_SUPERLATIVE) {
+			return false
+		}
+	case WC_VERB:
+		if mods.Enabled(MOD_COMPARATIVE | MOD_SUPERLATIVE) {
+			return false
+		}
 
-		case MOD_PLURAL:
-			if wc == WC_ADJECTIVE || wc == WC_ADVERB {
-				return false
-			}
-
-			if wc == WC_VERB && !slices.Contains(mods, MOD_PAST_SIMPLE) && !slices.Contains(mods, MOD_PRESENT_SIMPLE) {
-				return false
-			}
-
-		case MOD_PAST_SIMPLE, MOD_PAST_PARTICIPLE, MOD_PRESENT_SIMPLE, MOD_GERUND:
-			if wc != WC_VERB {
-				return false
-			}
-
-		case MOD_COMPARATIVE, MOD_SUPERLATIVE:
-			if wc != WC_ADJECTIVE && wc != WC_ADVERB {
-				return false
-			}
-
-		case MOD_CASE_LOWER, MOD_CASE_TITLE, MOD_CASE_UPPER:
-			continue
-
-		default: // Undefined Mod
+		if mods.Enabled(MOD_PLURAL) && !mods.Enabled(MOD_PAST_SIMPLE|MOD_PRESENT_SIMPLE) {
 			return false
 		}
 	}

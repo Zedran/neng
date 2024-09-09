@@ -1,11 +1,14 @@
 package neng
 
 // Modification parameter for a generated word
-type Mod uint8
+type Mod uint
+
+// Do not transform word in any way
+const MOD_NONE Mod = 0
 
 const (
 	// Transform a noun or a verb (Past Simple, Present Simple) into its plural form
-	MOD_PLURAL Mod = iota
+	MOD_PLURAL Mod = 1 << iota
 
 	// Add Past Simple suffix to a verb or substitute its irregular form
 	MOD_PAST_SIMPLE
@@ -33,7 +36,24 @@ const (
 
 	// Transform a word to UPPER CASE
 	MOD_CASE_UPPER
+
+	// Internal value, declared to mark the end of usable Mod values
+	mod_undefined
 )
+
+/*
+Returns true if any of the specified mods are enabled in m.
+Do not use this method to test for MOD_NONE. Use a simple
+comparison instead.
+*/
+func (m Mod) Enabled(mods Mod) bool {
+	return m&mods != 0
+}
+
+// Returns true if an undefined Mod value is held.
+func (m Mod) Undefined() bool {
+	return m >= mod_undefined
+}
 
 /* Translates flag character into Mod value. */
 func flagToMod(flag rune) Mod {
@@ -59,6 +79,6 @@ func flagToMod(flag rune) Mod {
 	case 'u':
 		return MOD_CASE_UPPER
 	default:
-		return Mod(255)
+		return Mod(mod_undefined)
 	}
 }

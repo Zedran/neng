@@ -23,7 +23,7 @@ func ExampleGenerator_Adjective() {
 func ExampleGenerator_Adverb() {
 	gen, _ := neng.DefaultGenerator()
 
-	adv, _ := gen.Adverb()
+	adv, _ := gen.Adverb(neng.MOD_NONE)
 	fmt.Println(adv)
 }
 
@@ -71,7 +71,7 @@ func ExampleGenerator_Transform() {
 	// because it searches the database for the specified string every time. Refer to Generator.Find
 	// for an example of bulk transformation.
 
-	v, _ := gen.Transform("muffin", neng.WC_NOUN, neng.MOD_PLURAL, neng.MOD_CASE_TITLE)
+	v, _ := gen.Transform("muffin", neng.WC_NOUN, neng.MOD_PLURAL|neng.MOD_CASE_TITLE)
 
 	fmt.Println(v)
 	// Output:
@@ -97,6 +97,37 @@ func ExampleGenerator_Verb() {
 	fmt.Println(verb)
 }
 
+func ExampleMod_Enabled() {
+	mods := neng.MOD_GERUND | neng.MOD_CASE_UPPER
+
+	fmt.Println(mods.Enabled(neng.MOD_GERUND))
+	fmt.Println(mods.Enabled(neng.MOD_PLURAL))
+
+	// Returns true if any Mod value is enabled
+	fmt.Println(mods.Enabled(neng.MOD_GERUND | neng.MOD_PAST_PARTICIPLE))
+	fmt.Println(mods.Enabled(neng.MOD_COMPARATIVE | neng.MOD_PLURAL))
+
+	// If you need to test for MOD_NONE, use comparison instead of Mod.Enabled
+	fmt.Println(mods == neng.MOD_NONE)
+	// Output:
+	// true
+	// false
+	// true
+	// false
+	// false
+}
+
+func ExampleMod_Undefined() {
+	def := neng.MOD_GERUND
+	ndef := neng.Mod(65536)
+
+	fmt.Println(def.Undefined())
+	fmt.Println(ndef.Undefined())
+	// Output:
+	// false
+	// true
+}
+
 func ExampleNewGenerator() {
 	gen, _ := neng.NewGenerator(
 		[]string{"3strong"},    // Adjectives
@@ -107,7 +138,7 @@ func ExampleNewGenerator() {
 		false,                  // No need for sorting and length checks in this case
 	)
 
-	adj, _ := gen.Adjective()
+	adj, _ := gen.Adjective(0)
 	adv, _ := gen.Adverb(neng.MOD_CASE_TITLE)
 	noun, _ := gen.Noun(neng.MOD_PLURAL)
 	verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
@@ -184,7 +215,7 @@ func ExampleNewWordFromParams() {
 func ExampleWordClass_CompatibleWith() {
 	wc := neng.WC_VERB
 
-	fmt.Println(wc.CompatibleWith(neng.MOD_PLURAL, neng.MOD_PRESENT_SIMPLE))
+	fmt.Println(wc.CompatibleWith(neng.MOD_PLURAL | neng.MOD_PRESENT_SIMPLE))
 	fmt.Println(wc.CompatibleWith(neng.MOD_PLURAL))
 	// Output:
 	// true

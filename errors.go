@@ -44,13 +44,13 @@ var (
 	// Error returned by Generator.TransformWord, if uncountable noun is received along with pluralization modifier
 	errUncountable error = errors.New("pluralization requested, but the provided word is uncountable")
 
-	// Error returned from NewWordFromParams, if undefined FormType is passed as ft parameter, e.g. FormType(123)
+	// Error returned from NewWordFromParams, if undefined FormType is passed as ft parameter, e.g. FormType(65536)
 	errUndefinedFormType error = errors.New("undefined FormType")
 
-	// Error returned by Generator.TransformWord, if undefined modifier value is received, e.g. Mod(123)
+	// Error returned by Generator.TransformWord, if undefined modifier value is received, e.g. Mod(65536)
 	errUndefinedMod error = errors.New("undefined modifier")
 
-	// Error returned by Generator.Find, if undefined WordClass value is received, e.g. WordClass(123)
+	// Error returned by Generator.Find, if undefined WordClass value is received, e.g. WordClass(65536)
 	errUndefinedWordClass error = errors.New("undefined WordClass")
 
 	// Error returned by Generator.Phrase, if pattern contains undefined escaped character

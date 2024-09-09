@@ -56,8 +56,8 @@ Returns an error if:
   - an incompatible Mod is received (relays from Generator.Transform)
   - iteration limit is reached while attempting to generate a comparable adjective
 */
-func (gen *Generator) Adjective(mods ...Mod) (string, error) {
-	return gen.generateModifier(WC_ADJECTIVE, mods...)
+func (gen *Generator) Adjective(mods Mod) (string, error) {
+	return gen.generateModifier(WC_ADJECTIVE, mods)
 }
 
 /*
@@ -68,8 +68,8 @@ Returns an error if:
   - an incompatible Mod is received (relays from Generator.Transform)
   - iteration limit is reached while attempting to generate a comparable adverb
 */
-func (gen *Generator) Adverb(mods ...Mod) (string, error) {
-	return gen.generateModifier(WC_ADVERB, mods...)
+func (gen *Generator) Adverb(mods Mod) (string, error) {
+	return gen.generateModifier(WC_ADVERB, mods)
 }
 
 /*
@@ -117,10 +117,10 @@ Returns an error if:
   - an incompatible Mod is received (relays from Generator.Transform)
   - iteration limit is reached while attempting to generate a countable noun
 */
-func (gen *Generator) Noun(mods ...Mod) (string, error) {
+func (gen *Generator) Noun(mods Mod) (string, error) {
 	var excluded FormType
 
-	if slices.Contains(mods, MOD_PLURAL) {
+	if mods.Enabled(MOD_PLURAL) {
 		excluded = FT_UNCOUNTABLE
 	} else {
 		excluded = FT_PLURAL_ONLY
@@ -128,7 +128,7 @@ func (gen *Generator) Noun(mods ...Mod) (string, error) {
 
 	for range gen.iterLimit {
 		if n := gen.noun[randIndex(len(gen.noun))]; n.ft != excluded {
-			return gen.TransformWord(n, WC_NOUN, mods...)
+			return gen.TransformWord(n, WC_NOUN, mods)
 		}
 	}
 
@@ -181,8 +181,8 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 		// If true, the next character is interpreted as syntax character
 		escaped bool
 
-		// Container for modifiers for the current word
-		mods []Mod
+		// Collects Mod values for the current word
+		mods Mod
 
 		// Built phrase
 		phrase strings.Builder
@@ -195,9 +195,9 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				phrase.WriteRune(c)
 				escaped = false
 			case '2', '3', 'N', 'c', 'g', 'l', 'p', 's', 't', 'u':
-				mods = append(mods, flagToMod(c))
+				mods |= flagToMod(c)
 			case 'a', 'm', 'n', 'v':
-				word, err := gen.getGenerator(c)(mods...)
+				word, err := gen.getGenerator(c)(mods)
 				if err != nil {
 					return "", err
 				}
@@ -212,7 +212,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			}
 
 			escaped = true
-			mods = make([]Mod, 0)
+			mods = MOD_NONE
 		} else {
 			phrase.WriteRune(c)
 		}
@@ -239,13 +239,13 @@ Relays an error from Generator.TransformWord if:
   - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
   - transformation into plural form is requested for an uncountable noun
 */
-func (gen *Generator) Transform(word string, wc WordClass, mods ...Mod) (string, error) {
+func (gen *Generator) Transform(word string, wc WordClass, mods Mod) (string, error) {
 	w, err := gen.Find(word, wc)
 	if err != nil {
 		return "", err
 	}
 
-	return gen.TransformWord(w, wc, mods...)
+	return gen.TransformWord(w, wc, mods)
 }
 
 /*
@@ -262,59 +262,52 @@ Returns an error if:
   - transformation into comparative or superlative form is requested for non-comparable adjective or adverb
   - transformation into plural form is requested for an uncountable noun
 */
-func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (string, error) {
-	slices.Sort(mods)
-	mods = slices.Compact(mods)
+func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string, error) {
+	if mods == MOD_NONE {
+		return word.word, nil
+	}
 
-	if !wc.CompatibleWith(mods...) {
+	if mods.Undefined() {
+		return "", errUndefinedMod
+	}
+
+	if !wc.CompatibleWith(mods) {
 		return "", errIncompatible
 	}
 
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
-		if word.ft == FT_NON_COMPARABLE && (slices.Contains(mods, MOD_COMPARATIVE) || slices.Contains(mods, MOD_SUPERLATIVE)) {
+		if word.ft == FT_NON_COMPARABLE && mods.Enabled(MOD_COMPARATIVE|MOD_SUPERLATIVE) {
 			return "", errNonComparable
 		}
 	case WC_NOUN:
-		if word.ft == FT_UNCOUNTABLE && slices.Contains(mods, MOD_PLURAL) {
+		if word.ft == FT_UNCOUNTABLE && mods.Enabled(MOD_PLURAL) {
 			return "", errUncountable
 		}
 	}
 
-	var (
-		caseTransformation func(string) string
-		pluralMod          bool
-		w                  string
-	)
+	var w string
 
-	for _, m := range mods {
-		switch m {
-		case MOD_PLURAL:
-			if wc == WC_NOUN {
-				w = plural(word)
-				continue
-			}
-			pluralMod = true
-		case MOD_GERUND:
-			w = gerund(word.word)
-		case MOD_PRESENT_SIMPLE:
-			w = presentSimple(word.word, pluralMod)
-		case MOD_PAST_SIMPLE:
-			w = pastSimple(word, pluralMod)
-		case MOD_PAST_PARTICIPLE:
-			w = pastParticiple(word)
-		case MOD_COMPARATIVE:
+	switch wc {
+	case WC_ADJECTIVE, WC_ADVERB:
+		if mods.Enabled(MOD_COMPARATIVE) {
 			w = comparative(word)
-		case MOD_SUPERLATIVE:
+		} else if mods.Enabled(MOD_SUPERLATIVE) {
 			w = superlative(word)
-		case MOD_CASE_LOWER:
-			caseTransformation = gen.caser.toLower
-		case MOD_CASE_TITLE:
-			caseTransformation = gen.caser.toTitle
-		case MOD_CASE_UPPER:
-			caseTransformation = gen.caser.toUpper
-		default:
-			return "", errUndefinedMod
+		}
+	case WC_NOUN:
+		if mods.Enabled(MOD_PLURAL) {
+			w = plural(word)
+		}
+	case WC_VERB:
+		if mods.Enabled(MOD_PAST_SIMPLE) {
+			w = pastSimple(word, mods.Enabled(MOD_PLURAL))
+		} else if mods.Enabled(MOD_PAST_PARTICIPLE) {
+			w = pastParticiple(word)
+		} else if mods.Enabled(MOD_PRESENT_SIMPLE) {
+			w = presentSimple(word.word, mods.Enabled(MOD_PLURAL))
+		} else if mods.Enabled(MOD_GERUND) {
+			w = gerund(word.word)
 		}
 	}
 
@@ -324,8 +317,13 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (stri
 		w = word.word
 	}
 
-	if caseTransformation != nil {
-		w = caseTransformation(w)
+	switch true {
+	case mods.Enabled(MOD_CASE_LOWER):
+		w = gen.caser.toLower(w)
+	case mods.Enabled(MOD_CASE_TITLE):
+		w = gen.caser.toTitle(w)
+	case mods.Enabled(MOD_CASE_UPPER):
+		w = gen.caser.toUpper(w)
 	}
 
 	return w, nil
@@ -335,8 +333,8 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods ...Mod) (stri
 Generates a single random verb and transforms it according to mods.
 Returns an error if an undefined Mod is received.
 */
-func (gen *Generator) Verb(mods ...Mod) (string, error) {
-	return gen.TransformWord(gen.verb[randIndex(len(gen.verb))], WC_VERB, mods...)
+func (gen *Generator) Verb(mods Mod) (string, error) {
+	return gen.TransformWord(gen.verb[randIndex(len(gen.verb))], WC_VERB, mods)
 }
 
 /*
@@ -347,7 +345,7 @@ Returns an error if:
   - an incompatible Mod is received (relays from Generator.TransformWord)
   - Generator.iterLimit is reached while attempting to generate a comparable adjective or adverb
 */
-func (gen *Generator) generateModifier(wc WordClass, mods ...Mod) (string, error) {
+func (gen *Generator) generateModifier(wc WordClass, mods Mod) (string, error) {
 	var items []*Word
 
 	if wc == WC_ADJECTIVE {
@@ -356,13 +354,13 @@ func (gen *Generator) generateModifier(wc WordClass, mods ...Mod) (string, error
 		items = gen.adv
 	}
 
-	if !slices.Contains(mods, MOD_COMPARATIVE) && !slices.Contains(mods, MOD_SUPERLATIVE) {
-		return gen.TransformWord(items[randIndex(len(items))], wc, mods...)
+	if !mods.Enabled(MOD_COMPARATIVE | MOD_SUPERLATIVE) {
+		return gen.TransformWord(items[randIndex(len(items))], wc, mods)
 	}
 
 	for range gen.iterLimit {
 		if a := items[randIndex(len(items))]; a.ft != FT_NON_COMPARABLE {
-			return gen.TransformWord(a, wc, mods...)
+			return gen.TransformWord(a, wc, mods)
 		}
 	}
 
@@ -375,7 +373,7 @@ It accepts an insertion command character and returns the corresponding generato
 nil is never returned as this method is only called when a valid insertion command
 is encountered.
 */
-func (gen *Generator) getGenerator(flag rune) func(...Mod) (string, error) {
+func (gen *Generator) getGenerator(flag rune) func(Mod) (string, error) {
 	switch flag {
 	case 'a':
 		return gen.Adjective
