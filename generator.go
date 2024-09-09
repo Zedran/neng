@@ -252,7 +252,7 @@ func (gen *Generator) Transform(word string, wc WordClass, mods Mod) (string, er
 Transforms a word according to specified mods. Not all mods are compatible with every WordClass.
 
 Assumes the following about the 'word' field of the 'word' argument:
-  - Word is lower case (irrelevant if case transformation is requested)
+  - Word.word is lower case
   - Adjectives and adverbs are in their positive forms
   - Nouns are in their singular forms
   - Verbs are in their base forms
