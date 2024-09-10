@@ -9,7 +9,7 @@ import (
 	"github.com/Zedran/neng"
 )
 
-const HELP string = "Specify your phrase.\n\n" +
+const HELP string = "Specify your pattern.\n\n" +
 	"a - adjective         m - adverb\n" +
 	"n - noun              v - verb\n\n" +
 	"2 - Past Simple       3 - Past Participle    N - Present Simple\n" +
@@ -24,26 +24,23 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var (
-		pattern string
-		phrase  string
-		scanner = bufio.NewScanner(os.Stdin)
-	)
+	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Printf("%s", HELP)
 
-	for {
-		fmt.Print("pattern> ")
-
-		if scanner.Scan() {
-			pattern = scanner.Text()
+	fmt.Print("pattern> ")
+	for scanner.Scan() {
+		if err := scanner.Err(); err != nil {
+			break
 		}
 
-		phrase, err = gen.Phrase(pattern)
+		phrase, err := gen.Phrase(scanner.Text())
 		if err != nil {
 			phrase = "err: " + err.Error()
 		}
 
 		fmt.Printf("       > %s\n", phrase)
+		fmt.Print("pattern> ")
 	}
+	fmt.Println()
 }
