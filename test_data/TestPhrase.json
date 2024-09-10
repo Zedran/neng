@@ -23,5 +23,6 @@
     "%lgv %lsm":      "stashing most nicely",
     "%glv %sla":      "stashing biggest",
     "%g2v %2gv":      "stashed stashed",
-    "%ltun %utn":     "snowfall Snowfall"
+    "%ltun %utn":     "snowfall Snowfall",
+    "%%s":            "%s"
 }

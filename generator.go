@@ -163,6 +163,7 @@ Error is returned if:
   - provided pattern is empty
   - character other than the above is escaped with a '%' sign
   - a single '%' ends the pattern
+  - transformation specifier ends the pattern ("%t2")
   - incompatible modifier is assigned to the word
 
 Error is not returned if:
@@ -195,6 +196,9 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				phrase.WriteRune(c)
 				escaped = false
 			case '2', '3', 'N', 'c', 'g', 'l', 'p', 's', 't', 'u':
+				if i == len(pattern)-1 {
+					return "", errSpecStrTerm
+				}
 				mods |= flagToMod(c)
 			case 'a', 'm', 'n', 'v':
 				word, err := gen.getGenerator(c)(mods)

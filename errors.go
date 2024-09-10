@@ -41,6 +41,9 @@ var (
 	// Returned by Generator.Find if the specified word is not found
 	errNotFound error = errors.New("no matches found")
 
+	// Error returned by Generator.Phrase, if pattern ends with transformation specifier (e.g "%t2")
+	errSpecStrTerm error = errors.New("transformation specifier ends the pattern")
+
 	// Error returned by Generator.TransformWord, if uncountable noun is received along with pluralization modifier
 	errUncountable error = errors.New("pluralization requested, but the provided word is uncountable")
 
