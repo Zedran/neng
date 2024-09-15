@@ -40,19 +40,19 @@ func cmpIrr(irr, b string) int {
 // Compiles the main word list and any number of supplementary lists into the embedded file
 // stored in EMBED_DIR/mainFname.
 func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
-	const errFmt = "%-5s: %w"
+	const ERR_FMT = "%-5s: %w"
 
 	defer wg.Done()
 
 	main, err := common.ReadFile(filepath.Join(RES_DIR, mainFname))
 	if err != nil {
-		chErr <- fmt.Errorf(errFmt, mainFname, err)
+		chErr <- fmt.Errorf(ERR_FMT, mainFname, err)
 		return
 	}
 
 	supplementary, err := readSupWLs(supFnames...)
 	if err != nil {
-		chErr <- fmt.Errorf(errFmt, mainFname, err)
+		chErr <- fmt.Errorf(ERR_FMT, mainFname, err)
 		return
 	}
 
@@ -62,7 +62,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames .
 	}
 
 	if err = common.WriteFile(filepath.Join(EMBED_DIR, mainFname), embed, false); err != nil {
-		chErr <- fmt.Errorf(errFmt, mainFname, err)
+		chErr <- fmt.Errorf(ERR_FMT, mainFname, err)
 		return
 	}
 

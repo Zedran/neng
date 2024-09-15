@@ -50,20 +50,20 @@ func applyFilter(lines, filter []string) []string {
 func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements map[string]string) {
 	const (
 		LICENSE_OFFSET int    = 29
-		errFmt         string = "%-5s: %w"
+		ERR_FMT        string = "%-5s: %w"
 	)
 
 	defer wg.Done()
 
 	lines, err := common.ReadFile(filepath.Join(WNET_DIR, "data."+srcFname))
 	if err != nil {
-		chErr <- fmt.Errorf(errFmt, srcFname, err)
+		chErr <- fmt.Errorf(ERR_FMT, srcFname, err)
 		return
 	}
 
 	filter, err := common.ReadFile(filepath.Join(FILTERS_DIR, srcFname+".filter"))
 	if err != nil {
-		chErr <- fmt.Errorf(errFmt, srcFname, err)
+		chErr <- fmt.Errorf(ERR_FMT, srcFname, err)
 		return
 	}
 
@@ -83,7 +83,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 	if srcFname == "verb" {
 		irr, err := common.ReadFile(filepath.Join(RES_DIR, srcFname+".irr"))
 		if err != nil {
-			chErr <- fmt.Errorf(errFmt, srcFname, err)
+			chErr <- fmt.Errorf(ERR_FMT, srcFname, err)
 			return
 		}
 		lines = appendMissingIrr(lines, irr)
@@ -97,7 +97,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 	replaceEntries(lines, replacements)
 
 	if err = common.WriteFile(filepath.Join(RES_DIR, srcFname), lines, true); err != nil {
-		chErr <- fmt.Errorf(errFmt, srcFname, err)
+		chErr <- fmt.Errorf(ERR_FMT, srcFname, err)
 		return
 	}
 
