@@ -31,7 +31,7 @@ const (
 )
 
 // Compiles the main word list and any number of supplementary lists into the embedded file
-// of the same name as mainWL.
+// stored in EMBED_DIR/mainFname.
 func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
 	const errFmt = "%-5s: %w"
 
@@ -43,7 +43,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames .
 		return
 	}
 
-	supplementary, err := createSupWLs(supFnames...)
+	supplementary, err := readSupWLs(supFnames...)
 	if err != nil {
 		chErr <- fmt.Errorf(errFmt, mainFname, err)
 		return
@@ -74,8 +74,8 @@ func cmpStr(a, b string) int {
 	return strings.Compare(a, b)
 }
 
-// Accepts the names of supplementary files of one neng.WordClass and combines their contents into a map.
-func createSupWLs(fnames ...string) (map[FormType][]string, error) {
+// Accepts the file names of supplementary files of a single main list and combines their contents into a map.
+func readSupWLs(fnames ...string) (map[FormType][]string, error) {
 	formTypes := make(map[FormType][]string)
 
 	for _, fn := range fnames {
