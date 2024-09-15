@@ -32,7 +32,7 @@ const (
 
 // Compiles the main word list and any number of supplementary lists into the embedded file
 // of the same name as mainWL.
-func Compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
+func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
 	const errFmt = "%-5s: %w"
 
 	defer wg.Done()
@@ -159,7 +159,7 @@ func main() {
 	wg.Add(4)
 
 	for main, sup := range res {
-		go Compile(&wg, chErr, main, sup...)
+		go compile(&wg, chErr, main, sup...)
 	}
 
 	wg.Wait()

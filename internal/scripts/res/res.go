@@ -24,7 +24,7 @@ const (
 // Compiles the main resource list from WordNet source file. Accepts the following arguments:
 //   - srcFname     - name of the source file, without "data." prefix
 //   - replacements - word replacements for a given srcFname (res/misc/replacements.json)
-func Compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements map[string]string) {
+func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements map[string]string) {
 	const (
 		LICENSE_OFFSET int    = 29
 		errFmt         string = "%-5s: %w"
@@ -183,7 +183,7 @@ func main() {
 	wg.Add(4)
 
 	for _, fname := range src {
-		go Compile(&wg, chErr, fname, replacements[fname])
+		go compile(&wg, chErr, fname, replacements[fname])
 	}
 
 	wg.Wait()
