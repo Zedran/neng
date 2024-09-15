@@ -30,6 +30,13 @@ const (
 	FT_UNCOUNTABLE
 )
 
+// Cmp function for slices.BinarySearchFunc. Compares plain string and the first element
+// of a comma-separated irregular line.
+func cmpIrr(irr, b string) int {
+	i := strings.Index(irr, ",")
+	return strings.Compare(irr[:i], b)
+}
+
 // Compiles the main word list and any number of supplementary lists into the embedded file
 // stored in EMBED_DIR/mainFname.
 func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
@@ -60,29 +67,6 @@ func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames .
 	}
 
 	log.Printf("%-5s: OK\n", mainFname)
-}
-
-// Cmp function for slices.BinarySearchFunc. Compares plain string and the first element
-// of a comma-separated irregular line.
-func cmpIrr(irr, b string) int {
-	i := strings.Index(irr, ",")
-	return strings.Compare(irr[:i], b)
-}
-
-// Accepts the file names of supplementary files of a single main list and combines their contents into a map.
-func readSupWLs(fnames ...string) (map[FormType][]string, error) {
-	sup := make(map[FormType][]string)
-
-	for _, fn := range fnames {
-		wl, err := common.ReadFile(filepath.Join(RES_DIR, fn))
-		if err != nil {
-			return nil, err
-		}
-
-		sup[getFormType(fn)] = wl
-	}
-
-	return sup, nil
 }
 
 // Determines FormType value based on file extension.
@@ -128,6 +112,22 @@ func processLine(word string, supWLs map[FormType][]string) string {
 	}
 
 	return "0" + word
+}
+
+// Accepts the file names of supplementary files of a single main list and combines their contents into a map.
+func readSupWLs(fnames ...string) (map[FormType][]string, error) {
+	sup := make(map[FormType][]string)
+
+	for _, fn := range fnames {
+		wl, err := common.ReadFile(filepath.Join(RES_DIR, fn))
+		if err != nil {
+			return nil, err
+		}
+
+		sup[getFormType(fn)] = wl
+	}
+
+	return sup, nil
 }
 
 func main() {

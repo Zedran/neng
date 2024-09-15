@@ -21,6 +21,29 @@ const (
 	WNET_DIR    string = "res/wordnet"
 )
 
+// Appends irregular verbs that are missing from lines.
+func appendMissingIrr(lines []string, irr []string) []string {
+	for _, iw := range irr {
+		i := strings.Index(iw, ",")
+		if _, found := slices.BinarySearch(lines, iw[:i]); !found {
+			lines = append(lines, iw[:i])
+		}
+	}
+	return lines
+}
+
+// Removes lines that are present in filter.
+func applyFilter(lines, filter []string) []string {
+	for _, f := range filter {
+		if i, found := slices.BinarySearch(lines, f); found {
+			lines[i] = ""
+		}
+	}
+
+	slices.Sort(lines)
+	return slices.Compact(lines)[1:]
+}
+
 // Compiles the main resource list from WordNet source file. Accepts the following arguments:
 //   - srcFname     - name of the source file, without "data." prefix
 //   - replacements - word replacements for a given srcFname (res/misc/replacements.json)
@@ -79,29 +102,6 @@ func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 	}
 
 	log.Printf("%-5s: OK\n", srcFname)
-}
-
-// Appends irregular verbs that are missing from lines.
-func appendMissingIrr(lines []string, irr []string) []string {
-	for _, iw := range irr {
-		i := strings.Index(iw, ",")
-		if _, found := slices.BinarySearch(lines, iw[:i]); !found {
-			lines = append(lines, iw[:i])
-		}
-	}
-	return lines
-}
-
-// Removes lines that are present in filter.
-func applyFilter(lines, filter []string) []string {
-	for _, f := range filter {
-		if i, found := slices.BinarySearch(lines, f); found {
-			lines[i] = ""
-		}
-	}
-
-	slices.Sort(lines)
-	return slices.Compact(lines)[1:]
 }
 
 // Returns true if line contains any of the following types of entries:
