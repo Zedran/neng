@@ -1,3 +1,9 @@
+// This script builds the embedded files from resource files
+// created with [github.com/Zedran/neng/internal/scripts/res].
+//
+//	go run internal/scripts/embed/embed.go
+//
+// Run in package's root directory.
 package main
 
 import (

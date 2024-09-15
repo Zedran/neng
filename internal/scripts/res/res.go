@@ -1,3 +1,8 @@
+// This script builds the resource files from WordNet source.
+//
+//	go run internal/scripts/res/res.go
+//
+// Run in package's root directory.
 package main
 
 import (
