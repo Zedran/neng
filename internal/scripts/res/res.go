@@ -96,12 +96,13 @@ func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 	lines = applyFilter(lines, filter)
 	replaceEntries(lines, replacements)
 
-	if err = common.WriteFile(filepath.Join(RES_DIR, srcFname), lines, true); err != nil {
+	csum, err := common.WriteFile(filepath.Join(RES_DIR, srcFname), lines, true)
+	if err != nil {
 		chErr <- fmt.Errorf(ERR_FMT, srcFname, err)
 		return
 	}
 
-	log.Printf("%-5s: OK\n", srcFname)
+	fmt.Println(csum)
 }
 
 // Returns true if line contains any of the following types of entries:

@@ -61,12 +61,13 @@ func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames .
 		embed[i] = processLine(w, supplementary)
 	}
 
-	if err = common.WriteFile(filepath.Join(EMBED_DIR, mainFname), embed, false); err != nil {
+	csum, err := common.WriteFile(filepath.Join(EMBED_DIR, mainFname), embed, false)
+	if err != nil {
 		chErr <- fmt.Errorf(ERR_FMT, mainFname, err)
 		return
 	}
 
-	log.Printf("%-5s: OK\n", mainFname)
+	fmt.Println(csum)
 }
 
 // Determines FormType value based on file extension.

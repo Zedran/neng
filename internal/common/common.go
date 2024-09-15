@@ -1,6 +1,8 @@
 package common
 
 import (
+	"crypto/sha256"
+	"fmt"
 	"os"
 	"slices"
 	"strings"
@@ -16,9 +18,14 @@ func ReadFile(path string) ([]string, error) {
 }
 
 // Writes compiled word list to a resource file. Optionally, sorts lines before writing.
-func WriteFile(path string, lines []string, sort bool) error {
+// Returns SHA256 checksum of the data written and errors related to file handling.
+func WriteFile(path string, lines []string, sort bool) (string, error) {
 	if sort {
 		slices.Sort(lines)
 	}
-	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
+
+	data := []byte(strings.Join(lines, "\n"))
+	csum := fmt.Sprintf("%x  %s", sha256.Sum256(data), path)
+
+	return csum, os.WriteFile(path, data, 0644)
 }
