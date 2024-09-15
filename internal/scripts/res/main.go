@@ -10,6 +10,8 @@ import (
 	"slices"
 	"strings"
 	"sync"
+
+	"github.com/Zedran/neng/internal/common"
 )
 
 const (
@@ -30,13 +32,13 @@ func Compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 
 	defer wg.Done()
 
-	lines, err := readFile(filepath.Join(WNET_DIR, "data."+srcFname))
+	lines, err := common.ReadFile(filepath.Join(WNET_DIR, "data."+srcFname))
 	if err != nil {
 		chErr <- fmt.Errorf(errFmt, srcFname, err)
 		return
 	}
 
-	filter, err := readFile(filepath.Join(FILTERS_DIR, srcFname+".filter"))
+	filter, err := common.ReadFile(filepath.Join(FILTERS_DIR, srcFname+".filter"))
 	if err != nil {
 		chErr <- fmt.Errorf(errFmt, srcFname, err)
 		return
@@ -56,7 +58,7 @@ func Compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 	}
 
 	if srcFname == "verb" {
-		irr, err := readFile(filepath.Join(RES_DIR, srcFname+".irr"))
+		irr, err := common.ReadFile(filepath.Join(RES_DIR, srcFname+".irr"))
 		if err != nil {
 			chErr <- fmt.Errorf(errFmt, srcFname, err)
 			return
@@ -71,7 +73,7 @@ func Compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 	lines = applyFilter(lines, filter)
 	replaceEntries(lines, replacements)
 
-	if err = writeFile(srcFname, lines); err != nil {
+	if err = common.WriteFile(filepath.Join(RES_DIR, srcFname), lines, true); err != nil {
 		chErr <- fmt.Errorf(errFmt, srcFname, err)
 		return
 	}
@@ -135,16 +137,6 @@ func isProperNoun(line string) bool {
 	return false
 }
 
-// Reads a file and splits its content into lines.
-func readFile(path string) ([]string, error) {
-	stream, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	return strings.Split(string(stream), "\n"), nil
-}
-
 // Reads JSON file into a container v.
 func readJSON(fname string, v any) error {
 	stream, err := os.ReadFile(fname)
@@ -169,12 +161,6 @@ func stripParentheses(s *string) {
 	if i > -1 {
 		*s = (*s)[:i]
 	}
-}
-
-// Writes compiled word list to resource file.
-func writeFile(fname string, lines []string) error {
-	slices.Sort(lines)
-	return os.WriteFile(filepath.Join(RES_DIR, fname), []byte(strings.Join(lines, "\n")), 0644)
 }
 
 func main() {

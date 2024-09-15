@@ -9,6 +9,8 @@ import (
 	"slices"
 	"strings"
 	"sync"
+
+	"github.com/Zedran/neng/internal/common"
 )
 
 const (
@@ -35,7 +37,7 @@ func Compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames .
 
 	defer wg.Done()
 
-	main, err := readWL(mainFname)
+	main, err := common.ReadFile(filepath.Join(RES_DIR, mainFname))
 	if err != nil {
 		chErr <- fmt.Errorf(errFmt, mainFname, err)
 		return
@@ -52,7 +54,7 @@ func Compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames .
 		embed[i] = processLine(w, supplementary)
 	}
 
-	if err = writeFile(mainFname, embed); err != nil {
+	if err = common.WriteFile(filepath.Join(EMBED_DIR, mainFname), embed, false); err != nil {
 		chErr <- fmt.Errorf(errFmt, mainFname, err)
 		return
 	}
@@ -77,7 +79,7 @@ func createSupWLs(fnames ...string) (map[FormType][]string, error) {
 	formTypes := make(map[FormType][]string)
 
 	for _, fn := range fnames {
-		wl, err := readWL(fn)
+		wl, err := common.ReadFile(filepath.Join(RES_DIR, fn))
 		if err != nil {
 			return nil, err
 		}
@@ -131,21 +133,6 @@ func processLine(word string, supWLs map[FormType][]string) string {
 	}
 
 	return "0" + word
-}
-
-// Reads word list from RES_DIR and returns a slice of words.
-func readWL(fname string) ([]string, error) {
-	stream, err := os.ReadFile(filepath.Join(RES_DIR, fname))
-	if err != nil {
-		return nil, err
-	}
-
-	return strings.Split(string(stream), "\n"), nil
-}
-
-// Writes lines to the specified embedded file.
-func writeFile(fname string, lines []string) error {
-	return os.WriteFile(filepath.Join(EMBED_DIR, fname), []byte(strings.Join(lines, "\n")), 0644)
 }
 
 func main() {
