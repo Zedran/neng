@@ -71,7 +71,7 @@ func cmpIrr(irr, b string) int {
 
 // Accepts the file names of supplementary files of a single main list and combines their contents into a map.
 func readSupWLs(fnames ...string) (map[FormType][]string, error) {
-	formTypes := make(map[FormType][]string)
+	sup := make(map[FormType][]string)
 
 	for _, fn := range fnames {
 		wl, err := common.ReadFile(filepath.Join(RES_DIR, fn))
@@ -79,10 +79,10 @@ func readSupWLs(fnames ...string) (map[FormType][]string, error) {
 			return nil, err
 		}
 
-		formTypes[getFormType(fn)] = wl
+		sup[getFormType(fn)] = wl
 	}
 
-	return formTypes, nil
+	return sup, nil
 }
 
 // Determines FormType value based on file extension.
