@@ -16,7 +16,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Zedran/neng/internal/common"
+	"github.com/Zedran/neng/internal/scripts/common"
 )
 
 const (
