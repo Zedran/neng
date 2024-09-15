@@ -69,11 +69,6 @@ func cmpIrr(irr, b string) int {
 	return strings.Compare(irr[:i], b)
 }
 
-// Cmp function for slices.BinarySearchFunc. Compares two strings.
-func cmpStr(a, b string) int {
-	return strings.Compare(a, b)
-}
-
 // Accepts the file names of supplementary files of a single main list and combines their contents into a map.
 func readSupWLs(fnames ...string) (map[FormType][]string, error) {
 	formTypes := make(map[FormType][]string)
@@ -116,7 +111,7 @@ func processLine(word string, supWLs map[FormType][]string) string {
 		if ft == FT_IRREGULAR {
 			cmp = cmpIrr
 		} else {
-			cmp = cmpStr
+			cmp = strings.Compare
 		}
 
 		i, found := slices.BinarySearchFunc(wl, word, cmp)
