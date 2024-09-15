@@ -1,3 +1,4 @@
+// This internal package contains common functions used by scripts.
 package common
 
 import (
