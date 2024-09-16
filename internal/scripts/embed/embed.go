@@ -46,7 +46,7 @@ func cmpIrr(irr, b string) int {
 // Compiles the main word list and any number of supplementary lists into the embedded file
 // stored in EMBED_DIR/mainFname.
 func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
-	const ERR_FMT = "%-5s: %w"
+	const ERR_FMT = "%s: %w"
 
 	defer wg.Done()
 

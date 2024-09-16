@@ -55,7 +55,7 @@ func applyFilter(lines, filter []string) []string {
 func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements map[string]string) {
 	const (
 		LICENSE_OFFSET int    = 29
-		ERR_FMT        string = "%-5s: %w"
+		ERR_FMT        string = "%s: %w"
 	)
 
 	defer wg.Done()
