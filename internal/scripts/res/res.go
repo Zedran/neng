@@ -68,8 +68,11 @@ func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 
 	filter, err := common.ReadFile(filepath.Join(FILTERS_DIR, srcFname+".filter"))
 	if err != nil {
-		chErr <- fmt.Errorf(ERR_FMT, srcFname, err)
-		return
+		if !errors.Is(err, os.ErrNotExist) {
+			chErr <- fmt.Errorf(ERR_FMT, srcFname, err)
+			return
+		}
+		log.Printf("%s: %s.filter file not found. Proceeding without it.\n", srcFname, srcFname)
 	}
 
 	// Strip license
@@ -183,7 +186,11 @@ func main() {
 
 	err := readJSON(REPL_FILE, &replacements)
 	if err != nil {
-		log.Fatal(err)
+		if !errors.Is(err, os.ErrNotExist) {
+			log.Fatal(err)
+		}
+		err = nil
+		log.Printf("%s not found. Proceeding without it.\n", REPL_FILE)
 	}
 
 	wg.Add(4)
