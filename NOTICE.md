@@ -75,20 +75,22 @@ Princeton University and LICENSEE agrees to preserve same.
 
 ### Modifications
 
-`adj.irr` and `adj.suf` were manually constructed using their respective source files. Automated formatting via [build_res.py](./scripts/build_res.py) and [build_embed.py](./scripts/build_embed.py) scripts was applied to the remaining source files. Below is the summary of the procedure:
+`adj.irr` and `adj.suf` were manually constructed using their respective source files. Automated formatting via [scripts](internal/scripts/) was applied to the remaining source files. Below is the summary of the procedure:
 
-1. Remove license text from the beginning of the file.
-2. Extract words from the surrounding metadata.
-3. Remove single-letter words.
-4. Remove entries consisting of multiple words.
-5. Remove proper nouns and adjectives derived from them.
-6. Remove all of the content within the parentheses.
-7. Remove duplicate words.
-8. Remove compound words.
-9. Remove words containing numbers.
-10. Remove words containing apostrophes.
-11. If any irregular verbs found in `res/verb.irr` are missing from `res/verb`, add them to the main list.
-12. Filter mature and controversial language. Filter files were created with [better_profanity](https://github.com/snguyenthanh/better_profanity) Python package and then edited manually to include more words and remove false positives.
-13. Sort word lists alphabetically.
-14. Change spelling of the selected words. To review the modifications, refer to [res/misc/replacements.json](./res/misc/replacements.json).
-15. Append additional data to every word: its [FormType](./formType.go#L4) and irregular forms (if applicable). Save newly compiled lists in the [embed](./embed/) directory.
+1. [scripts/res](internal/scripts/res/res.go)
+    1. Remove license text from the beginning of the file.
+    2. Extract words from the surrounding WordNet metadata.
+    3. Remove single-letter words.
+    4. Remove words containing apostrophes.
+    5. Remove compound words.
+    6. Remove words containing numbers.
+    7. Remove entries consisting of multiple words.
+    8. Remove proper nouns and adjectives derived from them.
+    9. Remove parenthesized line content.
+    10. If any [irregular verb](res/verb.irr) is missing from the main list, append it.
+    11. Remove duplicate words.
+    12. Remove unsuitable words. The lists of excluded words are available in [res/filters](res/filters/) directory.
+    13. Change spelling of the selected words. To review the modifications, refer to [res/misc/replacements.json](res/misc/replacements.json).
+    14. Sort word lists alphabetically.
+2. [scripts/embed](internal/scripts/embed/embed.go)
+    1. Append additional data to every word: its [FormType](formType.go#L4) and irregular forms (if applicable). Save newly compiled lists in the [embed](embed/) directory.
