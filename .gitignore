@@ -2,9 +2,6 @@
 audit/
 bench/
 res/wordnet/
-scripts/__pycache__/
-
-res/filters/*.auto
 
 TODO.md
 Taskfile.yml
