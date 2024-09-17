@@ -2,6 +2,7 @@ package neng
 
 import (
 	"fmt"
+	"iter"
 	"slices"
 	"strings"
 )
@@ -70,6 +71,29 @@ Returns an error if:
 */
 func (gen *Generator) Adverb(mods Mod) (string, error) {
 	return gen.generateModifier(WC_ADVERB, mods)
+}
+
+/*
+Returns an iterator over index-*Word pairs in alphabetical order
+for a given WordClass. Returns an error if undefined WordClass is received.
+*/
+func (gen *Generator) All(wc WordClass) (iter.Seq2[int, *Word], error) {
+	var words []*Word
+
+	switch wc {
+	case WC_ADJECTIVE:
+		words = gen.adj
+	case WC_ADVERB:
+		words = gen.adv
+	case WC_NOUN:
+		words = gen.noun
+	case WC_VERB:
+		words = gen.verb
+	default:
+		return nil, errUndefinedWordClass
+	}
+
+	return slices.All(words), nil
 }
 
 /*

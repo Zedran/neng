@@ -22,6 +22,26 @@ func TestDefaultGenerator(t *testing.T) {
 	}
 }
 
+/* Tests whether Generator.All properly reacts to WordClass values. */
+func TestGenerator_All(t *testing.T) {
+	gen, err := DefaultGenerator()
+	if err != nil {
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
+	}
+
+	for wc := WC_ADJECTIVE; wc <= WC_VERB; wc++ {
+		_, err := gen.All(wc)
+		if err != nil {
+			t.Fatalf("Failed for WordClass %d: %v", wc, err)
+		}
+	}
+
+	_, err = gen.All(WordClass(255))
+	if err == nil {
+		t.Fatalf("Failed for undefined WordClass: error not returned.")
+	}
+}
+
 /* Tests whether Generator.Find correctly returns found words or errors upon failure. */
 func TestGenerator_Find(t *testing.T) {
 	type testCase struct {
