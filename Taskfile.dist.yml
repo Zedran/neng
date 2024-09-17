@@ -2,6 +2,9 @@ version: '3'
 
 output: prefixed
 
+vars:
+  SCRIPTS: 'internal/scripts'
+
 tasks:
   audit:
     aliases: [a]
@@ -35,7 +38,7 @@ tasks:
     aliases: [e]
     desc: Generate embedded files from resources
     cmds:
-      - python3 ./scripts/build_embed.py
+      - go run {{.SCRIPTS}}/embed/embed.go
     deps:
       - res
     generates:
@@ -45,14 +48,14 @@ tasks:
       - res/adv*
       - res/noun*
       - res/verb*
-      - scripts/build_embed.py
-      - scripts/utils.py
+      - '{{.SCRIPTS}}/common/common.go'
+      - '{{.SCRIPTS}}/embed/embed.go'
 
   res:
     aliases: [r]
     desc: Generate resources from WordNet lists
     cmds:
-      - python3 ./scripts/build_res.py -fm
+      - go run {{.SCRIPTS}}/res/res.go
     ignore_error: true
     generates:
       - res/adj
@@ -63,8 +66,8 @@ tasks:
       - res/filters/*
       - res/misc/*
       - res/wordnet/data.*
-      - scripts/build_res.py
-      - scripts/utils.py
+      - '{{.SCRIPTS}}/common/common.go'
+      - '{{.SCRIPTS}}/res/res.go'
 
   source:
     aliases: [s]
