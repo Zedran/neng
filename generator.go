@@ -78,22 +78,12 @@ Returns an iterator over index-*Word pairs in alphabetical order
 for a given WordClass. Returns an error if undefined WordClass is received.
 */
 func (gen *Generator) All(wc WordClass) (iter.Seq2[int, *Word], error) {
-	var words []*Word
-
-	switch wc {
-	case WC_ADJECTIVE:
-		words = gen.adj
-	case WC_ADVERB:
-		words = gen.adv
-	case WC_NOUN:
-		words = gen.noun
-	case WC_VERB:
-		words = gen.verb
-	default:
-		return nil, errUndefinedWordClass
+	list, err := gen.getList(wc)
+	if err != nil {
+		return nil, err
 	}
 
-	return slices.All(words), nil
+	return slices.All(list), nil
 }
 
 /*
@@ -107,19 +97,9 @@ Assumes the following about the 'word' argument:
   - Verbs are in their base forms
 */
 func (gen *Generator) Find(word string, wc WordClass) (*Word, error) {
-	var list []*Word
-
-	switch wc {
-	case WC_ADJECTIVE:
-		list = gen.adj
-	case WC_ADVERB:
-		list = gen.adv
-	case WC_NOUN:
-		list = gen.noun
-	case WC_VERB:
-		list = gen.verb
-	default:
-		return nil, errUndefinedWordClass
+	list, err := gen.getList(wc)
+	if err != nil {
+		return nil, err
 	}
 
 	n, found := slices.BinarySearchFunc(list, word, func(listItem *Word, word string) int {
@@ -413,6 +393,25 @@ func (gen *Generator) getGenerator(flag rune) func(Mod) (string, error) {
 		return gen.Verb
 	default:
 		return nil
+	}
+}
+
+/*
+A helper method that returns a word list corresponding to wc
+or an error if an undefined WordClass value is received.
+*/
+func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
+	switch wc {
+	case WC_ADJECTIVE:
+		return gen.adj, nil
+	case WC_ADVERB:
+		return gen.adv, nil
+	case WC_NOUN:
+		return gen.noun, nil
+	case WC_VERB:
+		return gen.verb, nil
+	default:
+		return nil, errUndefinedWordClass
 	}
 }
 
