@@ -113,6 +113,12 @@ func (gen *Generator) Find(word string, wc WordClass) (*Word, error) {
 	return nil, errNotFound
 }
 
+/* Returns length of a word list corresponding to wc. */
+func (gen *Generator) Len(wc WordClass) (int, error) {
+	list, err := gen.getList(wc)
+	return len(list), err
+}
+
 /*
 Generates a single random noun and transforms it according to mods.
 

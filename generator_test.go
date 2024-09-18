@@ -22,26 +22,6 @@ func TestDefaultGenerator(t *testing.T) {
 	}
 }
 
-/* Tests whether Generator.All properly reacts to WordClass values. */
-func TestGenerator_All(t *testing.T) {
-	gen, err := DefaultGenerator()
-	if err != nil {
-		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
-	}
-
-	for wc := WC_ADJECTIVE; wc <= WC_VERB; wc++ {
-		_, err := gen.All(wc)
-		if err != nil {
-			t.Fatalf("Failed for WordClass %d: %v", wc, err)
-		}
-	}
-
-	_, err = gen.All(WordClass(255))
-	if err == nil {
-		t.Fatalf("Failed for undefined WordClass: error not returned.")
-	}
-}
-
 /* Tests whether Generator.Find correctly returns found words or errors upon failure. */
 func TestGenerator_Find(t *testing.T) {
 	type testCase struct {
@@ -80,6 +60,32 @@ func TestGenerator_Find(t *testing.T) {
 				t.Errorf("Failed for case %v: no error returned, got %v", c, out)
 			}
 		}
+	}
+}
+
+/* Tests whether Generator's iter-related methods correctly react to different WordClass values. */
+func TestGenerator_Iter(t *testing.T) {
+	gen, err := DefaultGenerator()
+	if err != nil {
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
+	}
+
+	for wc := WC_ADJECTIVE; wc <= WC_VERB; wc++ {
+		if _, err := gen.All(wc); err != nil {
+			t.Fatalf("All failed for WordClass %d: %v", wc, err)
+		}
+
+		if n, err := gen.Len(wc); err != nil || n == 0 {
+			t.Fatalf("Len failed for WordClass %d: %d %v", wc, n, err)
+		}
+	}
+
+	if _, err = gen.All(255); err == nil {
+		t.Fatal("Failed for undefined WordClass: error not returned")
+	}
+
+	if n, err := gen.Len(255); err == nil {
+		t.Fatalf("Failed for undefined WordClass: error not returned, len == %d", n)
 	}
 }
 
