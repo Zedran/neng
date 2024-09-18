@@ -78,14 +78,22 @@ func TestGenerator_Iter(t *testing.T) {
 		if n, err := gen.Len(wc); err != nil || n == 0 {
 			t.Fatalf("Len failed for WordClass %d: %d %v", wc, n, err)
 		}
+
+		if _, err := gen.Words(wc); err != nil {
+			t.Fatalf("Words failed for WordClass %d: %v", wc, err)
+		}
 	}
 
 	if _, err = gen.All(255); err == nil {
-		t.Fatal("Failed for undefined WordClass: error not returned")
+		t.Fatal("All failed for an undefined WordClass: error not returned")
 	}
 
 	if n, err := gen.Len(255); err == nil {
-		t.Fatalf("Failed for undefined WordClass: error not returned, len == %d", n)
+		t.Fatalf("Len failed for an undefined WordClass: error not returned, len == %d", n)
+	}
+
+	if _, err = gen.Words(255); err == nil {
+		t.Fatal("Words failed for an undefined WordClass: error not returned")
 	}
 }
 

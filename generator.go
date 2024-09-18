@@ -351,6 +351,15 @@ func (gen *Generator) Verb(mods Mod) (string, error) {
 	return gen.TransformWord(gen.verb[randIndex(len(gen.verb))], WC_VERB, mods)
 }
 
+/* Returns an iterator that yields words from the list corresponding to wc in alphabetical order. */
+func (gen *Generator) Words(wc WordClass) (iter.Seq[*Word], error) {
+	list, err := gen.getList(wc)
+	if err != nil {
+		return nil, err
+	}
+	return slices.Values(list), nil
+}
+
 /*
 A common method used to generate adjectives (noun modifiers) and adverbs (verb modifiers).
 
