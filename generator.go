@@ -82,7 +82,6 @@ func (gen *Generator) All(wc WordClass) (iter.Seq2[int, *Word], error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return slices.All(list), nil
 }
 
