@@ -2,6 +2,7 @@ package neng_test
 
 import (
 	"fmt"
+	"iter"
 
 	"github.com/Zedran/neng"
 )
@@ -25,6 +26,18 @@ func ExampleGenerator_Adverb() {
 
 	adv, _ := gen.Adverb(neng.MOD_NONE)
 	fmt.Println(adv)
+}
+
+func ExampleGenerator_All() {
+	gen, _ := neng.DefaultGenerator()
+	adj, _ := gen.All(neng.WC_ADJECTIVE)
+
+	for i, a := range adj {
+		if i > 3 {
+			break
+		}
+		fmt.Printf("%d: %s\n", i, a.Word())
+	}
 }
 
 func ExampleGenerator_Find() {
@@ -95,6 +108,18 @@ func ExampleGenerator_Verb() {
 
 	verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 	fmt.Println(verb)
+}
+
+func ExampleGenerator_Words() {
+	gen, _ := neng.DefaultGenerator()
+	noun, _ := gen.Words(neng.WC_NOUN)
+
+	next, stop := iter.Pull(noun)
+	defer stop()
+
+	if n, ok := next(); ok {
+		fmt.Println(n)
+	}
 }
 
 func ExampleMod_Enabled() {
