@@ -10,16 +10,15 @@ tasks:
     aliases: [a]
     desc: Generate files for manual transformation audit
     cmds:
-      - go test -run=^TestAudit$
+      - go run {{.SCRIPTS}}/audit/audit.go
     deps:
       - test
-    env:
-      AUDIT: 1
     generates:
       - audit/*
     sources:
       - ./*.go
       - embed/*
+      - '{{.SCRIPTS}}/audit/audit.go'
 
   cover:
     aliases: [c]
