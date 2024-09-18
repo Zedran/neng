@@ -75,8 +75,9 @@ func TestGenerator_Iter(t *testing.T) {
 			t.Fatalf("All failed for WordClass %d: %v", wc, err)
 		}
 
-		if n, err := gen.Len(wc); err != nil || n == 0 {
-			t.Fatalf("Len failed for WordClass %d: %d %v", wc, n, err)
+		list, _ := gen.getList(wc)
+		if n, err := gen.Len(wc); err != nil || n != len(list) {
+			t.Fatalf("Len failed for WordClass %d: %v, len: expected: %d, got: %d", wc, err, len(list), n)
 		}
 
 		if _, err := gen.Words(wc); err != nil {
