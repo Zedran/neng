@@ -79,10 +79,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, gen *neng.Generator, fname st
 		return
 	}
 
-	// length+1 for the sake of output comparison between audit.go and audit_test.go.
-	// The latter writes an extra empty line at the end. Commit for historical reason
-	// and remove later.
-	groups := make([]string, length+1)
+	groups := make([]string, length)
 
 	for i, w := range words {
 		forms, err := buildGroup(w, gen, wc, mods)
