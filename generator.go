@@ -2,6 +2,7 @@ package neng
 
 import (
 	"fmt"
+	"iter"
 	"slices"
 	"strings"
 )
@@ -73,6 +74,18 @@ func (gen *Generator) Adverb(mods Mod) (string, error) {
 }
 
 /*
+Returns an iterator over index-*Word pairs in alphabetical order
+for a given WordClass. Returns an error if undefined WordClass is received.
+*/
+func (gen *Generator) All(wc WordClass) (iter.Seq2[int, *Word], error) {
+	list, err := gen.getList(wc)
+	if err != nil {
+		return nil, err
+	}
+	return slices.All(list), nil
+}
+
+/*
 Searches the word list for the specified word. Returns an error if no word
 is found or if an unknown WordClass is passed to the function.
 
@@ -83,19 +96,9 @@ Assumes the following about the 'word' argument:
   - Verbs are in their base forms
 */
 func (gen *Generator) Find(word string, wc WordClass) (*Word, error) {
-	var list []*Word
-
-	switch wc {
-	case WC_ADJECTIVE:
-		list = gen.adj
-	case WC_ADVERB:
-		list = gen.adv
-	case WC_NOUN:
-		list = gen.noun
-	case WC_VERB:
-		list = gen.verb
-	default:
-		return nil, errUndefinedWordClass
+	list, err := gen.getList(wc)
+	if err != nil {
+		return nil, err
 	}
 
 	n, found := slices.BinarySearchFunc(list, word, func(listItem *Word, word string) int {
@@ -107,6 +110,12 @@ func (gen *Generator) Find(word string, wc WordClass) (*Word, error) {
 	}
 
 	return nil, errNotFound
+}
+
+/* Returns length of a word list corresponding to wc. */
+func (gen *Generator) Len(wc WordClass) (int, error) {
+	list, err := gen.getList(wc)
+	return len(list), err
 }
 
 /*
@@ -341,6 +350,15 @@ func (gen *Generator) Verb(mods Mod) (string, error) {
 	return gen.TransformWord(gen.verb[randIndex(len(gen.verb))], WC_VERB, mods)
 }
 
+/* Returns an iterator that yields words from the list corresponding to wc in alphabetical order. */
+func (gen *Generator) Words(wc WordClass) (iter.Seq[*Word], error) {
+	list, err := gen.getList(wc)
+	if err != nil {
+		return nil, err
+	}
+	return slices.Values(list), nil
+}
+
 /*
 A common method used to generate adjectives (noun modifiers) and adverbs (verb modifiers).
 
@@ -389,6 +407,25 @@ func (gen *Generator) getGenerator(flag rune) func(Mod) (string, error) {
 		return gen.Verb
 	default:
 		return nil
+	}
+}
+
+/*
+A helper method that returns a word list corresponding to wc
+or an error if an undefined WordClass value is received.
+*/
+func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
+	switch wc {
+	case WC_ADJECTIVE:
+		return gen.adj, nil
+	case WC_ADVERB:
+		return gen.adv, nil
+	case WC_NOUN:
+		return gen.noun, nil
+	case WC_VERB:
+		return gen.verb, nil
+	default:
+		return nil, errUndefinedWordClass
 	}
 }
 

@@ -3,6 +3,8 @@ audit/
 bench/
 res/wordnet/
 
+!internal/scripts/audit/
+
 TODO.md
 Taskfile.yml
 coverage.html

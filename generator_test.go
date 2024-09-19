@@ -63,6 +63,41 @@ func TestGenerator_Find(t *testing.T) {
 	}
 }
 
+/* Tests whether Generator's iter-related methods correctly react to different WordClass values. */
+func TestGenerator_Iter(t *testing.T) {
+	gen, err := DefaultGenerator()
+	if err != nil {
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
+	}
+
+	for wc := WC_ADJECTIVE; wc <= WC_VERB; wc++ {
+		if _, err := gen.All(wc); err != nil {
+			t.Fatalf("All failed for WordClass %d: %v", wc, err)
+		}
+
+		list, _ := gen.getList(wc)
+		if n, err := gen.Len(wc); err != nil || n != len(list) {
+			t.Fatalf("Len failed for WordClass %d: %v, len: expected: %d, got: %d", wc, err, len(list), n)
+		}
+
+		if _, err := gen.Words(wc); err != nil {
+			t.Fatalf("Words failed for WordClass %d: %v", wc, err)
+		}
+	}
+
+	if _, err = gen.All(255); err == nil {
+		t.Fatal("All failed for an undefined WordClass: error not returned")
+	}
+
+	if n, err := gen.Len(255); err == nil {
+		t.Fatalf("Len failed for an undefined WordClass: error not returned, len == %d", n)
+	}
+
+	if _, err = gen.Words(255); err == nil {
+		t.Fatal("Words failed for an undefined WordClass: error not returned")
+	}
+}
+
 /*
 Tests whether Generator.Noun correctly skips uncountable nouns in presence of MOD_PLURAL
 and plural-only nouns in absence of plural modifier.
