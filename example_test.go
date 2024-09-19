@@ -118,7 +118,7 @@ func ExampleGenerator_Words() {
 	defer stop()
 
 	if n, ok := next(); ok {
-		fmt.Println(n)
+		fmt.Println(n.Word())
 	}
 }
 
