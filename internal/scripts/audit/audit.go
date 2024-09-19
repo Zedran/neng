@@ -21,7 +21,7 @@ const AUDIT_DIR string = "audit"
 // either an undefined value or any Mod that is not compatible with wc.
 func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.Mod) (string, error) {
 	// Package errors are not exported. This switch ensures that the loop below does not encounter
-	// any error other than errNonComparable or errUncountable.
+	// any errors other than errNonComparable or errUncountable.
 	switch true {
 	case mods.Undefined():
 		return "", errors.New("mods contain an undefined value")
