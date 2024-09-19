@@ -110,7 +110,7 @@ func setMods(wc neng.WordClass) (neng.Mod, error) {
 	case neng.WC_VERB:
 		return neng.MOD_PAST_SIMPLE | neng.MOD_PAST_PARTICIPLE | neng.MOD_PRESENT_SIMPLE | neng.MOD_GERUND, nil
 	default:
-		return neng.MOD_NONE, errors.New("incompatible WordClass")
+		return neng.MOD_NONE, errors.New("undefined WordClass")
 	}
 }
 
