@@ -2,7 +2,7 @@ package neng
 
 import "testing"
 
-/* Tests casing transformations handled by caser struct. */
+// Tests case transformations handled by caser.
 func TestCaser(t *testing.T) {
 	type testCase struct {
 		input    string

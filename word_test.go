@@ -5,7 +5,8 @@ import (
 	"testing"
 )
 
-/* Ensures that NewWord function correctly parses the received line and returns error if malformed input is encountered. */
+// Ensures that NewWord correctly parses the received line and returns an error
+// if malformed input is encountered.
 func TestNewWord(t *testing.T) {
 	type testCase struct {
 		good     bool
@@ -64,7 +65,7 @@ func TestNewWord(t *testing.T) {
 	}
 }
 
-/* Tests whether NewWordFromParams enforces the designed limitations. */
+// Tests whether NewWordFromParams enforces the designed limitations.
 func TestNewWordFromParams(t *testing.T) {
 	type testCase struct {
 		good     bool

@@ -2,7 +2,7 @@ package neng
 
 import "strings"
 
-/* Returns plural form of a noun. */
+// plural returns plural form of a noun.
 func plural(word *Word) string {
 	switch word.ft {
 	case FT_IRREGULAR:

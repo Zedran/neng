@@ -2,7 +2,7 @@ package neng
 
 import "strings"
 
-/* Constitutes a single word list entry. */
+// Word represents a single word list entry.
 type Word struct {
 	// Form type
 	ft FormType
@@ -14,12 +14,13 @@ type Word struct {
 	word string
 }
 
-/* Returns the unmodified word. */
+// Word returns the unmodified word.
 func (w *Word) Word() string {
 	return w.word
 }
 
-/* Parses a single word list line into a new word struct. Returns an error if malformed line is encountered. */
+// NewWord parses a single word list line into a new word struct.
+// Returns an error if malformed line is encountered.
 func NewWord(line string) (*Word, error) {
 	if len(line) < 2 {
 		// Line must contain at least two characters:
@@ -34,7 +35,7 @@ func NewWord(line string) (*Word, error) {
 	}
 
 	if w.ft < FT_REGULAR || w.ft > FT_UNCOUNTABLE {
-		// Type must be within range of defined wordType values.
+		// FormType must be within range of the defined values.
 		// Coincidentally, this expression returns an error
 		// if a comma begins the line.
 		return nil, errBadWordList
@@ -73,7 +74,7 @@ func NewWord(line string) (*Word, error) {
 
 	if c2 == -1 {
 		// If there is no second comma, the word has only one irregular form
-		// The condition above ensures it is not zero-length by this point
+		// The condition above ensures it is not zero-length at this point
 		// (comma does not end the line)
 		w.irr = &[]string{line[c1:]}
 
@@ -94,13 +95,14 @@ func NewWord(line string) (*Word, error) {
 	return &w, nil
 }
 
-/*
-Returns Word struct built from the specified parameters, or error, if the following conditions are not met:
-  - word must be at least 1 character long
-  - ft must be in range of the defined values
-  - for irregular words, the length of irr must be 1 or 2 and the elements cannot be empty strings
-  - for non-irregular words, irr must be empty
-*/
+// NewWordFromParams returns a Word struct built from the specified parameters,
+// or error, if the following conditions are not met:
+//
+//   - word must be at least 1 character long
+//   - ft must be in range of the defined FormType values
+//   - for irregular words, the length of irr must be 1 or 2
+//     and the elements cannot be empty strings
+//   - for non-irregular words, irr must be empty
 func NewWordFromParams(word string, ft FormType, irr []string) (*Word, error) {
 	if len(word) == 0 {
 		return nil, errEmptyWord

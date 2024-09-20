@@ -2,7 +2,7 @@ package neng
 
 import "testing"
 
-/* Tests whether Mod methods return the correct results. */
+// Tests whether Mod methods return the correct results.
 func TestMod(t *testing.T) {
 	m := mod_undefined - 1 // Set every defined Mod value
 

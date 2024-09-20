@@ -2,7 +2,7 @@ package neng
 
 import "testing"
 
-/* Tests plural function. Fails if incorrect plural form of a noun is returned. */
+// Tests plural. Fails if incorrect plural form of a noun is returned.
 func TestPlural(t *testing.T) {
 	var cases map[string]string
 	if err := loadTestData("TestPlural.json", &cases); err != nil {

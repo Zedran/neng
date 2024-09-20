@@ -6,15 +6,15 @@ import (
 	"strings"
 )
 
-/* Comparison function for slices.IsSortedFunc and slices.SortFunc calls, Word version. */
+// cmpWord is a comparison function for slices.IsSortedFunc
+// and slices.SortFunc calls.
 func cmpWord(a, b *Word) int {
 	return strings.Compare(a.word, b.word)
 }
 
-/*
-Returns number of syllables in s given consonant-vowel sequence seq.
-Accuracy of this function is uncertain, especially for borrowed words (cafe).
-*/
+// countSyllables returns a number of syllables in s given the consonant-vowel
+// sequence. General accuracy of this function is not very high, especially
+// for borrowed words (cafe). It targets specific groups of verbs.
 func countSyllables(s, seq string) int {
 	if len(s) == 0 {
 		return 0
@@ -39,12 +39,14 @@ func countSyllables(s, seq string) int {
 	}
 
 	if count > 1 && endsWithAny(s, []string{"eat", "eate", "iate", "uate"}) {
-		// When apparent diphthongs are in fact individual vowels and belong to separate syllables
+		// When apparent diphthongs are in fact individual vowels
+		// and belong to separate syllables
 		count++
 	}
 
 	if strings.HasSuffix(s, "e") && strings.HasSuffix(seq, "cv") {
-		// A final 'e' preceded by a consonant (silent 'e') does not constitute the next syllable
+		// A final 'e' preceded by a consonant (silent 'e')
+		// does not constitute the next syllable
 		count--
 	}
 
@@ -55,12 +57,13 @@ func countSyllables(s, seq string) int {
 	return count
 }
 
-/* Doubles the final consonant of a verb and appends tenseEnding to it. */
+// doubleFinal returns the verb with its final consonant doubled
+// and tenseEnding appended.
 func doubleFinal(verb, tenseEnding string) string {
 	return verb + string(verb[len(verb)-1]) + tenseEnding
 }
 
-/* Returns true if s ends with any element of suf slice. */
+// endsWithAny returns true if s ends with any element of the suf slice.
 func endsWithAny(s string, suf []string) bool {
 	for _, suffix := range suf {
 		if strings.HasSuffix(s, suffix) {
@@ -71,7 +74,7 @@ func endsWithAny(s string, suf []string) bool {
 	return false
 }
 
-/* Returns a representation of vowel-consonant sequence in s ('word' == 'cvcc'). */
+// getSequence returns a vowel-consonant sequence of s ('word' == 'cvcc').
 func getSequence(s string) string {
 	var (
 		seq    strings.Builder
@@ -92,7 +95,8 @@ func getSequence(s string) string {
 	return seq.String()
 }
 
-/* Loads a word list from the embedded path. Returns error if the file is not found. */
+// loadLines reads a word list from the embedded path.
+// Returns an error if the file is not found.
 func loadLines(path string) ([]string, error) {
 	stream, err := efs.ReadFile(path)
 	if err != nil {
@@ -102,7 +106,8 @@ func loadLines(path string) ([]string, error) {
 	return strings.Split(string(stream), "\n"), nil
 }
 
-/* Parses the loaded word list into a slice of word struct pointers. Relays error from NewWord (line formatting). */
+// parseLines converts lines into a slice of *Word.
+// Relays an error from NewWord (line formatting).
 func parseLines(lines []string) ([]*Word, error) {
 	words := make([]*Word, len(lines))
 
@@ -118,7 +123,8 @@ func parseLines(lines []string) ([]*Word, error) {
 	return words, nil
 }
 
-/* Returns a random index [0, length). Does not check for 0 - NewGenerator does not allow empty slices. */
+// randIndex returns a random index [0, length). Does not check for 0 (panic) -
+// NewGenerator does not allow empty slices.
 func randIndex(length int) int {
 	return rand.IntN(length)
 }

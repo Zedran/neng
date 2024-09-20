@@ -1,4 +1,4 @@
-// This script builds the resource files from WordNet source.
+// Script res builds the resource files from WordNet database.
 //
 //	go run internal/scripts/res/res.go
 //
@@ -49,9 +49,12 @@ func applyFilter(lines, filter []string) []string {
 	return slices.Compact(lines)[1:]
 }
 
-// Compiles the main resource list from WordNet source file. Accepts the following arguments:
+// Compiles the main resource list from WordNet source file.
+//
+// Accepts the following arguments:
+//
 //   - srcFname     - name of the source file, without "data." prefix
-//   - replacements - word replacements for a given srcFname (res/misc/replacements.json)
+//   - replacements - word replacements for a given srcFname (replacements.json)
 func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements map[string]string) {
 	const (
 		LICENSE_OFFSET int    = 29
@@ -122,7 +125,7 @@ func containsChars(line string) bool {
 	return strings.ContainsAny(line, "'-0123456789_")
 }
 
-// Extract the words from the surrounding metadata.
+// Extract words from the surrounding metadata.
 func discardMetadata(lines []string) {
 	const WORD_COL int = 4
 
@@ -135,7 +138,8 @@ func discardMetadata(lines []string) {
 	}
 }
 
-// Returns true if the line contains a proper noun or an adjective derived from a proper noun.
+// Returns true if line contains a proper noun or an adjective derived
+// from a proper noun.
 func isProperNoun(line string) bool {
 	for _, c := range line {
 		// Every letter must be checked - consider deVries

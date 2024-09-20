@@ -1,4 +1,4 @@
-// This script builds the embedded files from resource files
+// Script embed builds the embedded files from resource files
 // created with [github.com/Zedran/neng/internal/scripts/res].
 //
 //	go run internal/scripts/embed/embed.go
@@ -36,15 +36,15 @@ const (
 	FT_UNCOUNTABLE
 )
 
-// Cmp function for slices.BinarySearchFunc. Compares plain string and the first element
-// of a comma-separated irregular line.
+// Cmp function for slices.BinarySearchFunc. Compares plain string and the first
+// element of a comma-separated irregular line.
 func cmpIrr(irr, b string) int {
 	i := strings.Index(irr, ",")
 	return strings.Compare(irr[:i], b)
 }
 
-// Compiles the main word list and any number of supplementary lists into the embedded file
-// stored in EMBED_DIR/mainFname.
+// Compiles the main word list and any number of supplementary lists into
+// the embedded file stored in EMBED_DIR/mainFname.
 func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
 	const ERR_FMT = "%s: %w"
 
@@ -121,7 +121,8 @@ func processLine(word string, supWLs map[FormType][]string) string {
 	return "0" + word
 }
 
-// Accepts the file names of supplementary files of a single main list and combines their contents into a map.
+// Accepts the file names of supplementary files of a single main list
+// and combines their contents into a map.
 func readSupWLs(fnames ...string) (map[FormType][]string, error) {
 	sup := make(map[FormType][]string)
 

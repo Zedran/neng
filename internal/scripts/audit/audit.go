@@ -1,5 +1,10 @@
-// This script creates a standardized snapshot of all transformed words, which can be used
-// to evaluate transformation quality and analyze the impact of new features and modifications.
+// Script audit creates a standardized snapshot of all transformed words,
+// which can be used to evaluate transformation quality and analyze
+// the impact of new features and modifications.
+//
+//	go run internal/scripts/audit/audit.go
+//
+// Run in package's root directory.
 package main
 
 import (
@@ -17,11 +22,11 @@ import (
 
 const AUDIT_DIR string = "audit"
 
-// Returns a string containing LF-separated forms of a single word. Error is emitted, if mods contain
-// either an undefined value or any Mod that is not compatible with wc.
+// Returns a string containing LF-separated forms of a single word.
+// Error is emitted if any value in mods is undefined or incompatible with wc.
 func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.Mod) (string, error) {
-	// Package errors are not exported. This switch ensures that the loop below does not encounter
-	// any errors other than errNonComparable or errUncountable.
+	// Package errors are not exported. This switch ensures that the loop below
+	// does not encounter any errors other than errNonComparable or errUncountable.
 	switch true {
 	case mods.Undefined():
 		return "", errors.New("mods contain an undefined value")
@@ -53,9 +58,10 @@ func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.
 	return s.String(), nil
 }
 
-// Applies all viable grammatical transformations to every word of WordClass wc from the default database
-// and writes the result to a file at audit/fname. Omits plural Past Simple and Present Simple forms of verbs
-// because their transformation rules are trivial.
+// Applies all viable grammatical transformations to every word of WordClass
+// wc from the default database and writes the result to a file at audit/fname.
+// Omits plural Past Simple and Present Simple forms of verbs because their
+// transformation rules are trivial.
 func compile(wg *sync.WaitGroup, chErr chan error, gen *neng.Generator, fname string, wc neng.WordClass) {
 	const ERR_FMT string = "%s: %w"
 
@@ -99,8 +105,8 @@ func compile(wg *sync.WaitGroup, chErr chan error, gen *neng.Generator, fname st
 	fmt.Println(csum)
 }
 
-// Returns a Mod with every compatible grammatical bit set, depending on the specified WordClass.
-// For an undefined WordClass value, returns an error.
+// Returns a Mod with every compatible grammatical bit set, depending on
+// the specified WordClass. For an undefined WordClass value, returns an error.
 func setMods(wc neng.WordClass) (neng.Mod, error) {
 	switch wc {
 	case neng.WC_ADJECTIVE, neng.WC_ADVERB:

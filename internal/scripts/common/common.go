@@ -1,4 +1,4 @@
-// This internal package contains common functions used by scripts.
+// Package common contains functions shared by scripts.
 package common
 
 import (
@@ -18,8 +18,8 @@ func ReadFile(path string) ([]string, error) {
 	return strings.Split(string(stream), "\n"), nil
 }
 
-// Writes compiled word list to a resource file. Optionally, sorts lines before writing.
-// Returns SHA256 checksum of the data written and errors related to file handling.
+// Writes lines to the specified path, optionally sorting them. Returns SHA256
+// checksum of the data written and errors related to file handling.
 func WriteFile(path string, lines []string, sort bool) (string, error) {
 	if sort {
 		slices.Sort(lines)

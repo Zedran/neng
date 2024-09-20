@@ -2,10 +2,9 @@ package neng
 
 import "testing"
 
-/*
-Tests comparative function. Fails if incorrect comparative form is returned.
-If the word does not exist in the database, the test attempts to transform it as FT_REGULAR.
-*/
+// Tests comparative. Fails if incorrect comparative form is returned.
+// If the word does not exist in the database, the test attempts
+// to transform it as FT_REGULAR.
 func TestComparative(t *testing.T) {
 	type testCase struct {
 		Input    string    `json:"input"`
@@ -42,7 +41,7 @@ func TestComparative(t *testing.T) {
 	}
 }
 
-/* Tests sufGrad function. Fails if incorrect graded form is returned. */
+// Tests sufGrad. Fails if a malformed graded form is returned.
 func TestSufGrad(t *testing.T) {
 	var cases [][]string
 	if err := loadTestData("TestSufGrad.json", &cases); err != nil {
@@ -58,10 +57,9 @@ func TestSufGrad(t *testing.T) {
 	}
 }
 
-/*
-Tests superlative function. Fails if incorrect superlative form is returned.
-If the word does not exist in the database, the test attempts to transform it as FT_REGULAR.
-*/
+// Tests superlative. Fails if a malformed superlative form is returned.
+// If the word does not exist in the database, the test attempts
+// to transform it as FT_REGULAR.
 func TestSuperlative(t *testing.T) {
 	type testCase struct {
 		Input    string    `json:"input"`
