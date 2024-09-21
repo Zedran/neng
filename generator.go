@@ -419,22 +419,22 @@ func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
 
 // DefaultGenerator returns a new Generator with default word lists.
 func DefaultGenerator() (*Generator, error) {
-	a, err := loadLines("embed/adj")
+	a, err := readEFS("embed/adj")
 	if err != nil {
 		return nil, err
 	}
 
-	m, err := loadLines("embed/adv")
+	m, err := readEFS("embed/adv")
 	if err != nil {
 		return nil, err
 	}
 
-	n, err := loadLines("embed/noun")
+	n, err := readEFS("embed/noun")
 	if err != nil {
 		return nil, err
 	}
 
-	v, err := loadLines("embed/verb")
+	v, err := readEFS("embed/verb")
 	if err != nil {
 		return nil, err
 	}

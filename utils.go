@@ -95,17 +95,6 @@ func getSequence(s string) string {
 	return seq.String()
 }
 
-// loadLines reads a word list from the embedded path.
-// Returns an error if the file is not found.
-func loadLines(path string) ([]string, error) {
-	stream, err := efs.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-
-	return strings.Split(string(stream), "\n"), nil
-}
-
 // parseLines converts lines into a slice of *Word.
 // Relays an error from NewWord (line formatting).
 func parseLines(lines []string) ([]*Word, error) {
