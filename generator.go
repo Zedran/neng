@@ -5,6 +5,8 @@ import (
 	"iter"
 	"slices"
 	"strings"
+
+	"github.com/Zedran/neng/symbols"
 )
 
 // Iteration limit used by the DefaultGenerator function. Exported
@@ -105,7 +107,7 @@ func (gen *Generator) Find(word string, wc WordClass) (*Word, error) {
 		return list[n], nil
 	}
 
-	return nil, errNotFound
+	return nil, symbols.ErrNotFound
 }
 
 // Len returns the length of the Generator's word list corresponding to wc.
@@ -136,7 +138,7 @@ func (gen *Generator) Noun(mods Mod) (string, error) {
 		}
 	}
 
-	return "", errIterLimit
+	return "", symbols.ErrIterLimit
 }
 
 // Phrase generates a phrase given the pattern.
@@ -175,7 +177,7 @@ func (gen *Generator) Noun(mods Mod) (string, error) {
 //	"%tn %2v a %ua %un" may produce "Serenade perplexed a STRAY SUPERBUG"
 func (gen *Generator) Phrase(pattern string) (string, error) {
 	if len(pattern) == 0 {
-		return "", errEmptyPattern
+		return "", symbols.ErrEmptyPattern
 	}
 
 	var (
@@ -197,7 +199,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				escaped = false
 			case '2', '3', 'N', 'c', 'g', 'l', 'p', 's', 't', 'u':
 				if i == len(pattern)-1 {
-					return "", errSpecStrTerm
+					return "", symbols.ErrSpecStrTerm
 				}
 				mods |= flagToMod(c)
 			case 'a', 'm', 'n', 'v':
@@ -208,11 +210,11 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				phrase.WriteString(word)
 				escaped = false
 			default:
-				return "", errUnknownCommand
+				return "", symbols.ErrUnknownCommand
 			}
 		} else if c == '%' {
 			if i == len(pattern)-1 {
-				return "", errEscapedStrTerm
+				return "", symbols.ErrEscapedStrTerm
 			}
 
 			escaped = true
@@ -272,21 +274,21 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string,
 	}
 
 	if mods.Undefined() {
-		return "", errUndefinedMod
+		return "", symbols.ErrUndefinedMod
 	}
 
 	if !wc.CompatibleWith(mods) {
-		return "", errIncompatible
+		return "", symbols.ErrIncompatible
 	}
 
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
 		if word.ft == FT_NON_COMPARABLE && mods.Enabled(MOD_COMPARATIVE|MOD_SUPERLATIVE) {
-			return "", errNonComparable
+			return "", symbols.ErrNonComparable
 		}
 	case WC_NOUN:
 		if word.ft == FT_UNCOUNTABLE && mods.Enabled(MOD_PLURAL) {
-			return "", errUncountable
+			return "", symbols.ErrUncountable
 		}
 	}
 
@@ -376,7 +378,7 @@ func (gen *Generator) generateModifier(wc WordClass, mods Mod) (string, error) {
 		}
 	}
 
-	return "", errIterLimit
+	return "", symbols.ErrIterLimit
 }
 
 // getGenerator is a helper method that was created to shorten the loop in
@@ -411,7 +413,7 @@ func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
 	case WC_VERB:
 		return gen.verb, nil
 	default:
-		return nil, errUndefinedWordClass
+		return nil, symbols.ErrUndefinedWordClass
 	}
 }
 
@@ -508,17 +510,17 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool) (*Gen
 // more information, refer to DEFAULT_ITER_LIMIT in the section 'Constants'.
 func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool) (*Generator, error) {
 	if iterLimit <= 0 {
-		return nil, errBadIterLimit
+		return nil, symbols.ErrBadIterLimit
 	}
 
 	if safe {
 		for _, wordList := range [][]*Word{adj, adv, noun, verb} {
 			if len(wordList) == 0 {
-				return nil, errEmptyLists
+				return nil, symbols.ErrEmptyLists
 			}
 
 			if slices.Contains(wordList, nil) {
-				return nil, errBadWordList
+				return nil, symbols.ErrBadWordList
 			}
 
 			if !slices.IsSortedFunc(wordList, cmpWord) {

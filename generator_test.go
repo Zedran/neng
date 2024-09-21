@@ -202,11 +202,11 @@ func TestGenerator_Transform(t *testing.T) {
 	}
 }
 
-// Tests whether the Generator.TransformWord correctly returns errIncompatible,
-// errNonComparable and errUncountable. errIncompatible should be returned
+// Tests whether Generator.TransformWord correctly returns ErrIncompatible,
+// ErrNonComparable and ErrUncountable. ErrIncompatible should be returned
 // if the requested modification is incompatible with a given WordClass.
-// errNonComparable should only be returned if gradation was requested
-// for a non-comparable adjective or an adverb and errUncountable should
+// ErrNonComparable should only be returned if gradation was requested
+// for a non-comparable adjective or an adverb and ErrUncountable should
 // only be returned if pluralization was requested for an uncountable noun.
 func TestGenerator_TransformWord(t *testing.T) {
 	type testCase struct {

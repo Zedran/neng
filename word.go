@@ -1,6 +1,10 @@
 package neng
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/Zedran/neng/symbols"
+)
 
 // Word represents a single word list entry.
 type Word struct {
@@ -26,7 +30,7 @@ func NewWord(line string) (*Word, error) {
 		// Line must contain at least two characters:
 		//   - a single digit denoting a type
 		//   - a word at least one character in length
-		return nil, errBadWordList
+		return nil, symbols.ErrBadWordList
 	}
 
 	w := Word{
@@ -38,7 +42,7 @@ func NewWord(line string) (*Word, error) {
 		// FormType must be within range of the defined values.
 		// Coincidentally, this expression returns an error
 		// if a comma begins the line.
-		return nil, errBadWordList
+		return nil, symbols.ErrBadWordList
 	}
 
 	// Find the first comma
@@ -47,7 +51,7 @@ func NewWord(line string) (*Word, error) {
 	if w.ft != FT_IRREGULAR {
 		if c1 != -1 {
 			// Only irregular words can have irregular forms
-			return nil, errBadWordList
+			return nil, symbols.ErrBadWordList
 		}
 		// Assign value to word field - from index 1 to the end of the line
 		w.word = line[1:]
@@ -60,7 +64,7 @@ func NewWord(line string) (*Word, error) {
 		//  1 - If the first comma is found at index 1, the word
 		//      has the length of zero
 		// or - Comma cannot end the line
-		return nil, errBadWordList
+		return nil, symbols.ErrBadWordList
 	}
 
 	// Assign value to word field - from index 1 to the first comma
@@ -86,7 +90,7 @@ func NewWord(line string) (*Word, error) {
 	if c2 == len(line)-1 || strings.IndexByte(line[c2+1:], ',') != -1 {
 		// Comma at the end of the line means the second word is zero-length
 		// or - more commas mean more irregular forms - two at most are allowed
-		return nil, errBadWordList
+		return nil, symbols.ErrBadWordList
 	}
 
 	// Assign both irregular forms to a word
@@ -105,29 +109,29 @@ func NewWord(line string) (*Word, error) {
 //   - for non-irregular words, irr must be empty
 func NewWordFromParams(word string, ft FormType, irr []string) (*Word, error) {
 	if len(word) == 0 {
-		return nil, errEmptyWord
+		return nil, symbols.ErrEmptyWord
 	}
 
 	if ft < FT_REGULAR || ft > FT_UNCOUNTABLE {
-		return nil, errUndefinedFormType
+		return nil, symbols.ErrUndefinedFormType
 	}
 
 	var pIrr *[]string
 
 	if ft == FT_IRREGULAR {
 		if len(irr) != 1 && len(irr) != 2 {
-			return nil, errMalformedIrr
+			return nil, symbols.ErrMalformedIrr
 		}
 
 		for _, e := range irr {
 			if len(e) == 0 {
-				return nil, errMalformedIrr
+				return nil, symbols.ErrMalformedIrr
 			}
 		}
 
 		pIrr = &irr
 	} else if len(irr) > 0 {
-		return nil, errNonIrregular
+		return nil, symbols.ErrNonIrregular
 	}
 
 	return &Word{ft: ft, irr: pIrr, word: word}, nil

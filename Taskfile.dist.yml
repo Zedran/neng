@@ -99,6 +99,7 @@ tasks:
       - ./*.go
       - embed/*
       - test_data/*.json
+      - symbols/*.go
       - go.mod
 
   testv:
