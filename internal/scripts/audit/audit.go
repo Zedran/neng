@@ -18,6 +18,7 @@ import (
 
 	"github.com/Zedran/neng"
 	"github.com/Zedran/neng/internal/scripts/common"
+	"github.com/Zedran/neng/symbols"
 )
 
 const AUDIT_DIR string = "audit"
@@ -25,15 +26,6 @@ const AUDIT_DIR string = "audit"
 // Returns a string containing LF-separated forms of a single word.
 // Error is emitted if any value in mods is undefined or incompatible with wc.
 func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.Mod) (string, error) {
-	// Package errors are not exported. This switch ensures that the loop below
-	// does not encounter any errors other than errNonComparable or errUncountable.
-	switch true {
-	case mods.Undefined():
-		return "", errors.New("mods contain an undefined value")
-	case !wc.CompatibleWith(mods):
-		return "", errors.New("mods incompatible with WordClass")
-	}
-
 	var s strings.Builder
 
 	s.WriteString(w.Word() + "\n")
@@ -48,9 +40,17 @@ func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.
 		if err != nil {
 			switch wc {
 			case neng.WC_ADJECTIVE, neng.WC_ADVERB:
+				if !errors.Is(err, symbols.ErrNonComparable) {
+					return "", err
+				}
 				tw = "ncmp"
 			case neng.WC_NOUN:
+				if !errors.Is(err, symbols.ErrUncountable) {
+					return "", err
+				}
 				tw = "unc"
+			default:
+				return "", err
 			}
 		}
 		s.WriteString(tw + "\n")
@@ -116,7 +116,7 @@ func setMods(wc neng.WordClass) (neng.Mod, error) {
 	case neng.WC_VERB:
 		return neng.MOD_PAST_SIMPLE | neng.MOD_PAST_PARTICIPLE | neng.MOD_PRESENT_SIMPLE | neng.MOD_GERUND, nil
 	default:
-		return neng.MOD_NONE, errors.New("undefined WordClass")
+		return neng.MOD_NONE, symbols.ErrUndefinedWordClass
 	}
 }
 
