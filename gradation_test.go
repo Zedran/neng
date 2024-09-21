@@ -1,6 +1,10 @@
 package neng
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/Zedran/neng/internal/tests"
+)
 
 // Tests comparative. Fails if incorrect comparative form is returned.
 // If the word does not exist in the database, the test attempts
@@ -13,7 +17,7 @@ func TestComparative(t *testing.T) {
 	}
 
 	var cases []testCase
-	if err := loadTestData("TestComparative.json", &cases); err != nil {
+	if err := tests.ReadData("TestComparative.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -44,7 +48,7 @@ func TestComparative(t *testing.T) {
 // Tests sufGrad. Fails if a malformed graded form is returned.
 func TestSufGrad(t *testing.T) {
 	var cases [][]string
-	if err := loadTestData("TestSufGrad.json", &cases); err != nil {
+	if err := tests.ReadData("TestSufGrad.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 	for _, c := range cases {
@@ -68,7 +72,7 @@ func TestSuperlative(t *testing.T) {
 	}
 
 	var cases []testCase
-	if err := loadTestData("TestSuperlative.json", &cases); err != nil {
+	if err := tests.ReadData("TestSuperlative.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 

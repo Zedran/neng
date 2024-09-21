@@ -3,6 +3,8 @@ package neng
 import (
 	"slices"
 	"testing"
+
+	"github.com/Zedran/neng/internal/tests"
 )
 
 // Ensures that call to DefaultGenerator does not return an error
@@ -132,7 +134,7 @@ func TestGenerator_Phrase(t *testing.T) {
 	}
 
 	var cases map[string]string
-	if err := loadTestData("TestPhrase.json", &cases); err != nil {
+	if err := tests.ReadData("TestPhrase.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
