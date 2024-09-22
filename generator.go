@@ -272,19 +272,14 @@ func (gen *Generator) Transform(word string, wc WordClass, mods Mod) (string, er
 //     for a non-comparable adjective or adverb
 //   - transformation into plural form is requested for an uncountable noun
 func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string, error) {
-	if wc > WC_VERB {
+	switch true {
+	case wc > WC_VERB:
 		return "", symbols.ErrUndefinedWordClass
-	}
-
-	if mods == MOD_NONE {
+	case mods == MOD_NONE:
 		return word.word, nil
-	}
-
-	if mods.Undefined() {
+	case mods.Undefined():
 		return "", symbols.ErrUndefinedMod
-	}
-
-	if !wc.CompatibleWith(mods) {
+	case !wc.CompatibleWith(mods):
 		return "", symbols.ErrIncompatible
 	}
 
