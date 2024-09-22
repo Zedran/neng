@@ -2,7 +2,8 @@ package neng
 
 import "strings"
 
-/* Returns comparative form of an adjective or an adverb (good -> better). */
+// comparative returns a comparative form of an adjective or an adverb
+// (good -> better).
 func comparative(word *Word) string {
 	switch word.ft {
 	case FT_IRREGULAR:
@@ -14,7 +15,8 @@ func comparative(word *Word) string {
 	}
 }
 
-/* Returns comparative or superlative form of those adjectives to which suffix is appended during gradation process. */
+// sufGrad returns comparative or superlative form of those adjectives to which
+// suffix is appended during gradation process.
 func sufGrad(a, suf string) string {
 	switch a[len(a)-1] {
 	case 'y':
@@ -33,7 +35,8 @@ func sufGrad(a, suf string) string {
 	return a + suf
 }
 
-/* Returns superlative form of an adjective or an adverb (good -> best). */
+// superlative returns a superlative form of an adjective or an adverb
+// (good -> best).
 func superlative(word *Word) string {
 	switch word.ft {
 	case FT_IRREGULAR:

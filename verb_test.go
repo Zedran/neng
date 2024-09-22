@@ -1,11 +1,15 @@
 package neng
 
-import "testing"
+import (
+	"testing"
 
-/* Tests gerund function. Fails if improper gerund form of a verb is returned. */
+	"github.com/Zedran/neng/internal/tests"
+)
+
+// Tests gerund. Fails if improper gerund form of a verb is returned.
 func TestGerund(t *testing.T) {
 	var cases map[string]string
-	if err := loadTestData("TestGerund.json", &cases); err != nil {
+	if err := tests.ReadData("TestGerund.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -18,13 +22,12 @@ func TestGerund(t *testing.T) {
 	}
 }
 
-/*
-Tests pastParticiple function. Fails if improper Past Participle form of a verb is returned.
-Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
-*/
+// Tests pastParticiple. Fails if improper Past Participle form of a verb
+// is returned. Handling of regular verbs is only symbolically checked,
+// as it is the main goal of TestPastSimpleRegular.
 func TestPastParticiple(t *testing.T) {
 	var cases map[string]string
-	if err := loadTestData("TestPastParticiple.json", &cases); err != nil {
+	if err := tests.ReadData("TestPastParticiple.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -52,10 +55,11 @@ func TestPastParticiple(t *testing.T) {
 	}
 }
 
-/* Tests pastRegular function. Fails if incorrect past tense form of a regular verb is returned. */
+// Tests pastRegular. Fails if incorrect past tense form of a regular verb
+// is returned.
 func TestPastRegular(t *testing.T) {
 	var cases map[string]string
-	if err := loadTestData("TestPastRegular.json", &cases); err != nil {
+	if err := tests.ReadData("TestPastRegular.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -68,10 +72,9 @@ func TestPastRegular(t *testing.T) {
 	}
 }
 
-/*
-Tests pastSimple function. Fails if improper Past Simple form of a verb is returned.
-Handling of regular verbs is only symbolically checked, as it is the focus of TestPastSimpleRegular.
-*/
+// Tests pastSimple. Fails if improper Past Simple form of a verb is returned.
+// Handling of regular verbs is only symbolically checked, as it is the main
+// goal of TestPastSimpleRegular
 func TestPastSimple(t *testing.T) {
 	type testCase struct {
 		Input    string `json:"input"`
@@ -80,7 +83,7 @@ func TestPastSimple(t *testing.T) {
 	}
 
 	var cases []testCase
-	if err := loadTestData("TestPastSimple.json", &cases); err != nil {
+	if err := tests.ReadData("TestPastSimple.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -108,7 +111,8 @@ func TestPastSimple(t *testing.T) {
 	}
 }
 
-/* Tests presentSimple function. Fails if improper Present Simple form of a verb is returned. */
+// Tests presentSimple. Fails if improper Present Simple form of a verb
+// is returned.
 func TestPresentSimple(t *testing.T) {
 	type testCase struct {
 		Input    string `json:"input"`
@@ -117,7 +121,7 @@ func TestPresentSimple(t *testing.T) {
 	}
 
 	var cases []testCase
-	if err := loadTestData("TestPresentSimple.json", &cases); err != nil {
+	if err := tests.ReadData("TestPresentSimple.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 

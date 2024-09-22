@@ -1,4 +1,4 @@
-// This script builds the resource files from WordNet source.
+// Script res builds the resource files from WordNet database.
 //
 //	go run internal/scripts/res/res.go
 //
@@ -26,7 +26,7 @@ const (
 	WNET_DIR    string = "res/wordnet"
 )
 
-// Appends irregular verbs that are missing from lines.
+// appendMissingIrr appends irregular verbs that are missing from lines.
 func appendMissingIrr(lines []string, irr []string) []string {
 	for _, iw := range irr {
 		i := strings.Index(iw, ",")
@@ -37,7 +37,7 @@ func appendMissingIrr(lines []string, irr []string) []string {
 	return lines
 }
 
-// Removes lines that are present in filter.
+// applyFilter removes lines that are present in filter.
 func applyFilter(lines, filter []string) []string {
 	for _, f := range filter {
 		if i, found := slices.BinarySearch(lines, f); found {
@@ -49,9 +49,12 @@ func applyFilter(lines, filter []string) []string {
 	return slices.Compact(lines)[1:]
 }
 
-// Compiles the main resource list from WordNet source file. Accepts the following arguments:
+// compile builds the main resource list from WordNet source file.
+//
+// Accepts the following arguments:
+//
 //   - srcFname     - name of the source file, without "data." prefix
-//   - replacements - word replacements for a given srcFname (res/misc/replacements.json)
+//   - replacements - word replacements for a given srcFname (replacements.json)
 func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements map[string]string) {
 	const (
 		LICENSE_OFFSET int    = 29
@@ -113,7 +116,8 @@ func compile(wg *sync.WaitGroup, chErr chan error, srcFname string, replacements
 	fmt.Println(csum)
 }
 
-// Returns true if line contains any of the following types of entries:
+// containsChars returns true if line contains any of the following types
+// of entries:
 //   - words containing apostrophes
 //   - compound words (separated with '-')
 //   - words containing numbers
@@ -122,7 +126,7 @@ func containsChars(line string) bool {
 	return strings.ContainsAny(line, "'-0123456789_")
 }
 
-// Extract the words from the surrounding metadata.
+// discardMetadata extracts words from the additional WordNet information.
 func discardMetadata(lines []string) {
 	const WORD_COL int = 4
 
@@ -135,7 +139,8 @@ func discardMetadata(lines []string) {
 	}
 }
 
-// Returns true if the line contains a proper noun or an adjective derived from a proper noun.
+// isProperNoun returns true if line contains a proper noun or an adjective
+// derived from a proper noun.
 func isProperNoun(line string) bool {
 	for _, c := range line {
 		// Every letter must be checked - consider deVries
@@ -146,7 +151,7 @@ func isProperNoun(line string) bool {
 	return false
 }
 
-// Reads JSON file into a container v.
+// readJSON parses a JSON file into a container v.
 func readJSON(fname string, v any) error {
 	stream, err := os.ReadFile(fname)
 	if err != nil {
@@ -155,7 +160,7 @@ func readJSON(fname string, v any) error {
 	return json.Unmarshal(stream, v)
 }
 
-// Modifies specific words in lines.
+// replaceEntries modifies specific words in lines.
 func replaceEntries(lines []string, replacements map[string]string) {
 	for old, new := range replacements {
 		if i, found := slices.BinarySearch(lines, old); found {
@@ -164,7 +169,7 @@ func replaceEntries(lines []string, replacements map[string]string) {
 	}
 }
 
-// Removes parenthesized content from the end of the string.
+// stripParentheses removes parenthesized content from the end of the string.
 func stripParentheses(s *string) {
 	i := strings.Index(*s, "(")
 	if i > -1 {

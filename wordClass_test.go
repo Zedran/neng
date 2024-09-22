@@ -2,10 +2,8 @@ package neng
 
 import "testing"
 
-/*
-Tests WordClass.CompatibleWith method. Fails if compatibility assessment
-is not consistent with documentation.
-*/
+// Tests WordClass.CompatibleWith. Fails if compatibility assessment
+// is not consistent with documentation.
 func TestWordClass_CompatibleWith(t *testing.T) {
 	type testCase struct {
 		expected bool

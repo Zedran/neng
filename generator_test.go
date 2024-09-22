@@ -3,12 +3,12 @@ package neng
 import (
 	"slices"
 	"testing"
+
+	"github.com/Zedran/neng/internal/tests"
 )
 
-/*
-Ensures that call to DefaultGenerator does not return an error
-and tests whether word lists of the resulting instance are sorted.
-*/
+// Ensures that call to DefaultGenerator does not return an error
+// and tests whether word lists of the resulting instance are sorted.
 func TestDefaultGenerator(t *testing.T) {
 	gen, err := DefaultGenerator()
 	if err != nil {
@@ -22,7 +22,7 @@ func TestDefaultGenerator(t *testing.T) {
 	}
 }
 
-/* Tests whether Generator.Find correctly returns found words or errors upon failure. */
+// Tests whether Generator.Find correctly returns found words or errors upon failure.
 func TestGenerator_Find(t *testing.T) {
 	type testCase struct {
 		good  bool
@@ -63,7 +63,8 @@ func TestGenerator_Find(t *testing.T) {
 	}
 }
 
-/* Tests whether Generator's iter-related methods correctly react to different WordClass values. */
+// Tests whether Generator's iter-related methods correctly react to different
+// WordClass values.
 func TestGenerator_Iter(t *testing.T) {
 	gen, err := DefaultGenerator()
 	if err != nil {
@@ -98,10 +99,8 @@ func TestGenerator_Iter(t *testing.T) {
 	}
 }
 
-/*
-Tests whether Generator.Noun correctly skips uncountable nouns in presence of MOD_PLURAL
-and plural-only nouns in absence of plural modifier.
-*/
+// Tests whether Generator.Noun correctly skips uncountable nouns in presence
+// of MOD_PLURAL and plural-only nouns in absence of plural modifier.
 func TestGenerator_Noun(t *testing.T) {
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10, false)
 	if err != nil {
@@ -127,7 +126,7 @@ func TestGenerator_Noun(t *testing.T) {
 	}
 }
 
-/* Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases. */
+// Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases.
 func TestGenerator_Phrase(t *testing.T) {
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false)
 	if err != nil {
@@ -135,7 +134,7 @@ func TestGenerator_Phrase(t *testing.T) {
 	}
 
 	var cases map[string]string
-	if err := loadTestData("TestPhrase.json", &cases); err != nil {
+	if err := tests.ReadData("TestPhrase.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -165,10 +164,9 @@ func TestGenerator_Phrase(t *testing.T) {
 	}
 }
 
-/*
-Tests basic dispatching done by Generator.Transform. More detailed tests are performed for Generator.TransformWord,
-which receives input from Generator.Transform.
-*/
+// Tests basic dispatching done by Generator.Transform. More detailed tests
+// are performed for Generator.TransformWord, which receives input from
+// Generator.Transform.
 func TestGenerator_Transform(t *testing.T) {
 	type testCase struct {
 		good     bool
@@ -206,12 +204,12 @@ func TestGenerator_Transform(t *testing.T) {
 	}
 }
 
-/*
-Tests whether the Generator.TransformWord correctly returns errIncompatible, errNonComparable and errUncountable.
-errIncompatible should be returned if the requested modification is incompatible with a given WordClass.
-errNonComparable should only be returned if gradation was requested for non-comparable adjective or adverb and
-errUncountable should only be returned if pluralization was requested for an uncountable noun.
-*/
+// Tests whether Generator.TransformWord correctly returns ErrIncompatible,
+// ErrNonComparable and ErrUncountable. ErrIncompatible should be returned
+// if the requested modification is incompatible with a given WordClass.
+// ErrNonComparable should only be returned if gradation was requested
+// for a non-comparable adjective or an adverb and ErrUncountable should
+// only be returned if pluralization was requested for an uncountable noun.
 func TestGenerator_TransformWord(t *testing.T) {
 	type testCase struct {
 		description string
@@ -261,7 +259,8 @@ func TestGenerator_TransformWord(t *testing.T) {
 	}
 }
 
-/* Tests whether Generator.generateModifier correctly skips non-comparable adjectives if gradation is requested. */
+// Tests whether Generator.generateModifier correctly skips non-comparable
+// adjectives if gradation is requested.
 func TestGenerator_generateModifier(t *testing.T) {
 	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10, false)
 	if err != nil {
@@ -293,11 +292,11 @@ func TestGenerator_generateModifier(t *testing.T) {
 	}
 }
 
-/*
-Tests NewGenerator function. Fails if it does not return an error upon receiving an empty list, nil or invalid iterLimit value.
-Malformed or empty slice elements trigger an error as well. Takes safe value into account during testing. Slice order is not
-checked - NewGenerator calls NewGeneratorFromWord which handles sorting.
-*/
+// Tests NewGenerator. Fails if it does not return an error upon receiving
+// an empty list, nil or invalid iterLimit value. Malformed or empty slice
+// elements trigger an error as well. Takes safe value into account during
+// testing. Slice order is not checked - NewGenerator calls
+// NewGeneratorFromWord which handles sorting.
 func TestNewGenerator(t *testing.T) {
 	type testCase struct {
 		adj, adv, noun, verb []string
@@ -350,7 +349,7 @@ func TestNewGenerator(t *testing.T) {
 	}
 }
 
-/* Tests NewGeneratorFromWord ensuring that the intended checks correctly trigger errors. */
+// Tests NewGeneratorFromWord ensuring that all checks correctly trigger errors.
 func TestNewGeneratorFromWord(t *testing.T) {
 	type testCase struct {
 		adj, adv, noun, verb []*Word

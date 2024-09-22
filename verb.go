@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-/* Returns gerund form of a verb. */
+// gerund returns a gerund form of a verb.
 func gerund(verb string) string {
 	if len(verb) <= 2 {
 		if verb == "up" {
@@ -63,13 +63,14 @@ func gerund(verb string) string {
 	return verb + "ing"
 }
 
-/*
-Handles past tense and gerund transformations for verbs ending with consonant-vowel-consonant sequence. Takes a number of arguments:
-
-  - tenseEnding: '-ing' or '-ed'
-  - wi: wordInfo created during earlier processing steps
-  - tenseExceptions: tense-specific words whose endings are doubled, regardless of transformation rules based on syllable count and verb endings
-*/
+// handleCVC performs past tense and gerund transformations for verbs ending
+// with consonant-vowel-consonant sequence. Takes a number of arguments:
+//
+//   - tenseEnding: '-ing' or '-ed'
+//   - seq: vowel-consonant sequence
+//   - tenseExceptions: tense-specific words whose endings are doubled,
+//     regardless of transformation rules based on syllable count
+//     and verb endings
 func handleCVC(verb, tenseEnding, seq string, tenseExceptions []string) string {
 	if strings.HasSuffix(verb, "c") && verb != "sic" {
 		if strings.HasSuffix(verb, "lyric") {
@@ -92,7 +93,8 @@ func handleCVC(verb, tenseEnding, seq string, tenseExceptions []string) string {
 	}
 
 	if slices.Contains(commonDoubledExceptions, verb) {
-		// Double the final consonant for exceptions that are common for past forms and gerund
+		// Double the final consonant for exceptions that are common
+		// for past forms and gerund
 		return doubleFinal(verb, tenseEnding)
 	}
 
@@ -110,13 +112,15 @@ func handleCVC(verb, tenseEnding, seq string, tenseExceptions []string) string {
 
 	if sylCount == 2 {
 		if endsWithAny(verb, []string{"en", "et", "in", "om", "on"}) {
-			// Do not double the final consonant of bisyllabic verbs with specific endings
+			// Do not double the final consonant of bisyllabic verbs
+			// with specific endings
 			return verb + tenseEnding
 		}
 	}
 
 	if sylCount > 2 {
-		// Do not double the final consonant of verbs consisting of more than 2 syllables
+		// Do not double the final consonant of verbs consisting
+		// of more than 2 syllables
 		return verb + tenseEnding
 	}
 
@@ -124,7 +128,7 @@ func handleCVC(verb, tenseEnding, seq string, tenseExceptions []string) string {
 	return doubleFinal(verb, tenseEnding)
 }
 
-/* Handles transformation of verbs ending with '-it'. */
+// handleIt transforms verbs ending with '-it'.
 func handleIt(verb, tenseEnding string) string {
 	seq := getSequence(verb)
 
@@ -149,7 +153,7 @@ func handleIt(verb, tenseEnding string) string {
 	return verb + tenseEnding
 }
 
-/* Handles transformation of verbs ending with '-r'. */
+// handleR transforms verbs ending with '-r'.
 func handleR(verb, tenseEnding string) string {
 	doubled := []string{
 		"abhor", "bar", "bestir", "blur", "bur", "char", "concur",
@@ -166,7 +170,7 @@ func handleR(verb, tenseEnding string) string {
 	return verb + tenseEnding
 }
 
-/* Handles transformation of verbs ending with vowel-vowel-l sequence. */
+// handleVVL transforms verbs ending with vowel-vowel-l sequence.
 func handleVVL(verb, tenseEnding string) string {
 	if strings.HasSuffix(verb, "uel") || verb == "victual" || verb == "vitriol" {
 		return doubleFinal(verb, tenseEnding)
@@ -175,7 +179,7 @@ func handleVVL(verb, tenseEnding string) string {
 	return verb + tenseEnding
 }
 
-/* Returns Past Participle form of a verb. */
+// pastParticiple returns Past Participle form of a verb.
 func pastParticiple(word *Word) string {
 	if word.ft == FT_IRREGULAR {
 		return (*word.irr)[1]
@@ -188,7 +192,7 @@ func pastParticiple(word *Word) string {
 	return pastRegular(word.word)
 }
 
-/* Appends past tense suffix to a regular verb. */
+// pastRegular appends past tense suffix to a regular verb.
 func pastRegular(verb string) string {
 	switch verb[len(verb)-1] {
 	case 'e':
@@ -231,7 +235,7 @@ func pastRegular(verb string) string {
 	return verb + "ed"
 }
 
-/* Returns Past Simple form of a verb. */
+// pastSimple returns Past Simple form of a verb.
 func pastSimple(word *Word, plural bool) string {
 	if word.ft == FT_IRREGULAR {
 		return (*word.irr)[0]
@@ -247,7 +251,7 @@ func pastSimple(word *Word, plural bool) string {
 	return pastRegular(word.word)
 }
 
-/* Returns Present Simple form of a verb. */
+// presentSimple returns Present Simple form of a verb.
 func presentSimple(verb string, plural bool) string {
 	if plural {
 		if verb == "be" {

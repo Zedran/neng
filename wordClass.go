@@ -1,6 +1,6 @@
 package neng
 
-// WordClass type helps the Generator to differentiate parts of speech.
+// WordClass helps the Generator to differentiate parts of speech.
 type WordClass uint8
 
 const (
@@ -10,12 +10,10 @@ const (
 	WC_VERB
 )
 
-/*
-Returns true if WordClass is compatible with all of the received mods.
-This method tests defined Mod values only - undefined Mod values
-have undefined compatibility. Use Mod.Undefined to ensure that
-all mods are defined.
-*/
+// CompatibleWith returns true if WordClass is compatible with all of the
+// received mods. This method tests defined Mod values only - undefined Mod
+// values have undefined compatibility. Use Mod.Undefined to ensure that
+// all bits in Mod have defined values.
 func (wc WordClass) CompatibleWith(mods Mod) bool {
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:

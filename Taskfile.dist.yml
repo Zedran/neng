@@ -31,7 +31,8 @@ tasks:
       - ./coverage.out
     sources:
       - ./*.go
-      - test_data/*.json
+      - internal/tests/*.go
+      - testdata/*
 
   embed:
     aliases: [e]
@@ -98,7 +99,9 @@ tasks:
     sources:
       - ./*.go
       - embed/*
-      - test_data/*.json
+      - internal/tests/*.go
+      - testdata/*
+      - symbols/*.go
       - go.mod
 
   testv:

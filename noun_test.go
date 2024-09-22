@@ -1,11 +1,15 @@
 package neng
 
-import "testing"
+import (
+	"testing"
 
-/* Tests plural function. Fails if incorrect plural form of a noun is returned. */
+	"github.com/Zedran/neng/internal/tests"
+)
+
+// Tests plural. Fails if incorrect plural form of a noun is returned.
 func TestPlural(t *testing.T) {
 	var cases map[string]string
-	if err := loadTestData("TestPlural.json", &cases); err != nil {
+	if err := tests.ReadData("TestPlural.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 

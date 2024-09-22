@@ -1,11 +1,14 @@
 package neng
 
-import "testing"
+import (
+	"testing"
 
-/*
-Tests comparative function. Fails if incorrect comparative form is returned.
-If the word does not exist in the database, the test attempts to transform it as FT_REGULAR.
-*/
+	"github.com/Zedran/neng/internal/tests"
+)
+
+// Tests comparative. Fails if incorrect comparative form is returned.
+// If the word does not exist in the database, the test attempts
+// to transform it as FT_REGULAR.
 func TestComparative(t *testing.T) {
 	type testCase struct {
 		Input    string    `json:"input"`
@@ -14,7 +17,7 @@ func TestComparative(t *testing.T) {
 	}
 
 	var cases []testCase
-	if err := loadTestData("TestComparative.json", &cases); err != nil {
+	if err := tests.ReadData("TestComparative.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -42,10 +45,10 @@ func TestComparative(t *testing.T) {
 	}
 }
 
-/* Tests sufGrad function. Fails if incorrect graded form is returned. */
+// Tests sufGrad. Fails if a malformed graded form is returned.
 func TestSufGrad(t *testing.T) {
 	var cases [][]string
-	if err := loadTestData("TestSufGrad.json", &cases); err != nil {
+	if err := tests.ReadData("TestSufGrad.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 	for _, c := range cases {
@@ -58,10 +61,9 @@ func TestSufGrad(t *testing.T) {
 	}
 }
 
-/*
-Tests superlative function. Fails if incorrect superlative form is returned.
-If the word does not exist in the database, the test attempts to transform it as FT_REGULAR.
-*/
+// Tests superlative. Fails if a malformed superlative form is returned.
+// If the word does not exist in the database, the test attempts
+// to transform it as FT_REGULAR.
 func TestSuperlative(t *testing.T) {
 	type testCase struct {
 		Input    string    `json:"input"`
@@ -70,7 +72,7 @@ func TestSuperlative(t *testing.T) {
 	}
 
 	var cases []testCase
-	if err := loadTestData("TestSuperlative.json", &cases); err != nil {
+	if err := tests.ReadData("TestSuperlative.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 

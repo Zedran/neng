@@ -1,11 +1,15 @@
 package neng
 
-import "testing"
+import (
+	"testing"
 
-/* Tests whether countSyllables returns a proper number of syllables for sample words. */
+	"github.com/Zedran/neng/internal/tests"
+)
+
+// Tests whether countSyllables returns a correct number of syllables.
 func TestCountSyllables(t *testing.T) {
 	var cases map[string]int
-	if err := loadTestData("TestCountSyllables.json", &cases); err != nil {
+	if err := tests.ReadData("TestCountSyllables.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
@@ -19,10 +23,10 @@ func TestCountSyllables(t *testing.T) {
 	}
 }
 
-/* Tests getSequence function. */
+// Tests getSequence.
 func TestGetSequence(t *testing.T) {
 	var cases map[string]string
-	if err := loadTestData("TestGetSequence.json", &cases); err != nil {
+	if err := tests.ReadData("TestGetSequence.json", &cases); err != nil {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
