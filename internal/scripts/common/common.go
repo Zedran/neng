@@ -9,7 +9,8 @@ import (
 	"strings"
 )
 
-// Reads a file at OS path and splits its content into lines.
+// ReadFile reads a file at OS path, splits its content into lines
+// and returns the resulting slice.
 func ReadFile(path string) ([]string, error) {
 	stream, err := os.ReadFile(path)
 	if err != nil {
@@ -18,8 +19,9 @@ func ReadFile(path string) ([]string, error) {
 	return strings.Split(string(stream), "\n"), nil
 }
 
-// Writes lines to the specified path, optionally sorting them. Returns SHA256
-// checksum of the data written and errors related to file handling.
+// WriteFile writes lines to the specified path, optionally sorting them.
+// Returns SHA256 checksum of the data written and errors related
+// to file handling.
 func WriteFile(path string, lines []string, sort bool) (string, error) {
 	if sort {
 		slices.Sort(lines)

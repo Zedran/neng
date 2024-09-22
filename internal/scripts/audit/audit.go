@@ -23,7 +23,7 @@ import (
 
 const AUDIT_DIR string = "audit"
 
-// Returns a string containing LF-separated forms of a single word.
+// buildGroup returns a string containing LF-separated forms of a single word.
 // Error is emitted if any value in mods is undefined or incompatible with wc.
 func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.Mod) (string, error) {
 	var s strings.Builder
@@ -58,10 +58,10 @@ func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.
 	return s.String(), nil
 }
 
-// Applies all viable grammatical transformations to every word of WordClass
-// wc from the default database and writes the result to a file at audit/fname.
-// Omits plural Past Simple and Present Simple forms of verbs because their
-// transformation rules are trivial.
+// compile applies all viable grammatical transformations to every word
+// of WordClass wc from the default database and writes the result to a file
+// at audit/fname. Omits plural Past Simple and Present Simple forms of verbs
+// because their transformation rules are trivial.
 func compile(wg *sync.WaitGroup, chErr chan error, gen *neng.Generator, fname string, wc neng.WordClass) {
 	const ERR_FMT string = "%s: %w"
 
@@ -105,7 +105,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, gen *neng.Generator, fname st
 	fmt.Println(csum)
 }
 
-// Returns a Mod with every compatible grammatical bit set, depending on
+// setMod returns a Mod with every compatible grammatical bit set, depending on
 // the specified WordClass. For an undefined WordClass value, returns an error.
 func setMods(wc neng.WordClass) (neng.Mod, error) {
 	switch wc {

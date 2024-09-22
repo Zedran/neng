@@ -24,7 +24,8 @@ const (
 	RES_DIR   string = "res"
 )
 
-// Mirrors neng.FormType
+// FormType mirrors neng.FormType. The original cannot be used, because
+// importing neng causes compile-time error if the embedded files are missing.
 type FormType uint8
 
 const (
@@ -36,14 +37,14 @@ const (
 	FT_UNCOUNTABLE
 )
 
-// Cmp function for slices.BinarySearchFunc. Compares plain string and the first
-// element of a comma-separated irregular line.
+// cmpIrr is a cmp function for slices.BinarySearchFunc. Compares plain string
+// and the first element of a comma-separated irregular line.
 func cmpIrr(irr, b string) int {
 	i := strings.Index(irr, ",")
 	return strings.Compare(irr[:i], b)
 }
 
-// Compiles the main word list and any number of supplementary lists into
+// compile builds the main word list and any number of supplementary lists into
 // the embedded file stored in EMBED_DIR/mainFname.
 func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames ...string) {
 	const ERR_FMT = "%s: %w"
@@ -76,7 +77,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, mainFname string, supFnames .
 	fmt.Println(csum)
 }
 
-// Determines FormType value based on file extension.
+// getFormType determines FormType value based on file extension.
 func getFormType(fname string) FormType {
 	switch filepath.Ext(fname) {
 	case ".irr":
@@ -94,7 +95,7 @@ func getFormType(fname string) FormType {
 	}
 }
 
-// Builds a single line of the embedded file.
+// processLine builds a single line of the embedded file.
 func processLine(word string, supWLs map[FormType][]string) string {
 	for ft, wl := range supWLs {
 		var cmp func(string, string) int
@@ -121,8 +122,8 @@ func processLine(word string, supWLs map[FormType][]string) string {
 	return "0" + word
 }
 
-// Accepts the file names of supplementary files of a single main list
-// and combines their contents into a map.
+// readSupWLs accepts the file names of supplementary files of a single
+// main list and combines their contents into a map.
 func readSupWLs(fnames ...string) (map[FormType][]string, error) {
 	sup := make(map[FormType][]string)
 
