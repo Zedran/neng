@@ -1,4 +1,7 @@
 {
+    "adj": {
+        "archaeological"  : "archeological"
+    },
     "noun": {
         "adz"             : "adze",
         "ax"              : "axe",
