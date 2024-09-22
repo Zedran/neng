@@ -42,19 +42,18 @@ const (
 	mod_undefined
 )
 
-// Returns true if any of the specified mods are enabled in m.
-// Do not use this method to test for MOD_NONE. Use a simple
-// comparison instead.
+// Enabled returns true if any of the specified mods are enabled in m.
+// Do not use this method to test for MOD_NONE. Use a simple comparison instead.
 func (m Mod) Enabled(mods Mod) bool {
 	return m&mods != 0
 }
 
-// Returns true if an undefined Mod value is held.
+// Undefined returns true if m holds an undefined Mod value.
 func (m Mod) Undefined() bool {
 	return m >= mod_undefined
 }
 
-// Translates flag character into Mod value.
+// flagToMod translates flag character into Mod value.
 func flagToMod(flag rune) Mod {
 	switch flag {
 	case 'p':
