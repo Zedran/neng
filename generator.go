@@ -255,7 +255,7 @@ func (gen *Generator) Transform(word string, wc WordClass, mods Mod) (string, er
 	return gen.TransformWord(w, wc, mods)
 }
 
-// Transform modifies a Word according to specified mods.
+// TransformWord modifies the Word according to specified mods.
 // Not all mods are compatible with every WordClass.
 //
 // Assumes the following about Word.word:
