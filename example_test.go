@@ -38,6 +38,11 @@ func ExampleGenerator_All() {
 		}
 		fmt.Printf("%d: %s\n", i, a.Word())
 	}
+	// Output:
+	// 0: abandoned
+	// 1: abashed
+	// 2: abatable
+	// 3: abbatial
 }
 
 func ExampleGenerator_Find() {
@@ -120,6 +125,8 @@ func ExampleGenerator_Words() {
 	if n, ok := next(); ok {
 		fmt.Println(n.Word())
 	}
+	// Output:
+	// aa
 }
 
 func ExampleMod_Enabled() {
