@@ -105,7 +105,7 @@ func compile(wg *sync.WaitGroup, chErr chan error, gen *neng.Generator, fname st
 	fmt.Println(csum)
 }
 
-// setMod returns a Mod with every compatible grammatical bit set, depending on
+// setMods returns a Mod with every compatible grammatical bit set, depending on
 // the specified WordClass. For an undefined WordClass value, returns an error.
 func setMods(wc neng.WordClass) (neng.Mod, error) {
 	switch wc {
