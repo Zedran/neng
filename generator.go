@@ -10,7 +10,8 @@ import (
 )
 
 // Iteration limit used by the DefaultGenerator function. Exported
-// for convenience of users who wish to work with a custom Generator.
+// as a reasonable default iterLimit value for the convenience of users who wish
+// to work with a custom Generator.
 //
 // Iteration limit is a safeguard for Generator.Adjective, Generator.Adverb and
 // Generator.Noun methods. In presence of MOD_COMPARATIVE, MOD_SUPERLATIVE
