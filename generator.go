@@ -202,7 +202,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				if i == len(pattern)-1 {
 					return "", symbols.ErrSpecStrTerm
 				}
-				mods |= flagToMod(c)
+				mods |= specToMod(c)
 			case 'a', 'm', 'n', 'v':
 				word, err := gen.getGenerator(c)(mods)
 				if err != nil {

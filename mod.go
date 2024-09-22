@@ -53,9 +53,10 @@ func (m Mod) Undefined() bool {
 	return m >= mod_undefined
 }
 
-// flagToMod translates flag character into Mod value.
-func flagToMod(flag rune) Mod {
-	switch flag {
+// specToMod translates specifier (phrase pattern syntax character)
+// into a corresponding Mod value.
+func specToMod(spec rune) Mod {
+	switch spec {
 	case 'p':
 		return MOD_PLURAL
 	case '2':
