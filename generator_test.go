@@ -1,10 +1,12 @@
 package neng
 
 import (
+	"errors"
 	"slices"
 	"testing"
 
 	"github.com/Zedran/neng/internal/tests"
+	"github.com/Zedran/neng/symbols"
 )
 
 // Ensures that call to DefaultGenerator does not return an error
@@ -227,6 +229,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 	cases := []testCase{
 		{"Undefined mod", "aa", mod_undefined, WC_NOUN, false},
 		{"Undefined mod, non-declared value", "aa", 65536, WC_NOUN, false},
+		{"Undefined WordClass", "aa", MOD_PLURAL, WordClass(255), false},
 		{"WordClass-Mod incompatibility", "aa", MOD_COMPARATIVE, WC_NOUN, false},
 		{"Uncountable noun + MOD_PLURAL", "aa", MOD_PLURAL, WC_NOUN, false},
 		{"Non-comparable adj + MOD_COMPARATIVE", "own", MOD_COMPARATIVE, WC_ADJECTIVE, false},
@@ -241,7 +244,13 @@ func TestGenerator_TransformWord(t *testing.T) {
 	for _, c := range cases {
 		word, err := gen.Find(c.word, c.wc)
 		if err != nil {
-			t.Fatalf("'%s' (WordClass %d) does not exist in the word database.", c.word, c.wc)
+			if errors.Is(err, symbols.ErrUndefinedWordClass) {
+				// To test whether an undefined WordClass is recognized, error
+				// from Find must be suppressed and word cannot be nil
+				word = gen.noun[0]
+			} else {
+				t.Fatalf("'%s' (WordClass %d) does not exist in the word database.", c.word, c.wc)
+			}
 		}
 
 		out, err := gen.TransformWord(word, c.wc, c.mods)

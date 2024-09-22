@@ -265,11 +265,17 @@ func (gen *Generator) Transform(word string, wc WordClass, mods Mod) (string, er
 //   - Verbs are in their base forms
 //
 // Returns an error if:
+//   - undefined WordClass value is specified
+//   - mods parameter contains an undefined Mod value
 //   - WordClass of the word is not compatible with any Mod value in mods
 //   - transformation into comparative or superlative form is requested
 //     for a non-comparable adjective or adverb
 //   - transformation into plural form is requested for an uncountable noun
 func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string, error) {
+	if wc > WC_VERB {
+		return "", symbols.ErrUndefinedWordClass
+	}
+
 	if mods == MOD_NONE {
 		return word.word, nil
 	}
