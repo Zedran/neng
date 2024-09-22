@@ -210,7 +210,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				phrase.WriteString(word)
 				escaped = false
 			default:
-				return "", symbols.ErrUnknownCommand
+				return "", symbols.ErrUndefinedSpecifier
 			}
 		} else if c == '%' {
 			if i == len(pattern)-1 {

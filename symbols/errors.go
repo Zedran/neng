@@ -70,11 +70,11 @@ var (
 	// modifier value is received, e.g. Mod(65536).
 	ErrUndefinedMod = errors.New("undefined modifier")
 
+	// ErrUndefinedSpecifier is returned by Generator.Phrase if a pattern contains
+	// an undefined escaped character.
+	ErrUndefinedSpecifier = errors.New("undefined specifier")
+
 	// ErrUndefinedWordClass is returned by Generator.Find if an undefined
 	// WordClass value is received, e.g. WordClass(123).
 	ErrUndefinedWordClass = errors.New("undefined WordClass")
-
-	// ErrUnknownCommand is returned by Generator.Phrase if a pattern contains
-	// an undefined escaped character.
-	ErrUnknownCommand = errors.New("unknown command specified")
 )
