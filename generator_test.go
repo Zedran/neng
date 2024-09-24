@@ -101,15 +101,20 @@ func TestGenerator_Iter(t *testing.T) {
 	}
 }
 
-// Tests whether Generator.Noun correctly skips uncountable nouns in presence
-// of MOD_PLURAL and plural-only nouns in absence of plural modifier.
+// Tests whether Generator.Noun correctly skips:
+//   - uncountable nouns in presence of MOD_PLURAL or MOD_INDEF
+//   - plural-only nouns in presence of MOD_INDEF
+//   - plural-only nouns in absence of MOD_PLURAL
+//
+// ErrIterLimit marks the successful rejection. Any other error value means
+// that the input passed through the checks to Generator.TransformWord.
 func TestGenerator_Noun(t *testing.T) {
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10, false)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
-	if n, err := gen.Noun(MOD_NONE); err == nil {
+	if n, err := gen.Noun(MOD_NONE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for singular: plural-only noun was not rejected. Noun returned: %s", n)
 	}
 
@@ -123,7 +128,7 @@ func TestGenerator_Noun(t *testing.T) {
 
 	gen.noun = []*Word{{ft: FT_UNCOUNTABLE, irr: nil, word: "boldness"}}
 
-	if n, err := gen.Noun(MOD_PLURAL); err == nil {
+	if n, err := gen.Noun(MOD_PLURAL); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for plural: uncountable noun was not rejected. Noun returned: %s", n)
 	}
 
