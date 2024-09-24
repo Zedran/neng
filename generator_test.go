@@ -291,6 +291,9 @@ func TestGenerator_TransformWord(t *testing.T) {
 
 // Tests whether Generator.generateModifier correctly skips non-comparable
 // adjectives if gradation is requested.
+//
+// ErrIterLimit marks the successful rejection. Any other error value means
+// that the input passed through the checks to Generator.TransformWord.
 func TestGenerator_generateModifier(t *testing.T) {
 	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10, false)
 	if err != nil {
@@ -301,11 +304,11 @@ func TestGenerator_generateModifier(t *testing.T) {
 		t.Errorf("Failed for positive: non-comparable adjective was rejected: %v", err)
 	}
 
-	if a, err := gen.Adjective(MOD_COMPARATIVE); err == nil {
+	if a, err := gen.Adjective(MOD_COMPARATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for comparative: non-comparable adjective was not rejected. Adjective returned: %s", a)
 	}
 
-	if a, err := gen.Adjective(MOD_SUPERLATIVE); err == nil {
+	if a, err := gen.Adjective(MOD_SUPERLATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for superlative: non-comparable adjective was not rejected. Adjective returned: %s", a)
 	}
 
@@ -313,11 +316,11 @@ func TestGenerator_generateModifier(t *testing.T) {
 		t.Errorf("Failed for positive: non-comparable adverb was rejected: %v", err)
 	}
 
-	if a, err := gen.Adverb(MOD_COMPARATIVE); err == nil {
+	if a, err := gen.Adverb(MOD_COMPARATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for comparative: non-comparable adverb was not rejected. Adverb returned: %s", a)
 	}
 
-	if a, err := gen.Adverb(MOD_SUPERLATIVE); err == nil {
+	if a, err := gen.Adverb(MOD_SUPERLATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for superlative: non-comparable adverb was not rejected. Adverb returned: %s", a)
 	}
 }
