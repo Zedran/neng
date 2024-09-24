@@ -117,6 +117,10 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Errorf("Failed for plural: plural-only noun was rejected: %v", err)
 	}
 
+	if n, err := gen.Noun(MOD_INDEF); !errors.Is(err, symbols.ErrIterLimit) {
+		t.Errorf("Failed for indefinite article: plural-only noun was not rejected. Noun returned %s", n)
+	}
+
 	gen.noun = []*Word{{ft: FT_UNCOUNTABLE, irr: nil, word: "boldness"}}
 
 	if n, err := gen.Noun(MOD_PLURAL); err == nil {
@@ -125,6 +129,16 @@ func TestGenerator_Noun(t *testing.T) {
 
 	if _, err = gen.Noun(MOD_NONE); err != nil {
 		t.Errorf("Failed for singular: uncountable noun was rejected: %v", err)
+	}
+
+	if n, err := gen.Noun(MOD_INDEF); !errors.Is(err, symbols.ErrIterLimit) {
+		t.Errorf("Failed for indefinite article: uncountable noun was not rejected. Noun returned %s", n)
+	}
+
+	gen.noun = []*Word{{ft: FT_REGULAR, irr: nil, word: "microscope"}}
+
+	if _, err := gen.Noun(MOD_INDEF); err != nil {
+		t.Errorf("Failed for indefinite article: regular noun was rejected: %v", err)
 	}
 }
 
@@ -231,7 +245,9 @@ func TestGenerator_TransformWord(t *testing.T) {
 		{"Undefined mod, non-declared value", "aa", 65536, WC_NOUN, false},
 		{"Undefined WordClass", "aa", MOD_PLURAL, WordClass(255), false},
 		{"WordClass-Mod incompatibility", "aa", MOD_COMPARATIVE, WC_NOUN, false},
+		{"Plural-only noun + MOD_INDEF", "scissors", MOD_INDEF, WC_NOUN, false},
 		{"Uncountable noun + MOD_PLURAL", "aa", MOD_PLURAL, WC_NOUN, false},
+		{"Uncountable noun + MOD_INDEF", "aa", MOD_INDEF, WC_NOUN, false},
 		{"Non-comparable adj + MOD_COMPARATIVE", "own", MOD_COMPARATIVE, WC_ADJECTIVE, false},
 		{"Non-comparable adj + MOD_SUPERLATIVE", "own", MOD_SUPERLATIVE, WC_ADJECTIVE, false},
 		{"Non-comparable adv + MOD_COMPARATIVE", "cryptographically", MOD_COMPARATIVE, WC_ADVERB, false},

@@ -123,18 +123,21 @@ func (gen *Generator) Len(wc WordClass) (int, error) {
 //   - an undefined Mod is received (relays from Generator.Transform)
 //   - an incompatible Mod is received (relays from Generator.Transform)
 //   - Generator.iterLimit is reached while attempting to generate a countable
-//     noun (relevant for generators with customized word lists)
+//     noun	for MOD_PLURAL, or a countable, not plural-only noun for MOD_INDEF
+//     (relevant for generators with customized word lists)
 func (gen *Generator) Noun(mods Mod) (string, error) {
-	var excluded FormType
+	var excluded []FormType
 
 	if mods.Enabled(MOD_PLURAL) {
-		excluded = FT_UNCOUNTABLE
+		excluded = []FormType{FT_UNCOUNTABLE}
+	} else if mods.Enabled(MOD_INDEF) {
+		excluded = []FormType{FT_PLURAL_ONLY, FT_UNCOUNTABLE}
 	} else {
-		excluded = FT_PLURAL_ONLY
+		excluded = []FormType{FT_PLURAL_ONLY}
 	}
 
 	for range gen.iterLimit {
-		if n := gen.noun[randIndex(len(gen.noun))]; n.ft != excluded {
+		if n := gen.noun[randIndex(len(gen.noun))]; !slices.Contains(excluded, n.ft) {
 			return gen.TransformWord(n, WC_NOUN, mods)
 		}
 	}
@@ -159,6 +162,7 @@ func (gen *Generator) Noun(mods Mod) (string, error) {
 //		%N - transforms a verb into its Present Simple form (now)
 //		%c - transforms an adjective or an adverb into comparative (better)
 //		%g - transforms a verb into gerund
+//		%i - inserts an indefinite article before an adjective, adverb or a noun
 //		%p - transforms a noun or a verb (Present Simple) into its plural form
 //		%s - transforms an adjective or an adverb into superlative (best)
 //		%l - transforms a word to lower case
@@ -198,7 +202,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			case '%':
 				phrase.WriteRune(c)
 				escaped = false
-			case '2', '3', 'N', 'c', 'g', 'l', 'p', 's', 't', 'u':
+			case '2', '3', 'N', 'c', 'g', 'i', 'l', 'p', 's', 't', 'u':
 				if i == len(pattern)-1 {
 					return "", symbols.ErrSpecStrTerm
 				}
@@ -292,6 +296,14 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string,
 		if word.ft == FT_UNCOUNTABLE && mods.Enabled(MOD_PLURAL) {
 			return "", symbols.ErrUncountable
 		}
+		if mods.Enabled(MOD_INDEF) {
+			if word.ft == FT_PLURAL_ONLY {
+				return "", symbols.ErrPluralOnly
+			}
+			if word.ft == FT_UNCOUNTABLE {
+				return "", symbols.ErrUncountable
+			}
+		}
 	}
 
 	var w string
@@ -321,8 +333,12 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string,
 
 	if len(w) == 0 {
 		// If no mods other than case transformation
-		// are requested, w remains empty
+		// or indefinite are requested, w remains empty
 		w = word.word
+	}
+
+	if mods.Enabled(MOD_INDEF) {
+		w = indefinite(w)
 	}
 
 	switch true {

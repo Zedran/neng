@@ -20,19 +20,23 @@ func (wc WordClass) CompatibleWith(mods Mod) bool {
 		if mods.Enabled(MOD_PLURAL | MOD_PAST_SIMPLE | MOD_PAST_PARTICIPLE | MOD_PRESENT_SIMPLE | MOD_GERUND) {
 			return false
 		}
+		if mods.Enabled(MOD_INDEF) && mods.Enabled(MOD_SUPERLATIVE) {
+			return false
+		}
 	case WC_NOUN:
 		if mods.Enabled(MOD_PAST_SIMPLE | MOD_PAST_PARTICIPLE | MOD_PRESENT_SIMPLE | MOD_GERUND | MOD_COMPARATIVE | MOD_SUPERLATIVE) {
 			return false
 		}
-	case WC_VERB:
-		if mods.Enabled(MOD_COMPARATIVE | MOD_SUPERLATIVE) {
+		if mods.Enabled(MOD_INDEF) && mods.Enabled(MOD_PLURAL) {
 			return false
 		}
-
+	case WC_VERB:
+		if mods.Enabled(MOD_INDEF | MOD_COMPARATIVE | MOD_SUPERLATIVE) {
+			return false
+		}
 		if mods.Enabled(MOD_PLURAL) && !mods.Enabled(MOD_PAST_SIMPLE|MOD_PRESENT_SIMPLE) {
 			return false
 		}
 	}
-
 	return true
 }

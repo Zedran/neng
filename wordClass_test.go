@@ -20,11 +20,15 @@ func TestWordClass_CompatibleWith(t *testing.T) {
 		{true, WC_VERB, MOD_PRESENT_SIMPLE},
 		{false, WC_ADJECTIVE, MOD_GERUND},
 		{false, WC_ADJECTIVE, MOD_PLURAL},
+		{false, WC_ADJECTIVE, MOD_INDEF | MOD_SUPERLATIVE},
 		{false, WC_ADVERB, MOD_PLURAL},
 		{false, WC_ADVERB, MOD_PAST_SIMPLE},
+		{false, WC_ADVERB, MOD_INDEF | MOD_SUPERLATIVE},
+		{false, WC_NOUN, MOD_INDEF | MOD_PLURAL},
 		{false, WC_NOUN, MOD_COMPARATIVE},
 		{false, WC_VERB, MOD_SUPERLATIVE},
 		{false, WC_VERB, MOD_PLURAL},
+		{false, WC_VERB, MOD_INDEF},
 	}
 
 	for _, c := range cases {

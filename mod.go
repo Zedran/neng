@@ -29,6 +29,9 @@ const (
 	// Transform an adjective or an adverb into superlative (good -> best).
 	MOD_SUPERLATIVE
 
+	// Insert an indefinite article before an adjective, adverb or a noun.
+	MOD_INDEF
+
 	// Transform a word to lower case.
 	MOD_CASE_LOWER
 
@@ -69,6 +72,8 @@ func specToMod(spec rune) Mod {
 		return MOD_COMPARATIVE
 	case 'g':
 		return MOD_GERUND
+	case 'i':
+		return MOD_INDEF
 	case 'l':
 		return MOD_CASE_LOWER
 	case 's':

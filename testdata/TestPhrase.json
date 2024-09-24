@@ -24,5 +24,7 @@
     "%glv %sla":      "stashing biggest",
     "%g2v %2gv":      "stashed stashed",
     "%ltun %utn":     "snowfall Snowfall",
-    "%%s":            "%s"
+    "%%s":            "%s",
+    "%in":            "a snowfall",
+    "%ia %n":         "a big snowfall"
 }
