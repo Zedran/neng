@@ -81,20 +81,20 @@ Transformations can only be applied to compatible parts of speech.
 | `N`    | verb                     | `MOD_PRESENT_SIMPLE`  | Present Simple (now)         |
 | `c`    | adjective, adverb        | `MOD_COMPARATIVE`     | Comparative (better)         |
 | `g`    | verb                     | `MOD_GERUND`          | Gerund                       |
-| `i`    | adjective, adverb, noun* | `MOD_INDEFINITE`      | Indefinite adjective (a, an) |
+| `i`    | adjective, adverb, noun* | `MOD_INDEF`           | Indefinite adjective (a, an) |
 | `l`    | any                      | `MOD_CASE_LOWER`      | lower case                   |
 | `p`    | noun, verb**             | `MOD_PLURAL`          | Plural form                  |
 | `s`    | adjective, adverb        | `MOD_SUPERLATIVE`     | Superlative (best)           |
 | `t`    | any                      | `MOD_CASE_TITLE`      | Title Case                   |
 | `u`    | any                      | `MOD_CASE_UPPER`      | UPPER CASE                   |
 
-\* `MOD_INDEFINITE` is not compatible with `MOD_PLURAL` and `MOD_SUPERLATIVE`.
+\* `MOD_INDEF` is not compatible with `MOD_PLURAL` and `MOD_SUPERLATIVE`.
 
 \*\* `MOD_PLURAL` is only compatible with verbs when combined with `MOD_PAST_SIMPLE` or `MOD_PRESENT_SIMPLE`.
 
 Symbols are used to request transformations for words within a phrase. Package constants of type [`Mod`](./mod.go#L4) are designed to work with "single-word" methods.
 
-`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If multiple modifiers of the same kind are specified, the one with the lowest value is applied. The above-mentioned verb transformations with `MOD_PLURAL` and `MOD_INDEFINITE` are exceptions to this rule.
+`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If multiple modifiers of the same kind are specified, the one with the lowest value is applied. The above-mentioned verb transformations with `MOD_PLURAL` and `MOD_INDEF` are exceptions to this rule.
 
 ## State of the vocabulary
 
