@@ -130,7 +130,7 @@ func (gen *Generator) Noun(mods Mod) (string, error) {
 
 	if mods.Enabled(MOD_PLURAL) {
 		excluded = []FormType{FT_UNCOUNTABLE}
-	} else if mods.Enabled(MOD_INDEF) {
+	} else if mods.Enabled(MOD_INDEF | MOD_INDEF_SILENT) {
 		excluded = []FormType{FT_PLURAL_ONLY, FT_UNCOUNTABLE}
 	} else {
 		excluded = []FormType{FT_PLURAL_ONLY}
@@ -202,7 +202,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			case '%':
 				phrase.WriteRune(c)
 				escaped = false
-			case '2', '3', 'N', 'c', 'g', 'i', 'l', 'p', 's', 't', 'u':
+			case '2', '3', 'N', 'c', 'g', 'i', 'l', 'p', 's', 't', 'u', '_':
 				if i == len(pattern)-1 {
 					return "", symbols.ErrSpecStrTerm
 				}
@@ -296,7 +296,7 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string,
 		if word.ft == FT_UNCOUNTABLE && mods.Enabled(MOD_PLURAL) {
 			return "", symbols.ErrUncountable
 		}
-		if mods.Enabled(MOD_INDEF) {
+		if mods.Enabled(MOD_INDEF | MOD_INDEF_SILENT) {
 			if word.ft == FT_PLURAL_ONLY {
 				return "", symbols.ErrPluralOnly
 			}

@@ -32,6 +32,11 @@ const (
 	// Insert an indefinite article before an adjective, adverb or a noun.
 	MOD_INDEF
 
+	// Pick a noun that is compatible with MOD_INDEF (not uncountable,
+	// not plural-only). Helpful when the user wants to add the indefinite
+	// article before an adjective describing a noun.
+	MOD_INDEF_SILENT
+
 	// Transform a word to lower case.
 	MOD_CASE_LOWER
 
@@ -82,6 +87,8 @@ func specToMod(spec rune) Mod {
 		return MOD_CASE_TITLE
 	case 'u':
 		return MOD_CASE_UPPER
+	case '_':
+		return MOD_INDEF_SILENT
 	default:
 		return Mod(mod_undefined)
 	}
