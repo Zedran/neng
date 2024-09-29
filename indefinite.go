@@ -17,7 +17,7 @@ func indefinite(word string) string {
 func indefiniteU(word string) string {
 	switch word[1] {
 	case 'n':
-		if strings.HasPrefix(word, "uni") {
+		if len(word) >= 3 && strings.HasPrefix(word, "uni") {
 			if !strings.ContainsRune("nmdr", rune(word[3])) || word == "unimodal" || word == "uninominal" {
 				// unin-, unim-, unid-, unir- (for a single 'unironed')
 				return "a " + word
