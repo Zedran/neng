@@ -15,6 +15,10 @@ func indefinite(word string) string {
 
 // indefiniteU prefixes the word beginning with 'u-' with an indefinite article.
 func indefiniteU(word string) string {
+	if len(word) == 1 {
+		return "a " + word
+	}
+
 	switch word[1] {
 	case 'n':
 		if strings.HasPrefix(word, "uni") {
