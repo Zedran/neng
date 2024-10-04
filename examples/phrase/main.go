@@ -10,7 +10,7 @@ import (
 )
 
 const HELP string = "Specify your pattern.\n\n" +
-	"Inertions:\n" +
+	"Insertions:\n" +
 	"\ta - adjective         m - adverb\n" +
 	"\tn - noun              v - verb\n\n" +
 	"Transformations:\n" +
