@@ -10,13 +10,15 @@ import (
 )
 
 const HELP string = "Specify your pattern.\n\n" +
-	"a - adjective         m - adverb\n" +
-	"n - noun              v - verb\n\n" +
-	"2 - Past Simple       3 - Past Participle    N - Present Simple\n" +
-	"c - Comparative       g - Gerund             p - Plural\n" +
-	"l - lower case        s - Superlative        t - Title Case\n" +
-	"u - UPPER CASE\n\n" +
-	"Example: %tsa %tpn that %m %Npv the %n\n\n"
+	"Inertions:\n" +
+	"\ta - adjective         m - adverb\n" +
+	"\tn - noun              v - verb\n\n" +
+	"Transformations:\n" +
+	"\t2 - Past Simple       3 - Past Participle    N - Present Simple\n" +
+	"\tc - Comparative       g - Gerund             i - Indefinite article\n" +
+	"\tp - Plural            l - lower case         s - Superlative\n" +
+	"\tt - Title Case        u - UPPER CASE         _ - Indefinite (noun)\n\n" +
+	"Example: %tsa %tpn that %m %Npv %in\n\n"
 
 func main() {
 	gen, err := neng.DefaultGenerator()
