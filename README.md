@@ -82,6 +82,7 @@ Symbols are used to request transformations for words within a phrase. Package c
 | `3`    | verb                     | `MOD_PAST_PARTICIPLE` | Past Participle (3rd form)   |
 | `N`    | verb                     | `MOD_PRESENT_SIMPLE`  | Present Simple (now)         |
 | `c`    | adjective, adverb        | `MOD_COMPARATIVE`     | Comparative (better)         |
+| `f`    | any                      | `MOD_CASE_SENTENCE`   | Sentence case (first letter) |
 | `g`    | verb                     | `MOD_GERUND`          | Gerund                       |
 | `i`    | adjective, adverb, noun* | `MOD_INDEF`           | Indefinite adjective (a, an) |
 | `_`    | noun                     | `MOD_INDEF_SILENT`    | Silent indefinite**          |

@@ -1,6 +1,8 @@
 package neng
 
 import (
+	"strings"
+
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
@@ -15,6 +17,16 @@ type caser struct {
 // toLower transforms word to lower case.
 func (c *caser) toLower(word string) string {
 	return c.lower.String(word)
+}
+
+// toSentence transforms the first word in a space-separated sequence
+// to title case and everything that follows to lower case.
+func (c *caser) toSentence(words string) string {
+	space := strings.Index(words, " ")
+	if space == -1 {
+		return c.toTitle(words)
+	}
+	return c.toTitle(words[:space]) + c.toLower(words[space:])
 }
 
 // toTitle transforms word to title case.

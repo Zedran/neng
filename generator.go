@@ -202,7 +202,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 			case '%':
 				phrase.WriteRune(c)
 				escaped = false
-			case '2', '3', 'N', 'c', 'g', 'i', 'l', 'p', 's', 't', 'u', '_':
+			case '2', '3', 'N', 'c', 'f', 'g', 'i', 'l', 'p', 's', 't', 'u', '_':
 				if i == len(pattern)-1 {
 					return "", symbols.ErrSpecStrTerm
 				}
@@ -344,6 +344,8 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string,
 	switch true {
 	case mods.Enabled(MOD_CASE_LOWER):
 		w = gen.caser.toLower(w)
+	case mods.Enabled(MOD_CASE_SENTENCE):
+		w = gen.caser.toSentence(w)
 	case mods.Enabled(MOD_CASE_TITLE):
 		w = gen.caser.toTitle(w)
 	case mods.Enabled(MOD_CASE_UPPER):

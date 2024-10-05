@@ -15,8 +15,12 @@ func TestCaser(t *testing.T) {
 	cases := []testCase{
 		{"LOWER", "lower", caser.toLower},
 		{"LoWeR", "lower", caser.toLower},
+		{"a man", "A man", caser.toSentence},
+		{"A MAN", "A man", caser.toSentence},
+		{"title", "Title", caser.toSentence},
 		{"title", "Title", caser.toTitle},
 		{"tItLe", "Title", caser.toTitle},
+		{"a man", "A Man", caser.toTitle},
 		{"upper", "UPPER", caser.toUpper},
 		{"uPpEr", "UPPER", caser.toUpper},
 	}
