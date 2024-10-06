@@ -200,6 +200,9 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 		if escaped {
 			switch c {
 			case '%':
+				if mods != MOD_NONE {
+					return "", symbols.ErrUndefinedSpecifier
+				}
 				phrase.WriteRune(c)
 				escaped = false
 			case '2', '3', 'N', 'c', 'f', 'g', 'i', 'l', 'p', 's', 't', 'u', '_':

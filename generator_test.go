@@ -187,6 +187,7 @@ func TestGenerator_Phrase(t *testing.T) {
 		"%cn",  // WordClass-Mod incompatibility
 		"%pv",  // Incorrect use of MOD_PLURAL with verb
 		"%s",   // Transformation specifier ends the pattern
+		"%s%a", // % is not a defined Mod specifier
 	}
 
 	for _, bc := range errCases {
