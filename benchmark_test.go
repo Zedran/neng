@@ -42,6 +42,20 @@ func BenchmarkTransformAll_Adj(b *testing.B) {
 	}
 }
 
+func BenchmarkTransformAll_Adj_Indef(b *testing.B) {
+	b.StopTimer()
+
+	gen, _ := DefaultGenerator()
+	nouns, _ := gen.Words(WC_ADJECTIVE)
+
+	b.StartTimer()
+	for range b.N {
+		for w := range nouns {
+			gen.TransformWord(w, WC_ADJECTIVE, MOD_INDEF)
+		}
+	}
+}
+
 func BenchmarkTransformAll_Adv(b *testing.B) {
 	b.StopTimer()
 
@@ -65,6 +79,20 @@ func BenchmarkTransformAll_Adv(b *testing.B) {
 	}
 }
 
+func BenchmarkTransformAll_Adv_Indef(b *testing.B) {
+	b.StopTimer()
+
+	gen, _ := DefaultGenerator()
+	nouns, _ := gen.Words(WC_ADVERB)
+
+	b.StartTimer()
+	for range b.N {
+		for w := range nouns {
+			gen.TransformWord(w, WC_ADVERB, MOD_INDEF)
+		}
+	}
+}
+
 func BenchmarkTransformAll_Noun(b *testing.B) {
 	b.StopTimer()
 
@@ -83,6 +111,20 @@ func BenchmarkTransformAll_Noun(b *testing.B) {
 			f, _ := gen.Find(w, wc)
 
 			gen.TransformWord(f, wc, MOD_PLURAL)
+		}
+	}
+}
+
+func BenchmarkTransformAll_Noun_Indef(b *testing.B) {
+	b.StopTimer()
+
+	gen, _ := DefaultGenerator()
+	nouns, _ := gen.Words(WC_NOUN)
+
+	b.StartTimer()
+	for range b.N {
+		for w := range nouns {
+			gen.TransformWord(w, WC_NOUN, MOD_INDEF)
 		}
 	}
 }

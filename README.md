@@ -74,24 +74,31 @@ neng's phrase generation syntax resembles C-style string format specifiers. The 
 
 Transformations can only be applied to compatible parts of speech.
 
-| Symbol | Compatible with       | Package constant      | Description                |
-|:------:|:---------------------:|:----------------------|:---------------------------|
-| `2`    | verb                  | `MOD_PAST_SIMPLE`     | Past Simple (2nd form)     |
-| `3`    | verb                  | `MOD_PAST_PARTICIPLE` | Past Participle (3rd form) |
-| `N`    | verb                  | `MOD_PRESENT_SIMPLE`  | Present Simple (now)       |
-| `c`    | adjective, adverb     | `MOD_COMPARATIVE`     | Comparative (better)       |
-| `g`    | verb                  | `MOD_GERUND`          | Gerund                     |
-| `l`    | any                   | `MOD_CASE_LOWER`      | lower case                 |
-| `p`    | noun, verb*           | `MOD_PLURAL`          | Plural form                |
-| `s`    | adjective, adverb     | `MOD_SUPERLATIVE`     | Superlative (best)         |
-| `t`    | any                   | `MOD_CASE_TITLE`      | Title Case                 |
-| `u`    | any                   | `MOD_CASE_UPPER`      | UPPER CASE                 |
-
-\*`MOD_PLURAL` is only compatible with verbs when combined with `MOD_PAST_SIMPLE` or `MOD_PRESENT_SIMPLE`.
-
 Symbols are used to request transformations for words within a phrase. Package constants of type [`Mod`](./mod.go#L4) are designed to work with "single-word" methods.
 
-`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If multiple modifiers of the same kind are specified, the one with the lowest value is applied. The above-mentioned verb transformations with `MOD_PLURAL` are exceptions to this rule.
+| Symbol | Compatible with          | Package constant      | Description                  |
+|:------:|:------------------------:|:----------------------|:-----------------------------|
+| `2`    | verb                     | `MOD_PAST_SIMPLE`     | Past Simple (2nd form)       |
+| `3`    | verb                     | `MOD_PAST_PARTICIPLE` | Past Participle (3rd form)   |
+| `N`    | verb                     | `MOD_PRESENT_SIMPLE`  | Present Simple (now)         |
+| `c`    | adjective, adverb        | `MOD_COMPARATIVE`     | Comparative (better)         |
+| `f`    | any                      | `MOD_CASE_SENTENCE`   | Sentence case (first letter) |
+| `g`    | verb                     | `MOD_GERUND`          | Gerund                       |
+| `i`    | adjective, adverb, noun* | `MOD_INDEF`           | Indefinite adjective (a, an) |
+| `_`    | noun                     | `MOD_INDEF_SILENT`    | Silent indefinite**          |
+| `l`    | any                      | `MOD_CASE_LOWER`      | lower case                   |
+| `p`    | noun, verb***            | `MOD_PLURAL`          | Plural form                  |
+| `s`    | adjective, adverb        | `MOD_SUPERLATIVE`     | Superlative (best)           |
+| `t`    | any                      | `MOD_CASE_TITLE`      | Title Case                   |
+| `u`    | any                      | `MOD_CASE_UPPER`      | UPPER CASE                   |
+
+\* `MOD_INDEF` is not compatible with `MOD_PLURAL` and `MOD_SUPERLATIVE`.
+
+\*\* `MOD_INDEF_SILENT` ensures that the noun is grammatically compatible with an indefinite article (not uncountable, not plural-only), but does not modify it in any way. It is useful in phrase patterns such as `%ia %_n`, where the indefinite article belongs to the noun, but it stands before the adjective describing the noun. If `Generator.TransformWord` method receives silent indefinite, it does nothing to the provided word, but it still returns an error in case of incompatibility.
+
+\*\*\* `MOD_PLURAL` is only compatible with verbs when combined with `MOD_PAST_SIMPLE` or `MOD_PRESENT_SIMPLE`.
+
+`Mod` values form two conceptual categories: grammar modifiers and case modifiers. Only one modifier from each category may be applied to any given word. If multiple modifiers of the same kind are specified, the one with the lowest value is applied. The above-mentioned verb transformations with `MOD_PLURAL` and `MOD_INDEF` are exceptions to this rule.
 
 ## State of the vocabulary
 

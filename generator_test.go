@@ -101,15 +101,20 @@ func TestGenerator_Iter(t *testing.T) {
 	}
 }
 
-// Tests whether Generator.Noun correctly skips uncountable nouns in presence
-// of MOD_PLURAL and plural-only nouns in absence of plural modifier.
+// Tests whether Generator.Noun correctly skips:
+//   - uncountable nouns in presence of MOD_PLURAL or MOD_INDEF
+//   - plural-only nouns in presence of MOD_INDEF
+//   - plural-only nouns in absence of MOD_PLURAL
+//
+// ErrIterLimit marks the successful rejection. Any other error value means
+// that the input passed through the checks to Generator.TransformWord.
 func TestGenerator_Noun(t *testing.T) {
 	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10, false)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
 
-	if n, err := gen.Noun(MOD_NONE); err == nil {
+	if n, err := gen.Noun(MOD_NONE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for singular: plural-only noun was not rejected. Noun returned: %s", n)
 	}
 
@@ -117,14 +122,40 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Errorf("Failed for plural: plural-only noun was rejected: %v", err)
 	}
 
+	if n, err := gen.Noun(MOD_INDEF); !errors.Is(err, symbols.ErrIterLimit) {
+		t.Errorf("Failed for indefinite article: plural-only noun was not rejected. Noun returned %s", n)
+	}
+
+	if n, err := gen.Noun(MOD_INDEF_SILENT); !errors.Is(err, symbols.ErrIterLimit) {
+		t.Errorf("Failed for silent indefinite: plural-only noun was not rejected. Noun returned %s", n)
+	}
+
 	gen.noun = []*Word{{ft: FT_UNCOUNTABLE, irr: nil, word: "boldness"}}
 
-	if n, err := gen.Noun(MOD_PLURAL); err == nil {
+	if n, err := gen.Noun(MOD_PLURAL); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for plural: uncountable noun was not rejected. Noun returned: %s", n)
 	}
 
 	if _, err = gen.Noun(MOD_NONE); err != nil {
 		t.Errorf("Failed for singular: uncountable noun was rejected: %v", err)
+	}
+
+	if n, err := gen.Noun(MOD_INDEF); !errors.Is(err, symbols.ErrIterLimit) {
+		t.Errorf("Failed for indefinite article: uncountable noun was not rejected. Noun returned %s", n)
+	}
+
+	if n, err := gen.Noun(MOD_INDEF_SILENT); !errors.Is(err, symbols.ErrIterLimit) {
+		t.Errorf("Failed for silent indefinite: uncountable noun was not rejected. Noun returned %s", n)
+	}
+
+	gen.noun = []*Word{{ft: FT_REGULAR, irr: nil, word: "microscope"}}
+
+	if _, err := gen.Noun(MOD_INDEF); err != nil {
+		t.Errorf("Failed for indefinite article: regular noun was rejected: %v", err)
+	}
+
+	if n, err := gen.Noun(MOD_INDEF_SILENT); err != nil {
+		t.Errorf("Failed for silent indefinite: regular noun was rejected: %v.", n)
 	}
 }
 
@@ -231,7 +262,11 @@ func TestGenerator_TransformWord(t *testing.T) {
 		{"Undefined mod, non-declared value", "aa", 65536, WC_NOUN, false},
 		{"Undefined WordClass", "aa", MOD_PLURAL, WordClass(255), false},
 		{"WordClass-Mod incompatibility", "aa", MOD_COMPARATIVE, WC_NOUN, false},
+		{"Plural-only noun + MOD_INDEF", "scissors", MOD_INDEF, WC_NOUN, false},
+		{"Plural-only noun + MOD_INDEF_SILENT", "scissors", MOD_INDEF_SILENT, WC_NOUN, false},
 		{"Uncountable noun + MOD_PLURAL", "aa", MOD_PLURAL, WC_NOUN, false},
+		{"Uncountable noun + MOD_INDEF", "aa", MOD_INDEF, WC_NOUN, false},
+		{"Uncountable noun + MOD_INDEF_SILENT", "aa", MOD_INDEF_SILENT, WC_NOUN, false},
 		{"Non-comparable adj + MOD_COMPARATIVE", "own", MOD_COMPARATIVE, WC_ADJECTIVE, false},
 		{"Non-comparable adj + MOD_SUPERLATIVE", "own", MOD_SUPERLATIVE, WC_ADJECTIVE, false},
 		{"Non-comparable adv + MOD_COMPARATIVE", "cryptographically", MOD_COMPARATIVE, WC_ADVERB, false},
@@ -270,6 +305,9 @@ func TestGenerator_TransformWord(t *testing.T) {
 
 // Tests whether Generator.generateModifier correctly skips non-comparable
 // adjectives if gradation is requested.
+//
+// ErrIterLimit marks the successful rejection. Any other error value means
+// that the input passed through the checks to Generator.TransformWord.
 func TestGenerator_generateModifier(t *testing.T) {
 	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10, false)
 	if err != nil {
@@ -280,11 +318,11 @@ func TestGenerator_generateModifier(t *testing.T) {
 		t.Errorf("Failed for positive: non-comparable adjective was rejected: %v", err)
 	}
 
-	if a, err := gen.Adjective(MOD_COMPARATIVE); err == nil {
+	if a, err := gen.Adjective(MOD_COMPARATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for comparative: non-comparable adjective was not rejected. Adjective returned: %s", a)
 	}
 
-	if a, err := gen.Adjective(MOD_SUPERLATIVE); err == nil {
+	if a, err := gen.Adjective(MOD_SUPERLATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for superlative: non-comparable adjective was not rejected. Adjective returned: %s", a)
 	}
 
@@ -292,11 +330,11 @@ func TestGenerator_generateModifier(t *testing.T) {
 		t.Errorf("Failed for positive: non-comparable adverb was rejected: %v", err)
 	}
 
-	if a, err := gen.Adverb(MOD_COMPARATIVE); err == nil {
+	if a, err := gen.Adverb(MOD_COMPARATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for comparative: non-comparable adverb was not rejected. Adverb returned: %s", a)
 	}
 
-	if a, err := gen.Adverb(MOD_SUPERLATIVE); err == nil {
+	if a, err := gen.Adverb(MOD_SUPERLATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for superlative: non-comparable adverb was not rejected. Adverb returned: %s", a)
 	}
 }

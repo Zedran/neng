@@ -89,11 +89,12 @@ func ExampleGenerator_Transform() {
 	// because it searches the database for the specified string every time. Refer to Generator.Find
 	// for an example of bulk transformation.
 
-	v, _ := gen.Transform("muffin", neng.WC_NOUN, neng.MOD_PLURAL|neng.MOD_CASE_TITLE)
+	a, _ := gen.Transform("delightful", neng.WC_ADJECTIVE, neng.MOD_INDEF|neng.MOD_CASE_SENTENCE)
+	n, _ := gen.Transform("muffin", neng.WC_NOUN, neng.MOD_INDEF_SILENT)
 
-	fmt.Println(v)
+	fmt.Printf("%s %s\n", a, n)
 	// Output:
-	// Muffins
+	// A delightful muffin
 }
 
 func ExampleGenerator_TransformWord() {

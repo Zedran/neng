@@ -28,14 +28,21 @@ const AUDIT_DIR string = "audit"
 func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.Mod) (string, error) {
 	var s strings.Builder
 
-	s.WriteString(w.Word() + "\n")
+	tw, err := gen.TransformWord(w, wc, neng.MOD_INDEF)
+	if err != nil {
+		if wc != neng.WC_VERB && !errors.Is(err, symbols.ErrPluralOnly) && !errors.Is(err, symbols.ErrUncountable) {
+			return "", err
+		}
+		tw = w.Word()
+	}
+	s.WriteString(tw + "\n")
 
-	for b := neng.MOD_PLURAL; b < neng.MOD_CASE_LOWER; b <<= 1 {
+	for b := neng.MOD_PLURAL; b < neng.MOD_INDEF; b <<= 1 {
 		if !mods.Enabled(b) {
 			continue
 		}
 
-		tw, err := gen.TransformWord(w, wc, b)
+		tw, err = gen.TransformWord(w, wc, b)
 
 		if err != nil {
 			switch wc {
@@ -107,6 +114,8 @@ func compile(wg *sync.WaitGroup, chErr chan error, gen *neng.Generator, fname st
 
 // setMods returns a Mod with every compatible grammatical bit set, depending on
 // the specified WordClass. For an undefined WordClass value, returns an error.
+// MOD_INDEF is not set by this function. buildGroup handles it in a different
+// way than the rest of the Mods.
 func setMods(wc neng.WordClass) (neng.Mod, error) {
 	switch wc {
 	case neng.WC_ADJECTIVE, neng.WC_ADVERB:

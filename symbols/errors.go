@@ -54,13 +54,17 @@ var (
 	// is not found in the word database.
 	ErrNotFound = errors.New("no matches found")
 
+	// ErrPluralOnly is returned by Generator.TransformWord if a plural-only
+	// noun is received along with MOD_INDEF or MOD_INDEF_SILENT.
+	ErrPluralOnly = errors.New("indefinite article requested for plural-only noun")
+
 	// ErrSpecStrTerm is returned by Generator.Phrase if a pattern ends
 	// with transformation specifier (e.g "%t2").
 	ErrSpecStrTerm = errors.New("transformation specifier ends the pattern")
 
 	// ErrUncountable is returned by Generator.TransformWord if an uncountable
-	// noun is received along with MOD_PLURAL.
-	ErrUncountable = errors.New("pluralization requested, but the provided word is uncountable")
+	// noun is received along with MOD_INDEF, MOD_INDEF_SILENT or MOD_PLURAL.
+	ErrUncountable = errors.New("indefinite article or pluralization requested for uncountable noun")
 
 	// ErrUndefinedFormType is returned from NewWordFromParams if an undefined
 	// FormType is passed as ft parameter, e.g. FormType(123).
