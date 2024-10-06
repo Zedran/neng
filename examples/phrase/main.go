@@ -16,8 +16,9 @@ const HELP string = "Specify your pattern.\n\n" +
 	"Transformations:\n" +
 	"\t2 - Past Simple       3 - Past Participle    N - Present Simple\n" +
 	"\tc - Comparative       g - Gerund             i - Indefinite article\n" +
-	"\tp - Plural            l - lower case         s - Superlative\n" +
-	"\tt - Title Case        u - UPPER CASE         _ - Indefinite (noun)\n\n" +
+	"\tp - Plural            s - Superlative        l - lower case\n" +
+	"\tf - Sentence case     t - Title Case         u - UPPER CASE\n" +
+	"\t_ - Indefinite (noun)\n\n" +
 	"Example: %tsa %tpn that %m %Npv %in\n\n"
 
 func main() {
