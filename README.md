@@ -74,9 +74,9 @@ neng's phrase generation syntax resembles C-style string format specifiers. The 
 
 Transformations can only be applied to compatible parts of speech.
 
-Symbols are used to request transformations for words within a phrase. Package constants of type [`Mod`](./mod.go#L4) are designed to work with "single-word" methods.
+Symbols are used to request transformations for words within a phrase. Constants of type [`Mod`](./mod.go#L4) are designed to work with "single-word" methods.
 
-| Symbol | Compatible with          | Package constant      | Description                  |
+| Symbol | Compatible with          | Mod                   | Description                  |
 |:------:|:------------------------:|:----------------------|:-----------------------------|
 | `2`    | verb                     | `MOD_PAST_SIMPLE`     | Past Simple (2nd form)       |
 | `3`    | verb                     | `MOD_PAST_PARTICIPLE` | Past Participle (3rd form)   |
