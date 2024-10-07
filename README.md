@@ -31,8 +31,8 @@ import (
 func main() {
     gen, _ := neng.DefaultGenerator()
 
-    // <title case + noun> <Simple Present + verb> a <upper case + adjective> <upper case + noun>
-    phrase, _ := gen.Phrase("%tn %Nv a %ua %un")
+    // <title case + noun> <Present Simple + verb> the <upper + adjective> <upper + noun>.
+    phrase, _ := gen.Phrase("%tn %Nv the %ua %un.")
 
     // A single, transformed verb
     verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
@@ -47,7 +47,7 @@ func main() {
 ### Output
 
 ```text
-Phrase -> Serenade perplexes a STRAY SUPERBUG
+Phrase -> Serenade perplexes the STRAY SUPERBUG.
 Verb   -> shared
 Word   -> Involving
 ```
