@@ -97,6 +97,6 @@ func specToMod(spec rune) Mod {
 	case '_':
 		return MOD_INDEF_SILENT
 	default:
-		return Mod(mod_undefined)
+		return mod_undefined
 	}
 }
