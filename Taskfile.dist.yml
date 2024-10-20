@@ -36,7 +36,7 @@ tasks:
 
   embed:
     aliases: [e]
-    desc: Generate embedded files from resources
+    desc: Generate embedded files from neng's word lists
     cmds:
       - go run {{.SCRIPTS}}/embed/embed.go
     deps:
