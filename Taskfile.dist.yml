@@ -51,9 +51,9 @@ tasks:
       - '{{.SCRIPTS}}/common/common.go'
       - '{{.SCRIPTS}}/embed/embed.go'
 
-  res:
-    aliases: [r]
-    desc: Generate resources from WordNet lists
+  lists:
+    aliases: [l, r, res]
+    desc: Generate neng's main lists from WordNet resources
     cmds:
       - go run {{.SCRIPTS}}/res/res.go
     ignore_error: true
