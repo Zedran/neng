@@ -38,7 +38,7 @@ func (w *Word) Irr(i int) (string, error) {
 	return (*w.irr)[i], nil
 }
 
-// Word returns the unmodified word.
+// Word returns base form of the word.
 func (w *Word) Word() string {
 	return w.word
 }
