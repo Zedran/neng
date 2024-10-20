@@ -1,10 +1,13 @@
 package neng_test
 
 import (
+	"errors"
 	"fmt"
 	"iter"
+	"log"
 
 	"github.com/Zedran/neng"
+	"github.com/Zedran/neng/symbols"
 )
 
 func ExampleDefaultGenerator() {
@@ -243,6 +246,22 @@ func ExampleNewWordFromParams() {
 	// strong
 	// tenth
 	// magnesium
+}
+
+func ExampleWord_Irr() {
+	word, _ := neng.NewWord("1good,better,best")
+
+	irr1, _ := word.Irr(0)
+	irr2, err := word.Irr(1)
+
+	if err != nil {
+		if errors.Is(err, symbols.ErrNonIrregular) {
+			log.Fatal("Non-irregular word")
+		}
+		log.Fatal("Out of bounds")
+	}
+
+	fmt.Printf("%s, %s, %s\n", word.Word(), irr1, irr2)
 }
 
 func ExampleWordClass_CompatibleWith() {

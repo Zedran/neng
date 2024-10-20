@@ -122,3 +122,39 @@ func TestNewWordFromParams(t *testing.T) {
 		}
 	}
 }
+
+// Ensures that the Word.Irr method provides safety when working with
+// irregular forms of the Word.
+func TestWord_Irr(t *testing.T) {
+	type testCase struct {
+		good     bool
+		word     *Word
+		index    int
+		expected string
+	}
+
+	regular, _ := NewWord("0word")
+	irregular, _ := NewWord("1good,better,best")
+
+	cases := []testCase{
+		{true, irregular, 0, "better"},
+		{true, irregular, 1, "best"},
+		{false, irregular, -1, ""},
+		{false, irregular, 2, ""},
+		{false, regular, 0, ""},
+	}
+
+	for i, c := range cases {
+		output, err := c.word.Irr(c.index)
+
+		if c.good {
+			if err != nil {
+				t.Errorf("Failed for case %d - error returned: %v", i, err)
+			} else if output != c.expected {
+				t.Errorf("Failed for case %d - expected %s, got %s", i, c.expected, output)
+			}
+		} else if err == nil {
+			t.Errorf("Failed for case %d - error not returned. Got: %s", i, output)
+		}
+	}
+}

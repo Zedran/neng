@@ -18,6 +18,26 @@ type Word struct {
 	word string
 }
 
+// Returns FormType of the Word.
+func (w *Word) FT() FormType {
+	return w.ft
+}
+
+// Returns an irregular form of the Word at index i of the underlying slice
+// of irregular forms. Returns an error if called for a non-irregular word
+// or if i is out of bounds of the slice.
+func (w *Word) Irr(i int) (string, error) {
+	if w.ft != FT_IRREGULAR {
+		return "", symbols.ErrNonIrregular
+	}
+
+	if i < 0 || i >= len(*w.irr) {
+		return "", symbols.ErrOutOfBounds
+	}
+
+	return (*w.irr)[i], nil
+}
+
 // Word returns the unmodified word.
 func (w *Word) Word() string {
 	return w.word

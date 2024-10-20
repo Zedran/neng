@@ -46,13 +46,18 @@ var (
 	// with gradation modifier.
 	ErrNonComparable = errors.New("gradation requested, but the provided word is non-comparable")
 
-	// ErrNonIrregular is returned if non-nil slice is passed as irr parameter
-	// to NewWordsFromPar, but ft != FT_IRREGULAR.
-	ErrNonIrregular = errors.New("attempt to assign irregular forms, but Word is not irregular")
+	// ErrNonIrregular is returned if:
+	//  - non-nil slice is passed as irr parameter to NewWordsFromPar, but ft != FT_IRREGULAR
+	//  - Word.Irr is called for a non-irregular Word
+	ErrNonIrregular = errors.New("attempt to assign or get irregular forms, but Word is not irregular")
 
 	// ErrNotFound is returned by Generator.Find if the specified word
 	// is not found in the word database.
 	ErrNotFound = errors.New("no matches found")
+
+	// ErrOutOfBounds returns an error if index value passed to Word.Irr
+	// function lies outside of the Word.irr slice.
+	ErrOutOfBounds = errors.New("index out of bounds")
 
 	// ErrPluralOnly is returned by Generator.TransformWord if a plural-only
 	// noun is received along with MOD_INDEF or MOD_INDEF_SILENT.
