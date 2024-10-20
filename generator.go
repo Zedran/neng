@@ -441,6 +441,12 @@ func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
 }
 
 // DefaultGenerator returns a new Generator with default word lists.
+//
+// It is safe to ignore the error value. The embedded word lists are guaranteed
+// to work correctly and errors returned by the current version of the embed
+// package (missing file, attempt to read a directory) cannot be triggered
+// by neng. The error value remains exposed in case of future changes
+// in the implementation of embed.
 func DefaultGenerator() (*Generator, error) {
 	a, err := readEFS("embed/adj")
 	if err != nil {
