@@ -11,15 +11,19 @@ This software incorporates materials licensed by third parties.
 * Wiktionary. Category: English uncomparable adverbs. Available at https://en.wiktionary.org/wiki/Category:English_uncomparable_adverbs \[2024-07-25] Wikimedia Foundation. 2022.
 * Wiktionary. Category: English uncountable nouns. Available at https://en.wiktionary.org/wiki/Category:English_uncountable_nouns \[2024-06-03] Wikimedia Foundation. 2022.
 
-### License
+### Original license
 
 [Creative Commons Attribution-ShareAlike License](https://creativecommons.org/licenses/by-sa/4.0)
 
 ### Used material
 
-* Page titles in the "English countable nouns" and "English uncountable nouns" categories were used to compile `res/noun.unc`.
-* Page titles in the "English uncomparable adjectives" category were used to compile `res/adj.ncmp`.
-* Page titles in the "English uncomparable adverbs" category were used to compile `res/adv.ncmp`.
+Source material was used to compile several word lists for the project. The summary below presents the compiled lists along with their source categories.
+
+| Project file   | Source categories                                      |
+|:--------------:|:-------------------------------------------------------|
+| `res/noun.unc` | `English countable nouns`, `English uncountable nouns` |
+| `res/adj.ncmp` | `English uncomparable adjectives`                      |
+| `res/adv.ncmp` | `English uncomparable adverbs`                         |
 
 ## WordNet
 
@@ -27,7 +31,7 @@ This software incorporates materials licensed by third parties.
 
 WordNet: A Lexical Database for English v3.1. Available at https://wordnet.princeton.edu/download/current-version \[2024-04-15] Princeton University. 2011.
 
-### License
+### Original license
 
 ```text
 WordNet Release 3.1

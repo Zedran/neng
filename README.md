@@ -119,4 +119,6 @@ Refer to [NOTICE.md](./NOTICE.md).
 
 ## License
 
-This software is available under MIT License.
+This project is available under GPL-3.0 License.
+
+Originally, neng was released under MIT License. However, during development, I included materials licensed under CC BY-SA 4.0, unaware that its share-alike clause is incompatible with MIT License. In order to satisfy "the newfound" requirements, I relicensed neng under GPL-3.0, starting with v0.16.0. Versions with licensing conflicts (v0.8.2 through v0.15.4) have been retracted from Go package index.
