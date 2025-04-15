@@ -20,6 +20,7 @@ package neng
 import (
 	"fmt"
 	"iter"
+	"math/rand/v2"
 	"slices"
 	"strings"
 
@@ -68,6 +69,9 @@ type Generator struct {
 	// A safeguard for Generator.generateModifier and Generator.Noun methods.
 	// Refer to DEFAULT_ITER_LIMIT in Constants section for more information.
 	iterLimit int
+
+	// Source of random numbers
+	source rand.Rand
 }
 
 // Adjective generates a single random adjective and transforms it
@@ -154,7 +158,7 @@ func (gen *Generator) Noun(mods Mod) (string, error) {
 	}
 
 	for range gen.iterLimit {
-		if n := gen.noun[randIndex(len(gen.noun))]; !slices.Contains(excluded, n.ft) {
+		if n := gen.noun[gen.randIndex(len(gen.noun))]; !slices.Contains(excluded, n.ft) {
 			return gen.TransformWord(n, WC_NOUN, mods)
 		}
 	}
@@ -378,7 +382,7 @@ func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string,
 // Verb generates a single random verb and transforms it according to mods.
 // Returns an error if an undefined Mod is received.
 func (gen *Generator) Verb(mods Mod) (string, error) {
-	return gen.TransformWord(gen.verb[randIndex(len(gen.verb))], WC_VERB, mods)
+	return gen.TransformWord(gen.verb[gen.randIndex(len(gen.verb))], WC_VERB, mods)
 }
 
 // Words returns an iterator that yields words from the Generator's list
@@ -409,11 +413,11 @@ func (gen *Generator) generateModifier(wc WordClass, mods Mod) (string, error) {
 	}
 
 	if !mods.Enabled(MOD_COMPARATIVE | MOD_SUPERLATIVE) {
-		return gen.TransformWord(items[randIndex(len(items))], wc, mods)
+		return gen.TransformWord(items[gen.randIndex(len(items))], wc, mods)
 	}
 
 	for range gen.iterLimit {
-		if a := items[randIndex(len(items))]; a.ft != FT_NON_COMPARABLE {
+		if a := items[gen.randIndex(len(items))]; a.ft != FT_NON_COMPARABLE {
 			return gen.TransformWord(a, wc, mods)
 		}
 	}
@@ -457,6 +461,12 @@ func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
 	}
 }
 
+// randIndex returns a random index [0, length). Does not check for 0 (panic) -
+// NewGenerator does not allow empty slices.
+func (gen *Generator) randIndex(length int) int {
+	return gen.source.IntN(length)
+}
+
 // DefaultGenerator returns a new Generator with default word lists.
 //
 // It is safe to ignore the error value. The embedded word lists are guaranteed
@@ -464,7 +474,10 @@ func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
 // package (missing file, attempt to read a directory) cannot be triggered
 // by neng. The error value remains exposed in case of future changes
 // in the implementation of embed.
-func DefaultGenerator() (*Generator, error) {
+//
+// src is the source of random numbers. If src is nil, a randomly seeded
+// PCG is created.
+func DefaultGenerator(src *rand.Rand) (*Generator, error) {
 	a, err := readEFS("embed/adj")
 	if err != nil {
 		return nil, err
@@ -485,7 +498,7 @@ func DefaultGenerator() (*Generator, error) {
 		return nil, err
 	}
 
-	return NewGenerator(a, m, n, v, DEFAULT_ITER_LIMIT, false)
+	return NewGenerator(a, m, n, v, DEFAULT_ITER_LIMIT, false, src)
 }
 
 // NewGenerator initializes a Generator with the provided lists.
@@ -520,7 +533,10 @@ func DefaultGenerator() (*Generator, error) {
 // iterLimit is an adjustable safety mechanism to prevent inifinite loops
 // during certain transformations. For more information, refer to
 // DEFAULT_ITER_LIMIT in the section 'Constants'.
-func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool) (*Generator, error) {
+//
+// src is the source of random numbers. If src is nil, a randomly seeded
+// PCG is created.
+func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool, src *rand.Rand) (*Generator, error) {
 	wAdj, err := parseLines(adj)
 	if err != nil {
 		return nil, fmt.Errorf("adj:%w", err)
@@ -541,7 +557,7 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool) (*Gen
 		return nil, fmt.Errorf("verb:%w", err)
 	}
 
-	return NewGeneratorFromWord(wAdj, wAdv, wNoun, wVerb, iterLimit, safe)
+	return NewGeneratorFromWord(wAdj, wAdv, wNoun, wVerb, iterLimit, safe, src)
 }
 
 // NewGeneratorFromWord returns Generator created using the provided lists
@@ -554,7 +570,9 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool) (*Gen
 // the function ensures the correct order. iterLimit is an adjustable safety
 // mechanism to prevent inifinite loops during certain transformations. For
 // more information, refer to DEFAULT_ITER_LIMIT in the section 'Constants'.
-func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool) (*Generator, error) {
+// src is the source of random numbers. If src is nil, a randomly seeded
+// PCG is created.
+func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool, src *rand.Rand) (*Generator, error) {
 	if iterLimit <= 0 {
 		return nil, symbols.ErrBadIterLimit
 	}
@@ -575,6 +593,10 @@ func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool
 		}
 	}
 
+	if src == nil {
+		src = rand.New(rand.NewPCG(rand.Uint64(), rand.Uint64()))
+	}
+
 	gen := Generator{
 		adj:       adj,
 		adv:       adv,
@@ -582,6 +604,7 @@ func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool
 		verb:      verb,
 		caser:     newCaser(),
 		iterLimit: iterLimit,
+		source:    *src,
 	}
 
 	return &gen, nil

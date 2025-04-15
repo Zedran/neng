@@ -39,7 +39,7 @@ const HELP string = "Specify your pattern.\n\n" +
 	"Example: %tsa %tpn that %m %Npv %in\n\n"
 
 func main() {
-	gen, err := neng.DefaultGenerator()
+	gen, err := neng.DefaultGenerator(nil)
 	if err != nil {
 		log.Fatal(err)
 	}

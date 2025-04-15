@@ -167,7 +167,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	gen, err := neng.DefaultGenerator()
+	gen, err := neng.DefaultGenerator(nil)
 	if err != nil {
 		log.Fatal(err)
 	}

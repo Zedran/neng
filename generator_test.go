@@ -29,7 +29,7 @@ import (
 // Ensures that call to DefaultGenerator does not return an error
 // and tests whether word lists of the resulting instance are sorted.
 func TestDefaultGenerator(t *testing.T) {
-	gen, err := DefaultGenerator()
+	gen, err := DefaultGenerator(nil)
 	if err != nil {
 		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
@@ -59,7 +59,7 @@ func TestGenerator_Find(t *testing.T) {
 		{false, WordClass(255), "snowfall"}, // Undefined WordClass
 	}
 
-	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false, nil)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
@@ -85,7 +85,7 @@ func TestGenerator_Find(t *testing.T) {
 // Tests whether Generator's iter-related methods correctly react to different
 // WordClass values.
 func TestGenerator_Iter(t *testing.T) {
-	gen, err := DefaultGenerator()
+	gen, err := DefaultGenerator(nil)
 	if err != nil {
 		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
@@ -126,7 +126,7 @@ func TestGenerator_Iter(t *testing.T) {
 // ErrIterLimit marks the successful rejection. Any other error value means
 // that the input passed through the checks to Generator.TransformWord.
 func TestGenerator_Noun(t *testing.T) {
-	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10, false)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"2binoculars"}, []string{"0stash"}, 10, false, nil)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
@@ -178,7 +178,7 @@ func TestGenerator_Noun(t *testing.T) {
 
 // Tests whether Generator.Phrase correctly parses pattern syntax and generates phrases.
 func TestGenerator_Phrase(t *testing.T) {
-	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false)
+	gen, err := NewGenerator([]string{"3big"}, []string{"0nicely"}, []string{"0snowfall"}, []string{"0stash"}, DEFAULT_ITER_LIMIT, false, nil)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
@@ -231,7 +231,7 @@ func TestGenerator_Transform(t *testing.T) {
 		{false, "theta", "theta", WC_NOUN}, // Non-existent
 	}
 
-	gen, err := DefaultGenerator()
+	gen, err := DefaultGenerator(nil)
 	if err != nil {
 		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
@@ -270,7 +270,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 		goodCase    bool
 	}
 
-	gen, err := DefaultGenerator()
+	gen, err := DefaultGenerator(nil)
 	if err != nil {
 		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
@@ -327,7 +327,7 @@ func TestGenerator_TransformWord(t *testing.T) {
 // ErrIterLimit marks the successful rejection. Any other error value means
 // that the input passed through the checks to Generator.TransformWord.
 func TestGenerator_generateModifier(t *testing.T) {
-	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10, false)
+	gen, err := NewGenerator([]string{"4bottomless"}, []string{"4cryptographically"}, []string{"0snowfall"}, []string{"0stash"}, 10, false, nil)
 	if err != nil {
 		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
 	}
@@ -399,7 +399,7 @@ func TestNewGenerator(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, c.iterLimit, c.safe)
+		_, err := NewGenerator(c.adj, c.adv, c.noun, c.verb, c.iterLimit, c.safe, nil)
 
 		switch c.goodCase {
 		case true:
@@ -465,7 +465,7 @@ func TestNewGeneratorFromWord(t *testing.T) {
 	}
 
 	for i, c := range cases {
-		_, err := NewGeneratorFromWord(c.adj, c.adv, c.noun, c.verb, c.iterLimit, c.safe)
+		_, err := NewGeneratorFromWord(c.adj, c.adv, c.noun, c.verb, c.iterLimit, c.safe, nil)
 
 		switch c.goodCase {
 		case true:

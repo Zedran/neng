@@ -19,7 +19,6 @@ package neng
 
 import (
 	"fmt"
-	"math/rand/v2"
 	"strings"
 )
 
@@ -127,10 +126,4 @@ func parseLines(lines []string) ([]*Word, error) {
 	}
 
 	return words, nil
-}
-
-// randIndex returns a random index [0, length). Does not check for 0 (panic) -
-// NewGenerator does not allow empty slices.
-func randIndex(length int) int {
-	return rand.IntN(length)
 }

@@ -22,34 +22,44 @@ import (
 	"fmt"
 	"iter"
 	"log"
+	"math/rand/v2"
 
 	"github.com/Zedran/neng"
 	"github.com/Zedran/neng/symbols"
 )
 
 func ExampleDefaultGenerator() {
-	gen, _ := neng.DefaultGenerator()
+	// Using default source of random numbers
+	gen, _ := neng.DefaultGenerator(nil)
 
 	phrase, _ := gen.Phrase("The %tsa %tpn that %m %Npv the %n")
 	fmt.Println(phrase)
+
+	// Using custom source of random numbers
+	src := rand.New(rand.NewPCG(123, 456))
+
+	gen2, _ := neng.DefaultGenerator(src)
+
+	phrase2, _ := gen2.Phrase("The %tsa %tpn that %m %Npv the %n")
+	fmt.Println(phrase2)
 }
 
 func ExampleGenerator_Adjective() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	adj, _ := gen.Adjective(neng.MOD_COMPARATIVE)
 	fmt.Println(adj)
 }
 
 func ExampleGenerator_Adverb() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	adv, _ := gen.Adverb(neng.MOD_NONE)
 	fmt.Println(adv)
 }
 
 func ExampleGenerator_All() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 	adj, _ := gen.All(neng.WC_ADJECTIVE)
 
 	for i, a := range adj {
@@ -66,7 +76,7 @@ func ExampleGenerator_All() {
 }
 
 func ExampleGenerator_Find() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	// Combine Find with TransformWord to efficiently
 	// perform multiple transformations on a single word
@@ -89,21 +99,21 @@ func ExampleGenerator_Find() {
 }
 
 func ExampleGenerator_Noun() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	noun, _ := gen.Noun(neng.MOD_PLURAL)
 	fmt.Println(noun)
 }
 
 func ExampleGenerator_Phrase() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	phrase, _ := gen.Phrase("%tpn %Npv %n")
 	fmt.Println(phrase)
 }
 
 func ExampleGenerator_Transform() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	// Suitable for one-time modification. Inefficient when transforming the same word multiple times,
 	// because it searches the database for the specified string every time. Refer to Generator.Find
@@ -118,7 +128,7 @@ func ExampleGenerator_Transform() {
 }
 
 func ExampleGenerator_TransformWord() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	w, _ := gen.Find("write", neng.WC_VERB)
 
@@ -130,14 +140,14 @@ func ExampleGenerator_TransformWord() {
 }
 
 func ExampleGenerator_Verb() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 
 	verb, _ := gen.Verb(neng.MOD_PAST_SIMPLE)
 	fmt.Println(verb)
 }
 
 func ExampleGenerator_Words() {
-	gen, _ := neng.DefaultGenerator()
+	gen, _ := neng.DefaultGenerator(nil)
 	noun, _ := gen.Words(neng.WC_NOUN)
 
 	next, stop := iter.Pull(noun)
@@ -189,6 +199,7 @@ func ExampleNewGenerator() {
 		[]string{"0exist"},     // Verbs
 		2,                      // iterLimit
 		false,                  // No need for sorting and length checks in this case
+		nil,                    // Using default source of random numbers
 	)
 
 	adj, _ := gen.Adjective(0)
@@ -218,7 +229,7 @@ func ExampleNewGeneratorFromWord() {
 	noun := []*neng.Word{n}
 	verb := []*neng.Word{v}
 
-	gen, _ := neng.NewGeneratorFromWord(adj, adv, noun, verb, neng.DEFAULT_ITER_LIMIT, true)
+	gen, _ := neng.NewGeneratorFromWord(adj, adv, noun, verb, neng.DEFAULT_ITER_LIMIT, true, nil)
 
 	phrase, _ := gen.Phrase("%tm, the %a %n was %2v.")
 	fmt.Println(phrase)

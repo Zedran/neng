@@ -21,14 +21,14 @@ import "testing"
 
 func BenchmarkDefaultGenerator(b *testing.B) {
 	for range b.N {
-		DefaultGenerator()
+		DefaultGenerator(nil)
 	}
 }
 
 func BenchmarkGenerator_Phrase(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 
 	b.StartTimer()
 	for range b.N {
@@ -39,7 +39,7 @@ func BenchmarkGenerator_Phrase(b *testing.B) {
 func BenchmarkTransformAll_Adj(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 
 	list := make([]string, len(gen.adj))
 	for i, w := range gen.adj {
@@ -62,7 +62,7 @@ func BenchmarkTransformAll_Adj(b *testing.B) {
 func BenchmarkTransformAll_Adj_Indef(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 	nouns, _ := gen.Words(WC_ADJECTIVE)
 
 	b.StartTimer()
@@ -76,7 +76,7 @@ func BenchmarkTransformAll_Adj_Indef(b *testing.B) {
 func BenchmarkTransformAll_Adv(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 
 	list := make([]string, len(gen.adv))
 	for i, w := range gen.adv {
@@ -99,7 +99,7 @@ func BenchmarkTransformAll_Adv(b *testing.B) {
 func BenchmarkTransformAll_Adv_Indef(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 	nouns, _ := gen.Words(WC_ADVERB)
 
 	b.StartTimer()
@@ -113,7 +113,7 @@ func BenchmarkTransformAll_Adv_Indef(b *testing.B) {
 func BenchmarkTransformAll_Noun(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 
 	list := make([]string, len(gen.noun))
 	for i, w := range gen.noun {
@@ -135,7 +135,7 @@ func BenchmarkTransformAll_Noun(b *testing.B) {
 func BenchmarkTransformAll_Noun_Indef(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 	nouns, _ := gen.Words(WC_NOUN)
 
 	b.StartTimer()
@@ -149,7 +149,7 @@ func BenchmarkTransformAll_Noun_Indef(b *testing.B) {
 func BenchmarkTransformAll_Verb(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 
 	list := make([]string, len(gen.verb))
 	for i, w := range gen.verb {
@@ -174,7 +174,7 @@ func BenchmarkTransformAll_Verb(b *testing.B) {
 func BenchmarkTransformOne_Adj(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 	w := "little"
 	wc := WC_ADJECTIVE
 
@@ -190,7 +190,7 @@ func BenchmarkTransformOne_Adj(b *testing.B) {
 func BenchmarkTransformOne_Adv(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 	w := "far"
 	wc := WC_ADVERB
 
@@ -206,7 +206,7 @@ func BenchmarkTransformOne_Adv(b *testing.B) {
 func BenchmarkTransformOne_Noun(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 	w := "modulus"
 	wc := WC_NOUN
 
@@ -221,7 +221,7 @@ func BenchmarkTransformOne_Noun(b *testing.B) {
 func BenchmarkTransformOne_Verb(b *testing.B) {
 	b.StopTimer()
 
-	gen, _ := DefaultGenerator()
+	gen, _ := DefaultGenerator(nil)
 	w := "overcome"
 	wc := WC_VERB
 

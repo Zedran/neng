@@ -38,7 +38,7 @@ func TestComparative(t *testing.T) {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
-	gen, err := DefaultGenerator()
+	gen, err := DefaultGenerator(nil)
 	if err != nil {
 		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
@@ -93,7 +93,7 @@ func TestSuperlative(t *testing.T) {
 		t.Fatalf("Failed loading test data: %v", err)
 	}
 
-	gen, err := DefaultGenerator()
+	gen, err := DefaultGenerator(nil)
 	if err != nil {
 		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
