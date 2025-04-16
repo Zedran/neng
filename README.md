@@ -27,7 +27,7 @@ import (
 )
 
 func main() {
-    gen, _ := neng.DefaultGenerator()
+    gen, _ := neng.DefaultGenerator(nil)
 
     // <title case + noun> <Present Simple + verb> the <upper + adjective> <upper + noun>.
     phrase, _ := gen.Phrase("%tn %Nv the %ua %un.")
