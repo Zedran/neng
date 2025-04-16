@@ -24,7 +24,7 @@ import (
 
 // cmpWord is a comparison function for slices.IsSortedFunc
 // and slices.SortFunc calls.
-func cmpWord(a, b *Word) int {
+func cmpWord(a, b Word) int {
 	return strings.Compare(a.word, b.word)
 }
 
@@ -111,10 +111,10 @@ func getSequence(s string) string {
 	return seq.String()
 }
 
-// parseLines converts lines into a slice of *Word.
+// parseLines converts lines into a slice of Word.
 // Relays an error from NewWord (line formatting).
-func parseLines(lines []string) ([]*Word, error) {
-	words := make([]*Word, len(lines))
+func parseLines(lines []string) ([]Word, error) {
+	words := make([]Word, len(lines))
 
 	for i, ln := range lines {
 		w, err := NewWord(ln)

@@ -34,7 +34,7 @@ func TestDefaultGenerator(t *testing.T) {
 		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
 	}
 
-	for i, wl := range [][]*Word{gen.adj, gen.adv, gen.noun, gen.verb} {
+	for i, wl := range [][]Word{gen.adj, gen.adv, gen.noun, gen.verb} {
 		if !slices.IsSortedFunc(wl, cmpWord) {
 			t.Fatalf("Failed for list %d - not sorted", i)
 		}
@@ -147,7 +147,7 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Errorf("Failed for silent indefinite: plural-only noun was not rejected. Noun returned %s", n)
 	}
 
-	gen.noun = []*Word{{ft: FT_UNCOUNTABLE, irr: nil, word: "boldness"}}
+	gen.noun = []Word{{ft: FT_UNCOUNTABLE, irr: nil, word: "boldness"}}
 
 	if n, err := gen.Noun(MOD_PLURAL); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for plural: uncountable noun was not rejected. Noun returned: %s", n)
@@ -165,7 +165,7 @@ func TestGenerator_Noun(t *testing.T) {
 		t.Errorf("Failed for silent indefinite: uncountable noun was not rejected. Noun returned %s", n)
 	}
 
-	gen.noun = []*Word{{ft: FT_REGULAR, irr: nil, word: "microscope"}}
+	gen.noun = []Word{{ft: FT_REGULAR, irr: nil, word: "microscope"}}
 
 	if _, err := gen.Noun(MOD_INDEF); err != nil {
 		t.Errorf("Failed for indefinite article: regular noun was rejected: %v", err)
@@ -417,7 +417,7 @@ func TestNewGenerator(t *testing.T) {
 // Tests NewGeneratorFromWord ensuring that all checks correctly trigger errors.
 func TestNewGeneratorFromWord(t *testing.T) {
 	type testCase struct {
-		adj, adv, noun, verb []*Word
+		adj, adv, noun, verb []Word
 		iterLimit            int
 		safe                 bool
 		goodCase             bool
@@ -433,19 +433,17 @@ func TestNewGeneratorFromWord(t *testing.T) {
 		t.Fatalf("Failed: NewWord returned an error: %v", err)
 	}
 
-	badW := &Word{ft: 255, irr: &[]string{"too", "many", "forms"}, word: "z"}
+	badW := Word{ft: 255, irr: &[]string{"too", "many", "forms"}, word: "z"}
 
 	var (
-		good   = []*Word{w, w}
-		empty  = []*Word{}
-		hasNil = []*Word{w, nil}
-		hasBad = []*Word{w, badW}
-		unsort = []*Word{w, w2}
+		good   = []Word{w, w}
+		empty  = []Word{}
+		hasBad = []Word{w, badW}
+		unsort = []Word{w, w2}
 	)
 
 	cases := []testCase{
 		{good, good, good, good, 1, true, true},               // Lines present in every slice
-		{good, good, good, hasNil, 1, false, true},            // One of the slices contains nil, but safe is false
 		{good, empty, good, good, 1, false, true},             // One of the slices is empty, but safe is false
 		{good, hasBad, good, good, 1, true, true},             // One of the slices has an invalid element, safe is true
 		{good, hasBad, good, good, 1, false, true},            // One of the slices has an invalid element, safe is false
@@ -461,7 +459,6 @@ func TestNewGeneratorFromWord(t *testing.T) {
 		{good, good, good, good, 0, true, false},              // Error: iterLimit == 0
 		{good, good, good, good, -5, true, false},             // Error: Negative iterLimit
 		{good, good, good, good, -5, false, false},            // Error: Negative iterLimit, safe is false
-		{good, good, good, hasNil, 1, true, false},            // Error: One of the slices contains nil
 	}
 
 	for i, c := range cases {
@@ -474,7 +471,7 @@ func TestNewGeneratorFromWord(t *testing.T) {
 			}
 
 			if c.safe {
-				for _, wl := range [][]*Word{c.adj, c.adv, c.noun, c.verb} {
+				for _, wl := range [][]Word{c.adj, c.adv, c.noun, c.verb} {
 					if len(wl) == 0 {
 						t.Errorf("Failed for case %d: NewGenerator allowed empty list", i)
 					}

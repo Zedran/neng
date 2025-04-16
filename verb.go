@@ -197,7 +197,7 @@ func handleVVL(verb, tenseEnding string) string {
 }
 
 // pastParticiple returns Past Participle form of a verb.
-func pastParticiple(word *Word) string {
+func pastParticiple(word Word) string {
 	if word.ft == FT_IRREGULAR {
 		return (*word.irr)[1]
 	}
@@ -253,7 +253,7 @@ func pastRegular(verb string) string {
 }
 
 // pastSimple returns Past Simple form of a verb.
-func pastSimple(word *Word, plural bool) string {
+func pastSimple(word Word, plural bool) string {
 	if word.ft == FT_IRREGULAR {
 		return (*word.irr)[0]
 	}
