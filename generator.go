@@ -469,14 +469,14 @@ func (gen *Generator) randIndex(length int) int {
 
 // DefaultGenerator returns a new Generator with default word lists.
 //
+// src is the source of random numbers. If src is nil, a new, randomly seeded
+// rand.PCG is created.
+//
 // It is safe to ignore the error value. The embedded word lists are guaranteed
 // to work correctly and errors returned by the current version of the embed
 // package (missing file, attempt to read a directory) cannot be triggered
 // by neng. The error value remains exposed in case of future changes
 // in the implementation of embed.
-//
-// src is the source of random numbers. If src is nil, a randomly seeded
-// PCG is created.
 func DefaultGenerator(src *rand.Rand) (*Generator, error) {
 	a, err := readEFS("embed/adj")
 	if err != nil {
@@ -534,8 +534,8 @@ func DefaultGenerator(src *rand.Rand) (*Generator, error) {
 // during certain transformations. For more information, refer to
 // DEFAULT_ITER_LIMIT in the section 'Constants'.
 //
-// src is the source of random numbers. If src is nil, a randomly seeded
-// PCG is created.
+// src is the source of random numbers. If src is nil, a new, randomly seeded
+// rand.PCG is created.
 func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool, src *rand.Rand) (*Generator, error) {
 	wAdj, err := parseLines(adj)
 	if err != nil {
@@ -570,8 +570,8 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool, src *
 // the function ensures the correct order. iterLimit is an adjustable safety
 // mechanism to prevent inifinite loops during certain transformations. For
 // more information, refer to DEFAULT_ITER_LIMIT in the section 'Constants'.
-// src is the source of random numbers. If src is nil, a randomly seeded
-// PCG is created.
+// src is the source of random numbers. If src is nil, a new, randomly seeded
+// rand.PCG is created.
 func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool, src *rand.Rand) (*Generator, error) {
 	if iterLimit <= 0 {
 		return nil, symbols.ErrBadIterLimit
