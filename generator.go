@@ -64,7 +64,7 @@ type Generator struct {
 	verb []Word
 
 	// Case transformation handler
-	caser *caser
+	caser caser
 
 	// A safeguard for Generator.generateModifier and Generator.Noun methods.
 	// Refer to DEFAULT_ITER_LIMIT in Constants section for more information.
