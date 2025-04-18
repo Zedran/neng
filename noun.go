@@ -20,7 +20,7 @@ package neng
 import "strings"
 
 // plural returns plural form of a noun.
-func plural(word *Word) string {
+func plural(word Word) string {
 	switch word.ft {
 	case FT_IRREGULAR:
 		return (*word.irr)[0]

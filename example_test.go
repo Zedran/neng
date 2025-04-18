@@ -224,10 +224,10 @@ func ExampleNewGeneratorFromWord() {
 	n, _ := neng.NewWordFromParams("hometown", 0, nil)
 	v, _ := neng.NewWordFromParams("make", 1, []string{"made", "made"})
 
-	adj := []*neng.Word{a}
-	adv := []*neng.Word{m}
-	noun := []*neng.Word{n}
-	verb := []*neng.Word{v}
+	adj := []neng.Word{a}
+	adv := []neng.Word{m}
+	noun := []neng.Word{n}
+	verb := []neng.Word{v}
 
 	gen, _ := neng.NewGeneratorFromWord(adj, adv, noun, verb, neng.DEFAULT_ITER_LIMIT, true, nil)
 
@@ -264,7 +264,7 @@ func ExampleNewWordFromParams() {
 	// Uncountable noun
 	un, _ := neng.NewWordFromParams("magnesium", neng.FT_UNCOUNTABLE, nil)
 
-	for _, w := range []*neng.Word{rv, iv, pn, sa, na, un} {
+	for _, w := range []neng.Word{rv, iv, pn, sa, na, un} {
 		fmt.Println(w.Word())
 	}
 	// Output:

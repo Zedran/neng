@@ -52,19 +52,19 @@ const DEFAULT_ITER_LIMIT int = 1000
 // Generator creates and transforms random phrases or words.
 type Generator struct {
 	// List of adjectives
-	adj []*Word
+	adj []Word
 
 	// List of adverbs
-	adv []*Word
+	adv []Word
 
 	// List of nouns
-	noun []*Word
+	noun []Word
 
 	// List of verbs
-	verb []*Word
+	verb []Word
 
 	// Case transformation handler
-	caser *caser
+	caser caser
 
 	// A safeguard for Generator.generateModifier and Generator.Noun methods.
 	// Refer to DEFAULT_ITER_LIMIT in Constants section for more information.
@@ -97,9 +97,9 @@ func (gen *Generator) Adverb(mods Mod) (string, error) {
 	return gen.generateModifier(WC_ADVERB, mods)
 }
 
-// All returns an iterator that yields index-*Word pairs from the Generator's
+// All returns an iterator that yields index-Word pairs from the Generator's
 // word list corresponding to wc in alphabetical order.
-func (gen *Generator) All(wc WordClass) (iter.Seq2[int, *Word], error) {
+func (gen *Generator) All(wc WordClass) (iter.Seq2[int, Word], error) {
 	list, err := gen.getList(wc)
 	if err != nil {
 		return nil, err
@@ -115,21 +115,21 @@ func (gen *Generator) All(wc WordClass) (iter.Seq2[int, *Word], error) {
 //   - Adjectives and adverbs are in their positive forms
 //   - Nouns are in their singular forms
 //   - Verbs are in their base forms
-func (gen *Generator) Find(word string, wc WordClass) (*Word, error) {
+func (gen *Generator) Find(word string, wc WordClass) (Word, error) {
 	list, err := gen.getList(wc)
 	if err != nil {
-		return nil, err
+		return Word{}, err
 	}
 
-	n, found := slices.BinarySearchFunc(list, word, func(listItem *Word, word string) int {
-		return strings.Compare((*listItem).word, word)
+	n, found := slices.BinarySearchFunc(list, word, func(listItem Word, word string) int {
+		return strings.Compare((listItem).word, word)
 	})
 
 	if found {
 		return list[n], nil
 	}
 
-	return nil, symbols.ErrNotFound
+	return Word{}, symbols.ErrNotFound
 }
 
 // Len returns the length of the Generator's word list corresponding to wc.
@@ -299,7 +299,7 @@ func (gen *Generator) Transform(word string, wc WordClass, mods Mod) (string, er
 //   - transformation into comparative or superlative form is requested
 //     for a non-comparable adjective or adverb
 //   - transformation into plural form is requested for an uncountable noun
-func (gen *Generator) TransformWord(word *Word, wc WordClass, mods Mod) (string, error) {
+func (gen *Generator) TransformWord(word Word, wc WordClass, mods Mod) (string, error) {
 	switch true {
 	case wc > WC_VERB:
 		return "", symbols.ErrUndefinedWordClass
@@ -387,7 +387,7 @@ func (gen *Generator) Verb(mods Mod) (string, error) {
 
 // Words returns an iterator that yields words from the Generator's list
 // corresponding to wc in alphabetical order.
-func (gen *Generator) Words(wc WordClass) (iter.Seq[*Word], error) {
+func (gen *Generator) Words(wc WordClass) (iter.Seq[Word], error) {
 	list, err := gen.getList(wc)
 	if err != nil {
 		return nil, err
@@ -404,7 +404,7 @@ func (gen *Generator) Words(wc WordClass) (iter.Seq[*Word], error) {
 //   - Generator.iterLimit is reached while attempting to generate
 //     a comparable adjective or adverb
 func (gen *Generator) generateModifier(wc WordClass, mods Mod) (string, error) {
-	var items []*Word
+	var items []Word
 
 	if wc == WC_ADJECTIVE {
 		items = gen.adj
@@ -446,7 +446,7 @@ func (gen *Generator) getGenerator(flag rune) func(Mod) (string, error) {
 
 // getList is a helper method that returns a word list corresponding to wc
 // or an error if an undefined WordClass value is received.
-func (gen *Generator) getList(wc WordClass) ([]*Word, error) {
+func (gen *Generator) getList(wc WordClass) ([]Word, error) {
 	switch wc {
 	case WC_ADJECTIVE:
 		return gen.adj, nil
@@ -562,8 +562,8 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool, src *
 
 // NewGeneratorFromWord returns Generator created using the provided lists
 // of Word structs and iterLimit. Returns an error if any of the lists is
-// empty or contains a nil pointer. If safe is false, empty / nil checks
-// are omitted. It is assumed that Word structs are created using one of
+// empty. If safe is false, empty / nil checks are omitted.
+// It is assumed that Word structs are created using one of
 // the safe constructors, therefore their validity is not verified. Those
 // constructors do not check word case though - all words should be lower
 // case. Every slice must be sorted A-Z by Word.word field. If safe is true,
@@ -572,19 +572,15 @@ func NewGenerator(adj, adv, noun, verb []string, iterLimit int, safe bool, src *
 // more information, refer to DEFAULT_ITER_LIMIT in the section 'Constants'.
 // src is the source of random numbers. If src is nil, a new, randomly seeded
 // rand.PCG is created.
-func NewGeneratorFromWord(adj, adv, noun, verb []*Word, iterLimit int, safe bool, src *rand.Rand) (*Generator, error) {
+func NewGeneratorFromWord(adj, adv, noun, verb []Word, iterLimit int, safe bool, src *rand.Rand) (*Generator, error) {
 	if iterLimit <= 0 {
 		return nil, symbols.ErrBadIterLimit
 	}
 
 	if safe {
-		for _, wordList := range [][]*Word{adj, adv, noun, verb} {
+		for _, wordList := range [][]Word{adj, adv, noun, verb} {
 			if len(wordList) == 0 {
 				return nil, symbols.ErrEmptyLists
-			}
-
-			if slices.Contains(wordList, nil) {
-				return nil, symbols.ErrBadWordList
 			}
 
 			if !slices.IsSortedFunc(wordList, cmpWord) {

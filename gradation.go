@@ -21,7 +21,7 @@ import "strings"
 
 // comparative returns a comparative form of an adjective or an adverb
 // (good -> better).
-func comparative(word *Word) string {
+func comparative(word Word) string {
 	switch word.ft {
 	case FT_IRREGULAR:
 		return (*word.irr)[0]
@@ -54,7 +54,7 @@ func sufGrad(a, suf string) string {
 
 // superlative returns a superlative form of an adjective or an adverb
 // (good -> best).
-func superlative(word *Word) string {
+func superlative(word Word) string {
 	switch word.ft {
 	case FT_IRREGULAR:
 		return (*word.irr)[1]

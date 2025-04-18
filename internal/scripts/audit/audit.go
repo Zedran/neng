@@ -42,7 +42,7 @@ const AUDIT_DIR string = "audit"
 
 // buildGroup returns a string containing LF-separated forms of a single word.
 // Error is emitted if any value in mods is undefined or incompatible with wc.
-func buildGroup(w *neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.Mod) (string, error) {
+func buildGroup(w neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.Mod) (string, error) {
 	var s strings.Builder
 
 	tw, err := gen.TransformWord(w, wc, neng.MOD_INDEF)
