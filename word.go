@@ -153,8 +153,6 @@ func NewWordFromParams(word string, ft FormType, irr []string) (Word, error) {
 		return Word{}, symbols.ErrUndefinedFormType
 	}
 
-	var pIrr *[]string
-
 	if ft == FT_IRREGULAR {
 		if len(irr) != 1 && len(irr) != 2 {
 			return Word{}, symbols.ErrMalformedIrr
@@ -166,10 +164,10 @@ func NewWordFromParams(word string, ft FormType, irr []string) (Word, error) {
 			}
 		}
 
-		pIrr = &irr
+		return Word{ft: ft, irr: &irr, word: word}, nil
 	} else if len(irr) > 0 {
 		return Word{}, symbols.ErrNonIrregular
 	}
 
-	return Word{ft: ft, irr: pIrr, word: word}, nil
+	return Word{ft: ft, irr: nil, word: word}, nil
 }
