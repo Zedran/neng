@@ -19,6 +19,7 @@ package neng
 
 import (
 	"strings"
+	"sync"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -29,6 +30,7 @@ type caser struct {
 	lower cases.Caser
 	title cases.Caser
 	upper cases.Caser
+	mu    sync.Mutex
 }
 
 // toLower transforms word to lower case.
@@ -48,6 +50,8 @@ func (c *caser) toSentence(words string) string {
 
 // toTitle transforms word to title case.
 func (c *caser) toTitle(word string) string {
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	return c.title.String(word)
 }
 
