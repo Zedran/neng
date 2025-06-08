@@ -23,6 +23,7 @@ import (
 	"math/rand/v2"
 	"slices"
 	"strings"
+	"sync"
 
 	"github.com/Zedran/neng/symbols"
 )
@@ -72,6 +73,9 @@ type Generator struct {
 
 	// Source of random numbers
 	source rand.Rand
+
+	// Mutex for source
+	mu sync.Mutex
 }
 
 // Adjective generates a single random adjective and transforms it
@@ -464,6 +468,8 @@ func (gen *Generator) getList(wc WordClass) ([]Word, error) {
 // randIndex returns a random index [0, length). Does not check for 0 (panic) -
 // NewGenerator does not allow empty slices.
 func (gen *Generator) randIndex(length int) int {
+	gen.mu.Lock()
+	defer gen.mu.Unlock()
 	return gen.source.IntN(length)
 }
 

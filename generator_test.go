@@ -19,7 +19,9 @@ package neng
 
 import (
 	"errors"
+	"runtime/debug"
 	"slices"
+	"sync"
 	"testing"
 
 	"github.com/Zedran/neng/internal/tests"
@@ -355,6 +357,36 @@ func TestGenerator_generateModifier(t *testing.T) {
 	if a, err := gen.Adverb(MOD_SUPERLATIVE); !errors.Is(err, symbols.ErrIterLimit) {
 		t.Errorf("Failed for superlative: non-comparable adverb was not rejected. Adverb returned: %s", a)
 	}
+}
+
+func TestGenerator_MT(t *testing.T) {
+	gen, err := DefaultGenerator(nil)
+	if err != nil {
+		t.Fatalf("Failed: NewGenerator returned an error: %v", err)
+	}
+
+	const T int = 100
+
+	var wg sync.WaitGroup
+	wg.Add(T)
+
+	for i := 0; i < T; i++ {
+		go func() {
+			defer wg.Done()
+
+			defer func() {
+				if r := recover(); r != nil {
+					t.Errorf("Panic on thread %d\n%s\n", i, debug.Stack())
+				}
+			}()
+
+			phrase, err := gen.Phrase("%tsa %fpn that %lm %uNpv %in")
+			if err != nil {
+				t.Errorf("Thread %d encountered an error: '%v', phrase: '%s'", i, err, phrase)
+			}
+		}()
+	}
+	wg.Wait()
 }
 
 // Tests NewGenerator. Fails if it does not return an error upon receiving
