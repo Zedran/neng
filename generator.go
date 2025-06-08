@@ -170,41 +170,55 @@ func (gen *Generator) Noun(mods Mod) (string, error) {
 	return "", symbols.ErrIterLimit
 }
 
-// Phrase generates a phrase given the pattern.
+// Phrase generates a phrase given a pattern.
 //
-// Syntax:
+// Pattern is a group of word generation commands that are transformed
+// into phrase - a randomly generated collection of words.
 //
-//	Insertion:
-//		%% - inserts '%' sign
-//		%a - inserts a random adjective
-//		%m - inserts a random adverb
-//		%n - inserts a random noun
-//		%v - inserts a random verb
+// To build a word generation command, begin with command prefix %, then
+// (optionally) specify transformations you want for the generated word
+// and finish the command with a single insertion symbol.
 //
-//	Transformation:
-//		%2 - transforms a verb into its Past Simple form (2nd form)
-//		%3 - transforms a verb into its Past Participle form (3rd form)
-//		%N - transforms a verb into its Present Simple form (now)
-//		%c - transforms an adjective or an adverb into comparative (better)
-//		%g - transforms a verb into gerund
-//		%i - inserts an indefinite article before an adjective, adverb or a noun
-//		%p - transforms a noun or a verb (Present Simple) into its plural form
-//		%s - transforms an adjective or an adverb into superlative (best)
-//		%l - transforms a word to lower case
-//		%t - transforms a word to Title Case
-//		%u - transforms a word to UPPER CASE
+// Pattern fragments that are not word generation commands will be copied
+// into the phrase with no modification.
+//
+//	Insertions:
+//		%% - inserts % sign, use it only to create a freestanding %
+//		a - inserts a random adjective
+//		m - inserts a random adverb
+//		n - inserts a random noun
+//		v - inserts a random verb
+//
+//	Transformations:
+//		2 - transforms a verb into its Past Simple form (2nd form)
+//		3 - transforms a verb into its Past Participle form (3rd form)
+//		N - transforms a verb into its Present Simple form (now)
+//		c - transforms an adjective or an adverb into comparative (better)
+//		g - transforms a verb into gerund
+//		i - inserts an indefinite article before an adjective, adverb or a noun
+//		_ - silent indefinite (refer to README for information)
+//		p - transforms a noun or a verb (Present Simple) into its plural form
+//		s - transforms an adjective or an adverb into superlative (best)
+//		f - transforms a word to Sentence case
+//		l - transforms a word to lower case
+//		t - transforms a word to Title Case
+//		u - transforms a word to UPPER CASE
 //
 // Error is returned if:
 //   - provided pattern is empty
-//   - character other than the above is escaped with a '%' sign
-//   - a single '%' ends the pattern
+//   - character other than the above is prefixed with a % sign
+//   - a single % ends the pattern
 //   - transformation specifier ends the group ("%t2 - bad, %t2v - ok")
 //   - transformation modifier assigned to a word is not compatible with
 //     its WordClass
 //
-// Example phrase:
+// Example pattern:
 //
-//	"%tn %2v a %ua %un" may produce "Serenade perplexed a STRAY SUPERBUG"
+//	%tn %2v a %ua %un
+//
+// And resulting phrase:
+//
+//	Serenade perplexed a STRAY SUPERBUG
 func (gen *Generator) Phrase(pattern string) (string, error) {
 	if len(pattern) == 0 {
 		return "", symbols.ErrEmptyPattern
