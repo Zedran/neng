@@ -32,5 +32,11 @@ func readEFS(path string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return strings.Split(string(stream), "\n"), nil
+
+	lines := strings.Split(string(stream), "\n")
+
+	if len(lines[len(lines)-1]) == 0 {
+		return lines[:len(lines)-1], nil
+	}
+	return lines, nil
 }

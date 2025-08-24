@@ -33,7 +33,13 @@ func ReadFile(path string) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return strings.Split(string(stream), "\n"), nil
+
+	lines := strings.Split(string(stream), "\n")
+
+	if len(lines[len(lines)-1]) == 0 {
+		return lines[:len(lines)-1], nil
+	}
+	return lines, nil
 }
 
 // WriteFile writes lines to the specified path, optionally sorting them.
@@ -45,6 +51,7 @@ func WriteFile(path string, lines []string, sort bool) (string, error) {
 	}
 
 	data := []byte(strings.Join(lines, "\n"))
+	data = append(data, '\n')
 	csum := fmt.Sprintf("%x  %s", sha256.Sum256(data), path)
 
 	return csum, os.WriteFile(path, data, 0644)
