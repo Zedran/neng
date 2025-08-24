@@ -51,7 +51,11 @@ func WriteFile(path string, lines []string, sort bool) (string, error) {
 	}
 
 	data := []byte(strings.Join(lines, "\n"))
-	data = append(data, '\n')
+
+	if len(data) > 0 && data[len(data)-1] != '\n' {
+		data = append(data, '\n')
+	}
+
 	csum := fmt.Sprintf("%x  %s", sha256.Sum256(data), path)
 
 	return csum, os.WriteFile(path, data, 0644)
