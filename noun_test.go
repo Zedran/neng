@@ -53,3 +53,38 @@ func TestPlural(t *testing.T) {
 		}
 	}
 }
+
+func TestPossessive(t *testing.T) {
+	type testCase struct {
+		Input    string `json:"input"`
+		Plural   bool   `json:"plural"`
+		Expected string `json:"expected"`
+	}
+
+	var cases []testCase
+
+	if err := tests.ReadData("TestPossessive.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
+	}
+
+	gen, err := DefaultGenerator(nil)
+	if err != nil {
+		t.Fatalf("Failed: DefaultGenerator returned an error: %v", err)
+	}
+
+	for _, c := range cases {
+		word, err := gen.Find(c.Input, WC_NOUN)
+		if err != nil {
+			word, err = NewWordFromParams(c.Input, 0, nil)
+			if err != nil {
+				t.Errorf("Failed for '%s' - error from NewWordFromParams: %v", c.Input, err)
+			}
+		}
+
+		output := possessive(word, c.Plural)
+
+		if output != c.Expected {
+			t.Errorf("Failed for '%s' (plural = %v): expected '%s', got '%s'", c.Input, c.Plural, c.Expected, output)
+		}
+	}
+}
