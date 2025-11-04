@@ -34,7 +34,7 @@ const (
 func (wc WordClass) CompatibleWith(mods Mod) bool {
 	switch wc {
 	case WC_ADJECTIVE, WC_ADVERB:
-		if mods.Enabled(MOD_PLURAL | MOD_PAST_SIMPLE | MOD_PAST_PARTICIPLE | MOD_PRESENT_SIMPLE | MOD_GERUND | MOD_INDEF_SILENT) {
+		if mods.Enabled(MOD_PLURAL | MOD_PAST_SIMPLE | MOD_PAST_PARTICIPLE | MOD_PRESENT_SIMPLE | MOD_GERUND | MOD_POSSESSIVE | MOD_INDEF_SILENT) {
 			return false
 		}
 		if mods.Enabled(MOD_INDEF) && mods.Enabled(MOD_SUPERLATIVE) {
@@ -51,7 +51,7 @@ func (wc WordClass) CompatibleWith(mods Mod) bool {
 			return false
 		}
 	case WC_VERB:
-		if mods.Enabled(MOD_INDEF | MOD_COMPARATIVE | MOD_SUPERLATIVE | MOD_INDEF_SILENT) {
+		if mods.Enabled(MOD_INDEF | MOD_COMPARATIVE | MOD_SUPERLATIVE | MOD_POSSESSIVE | MOD_INDEF_SILENT) {
 			return false
 		}
 		if mods.Enabled(MOD_PLURAL) && !mods.Enabled(MOD_PAST_SIMPLE|MOD_PRESENT_SIMPLE) {

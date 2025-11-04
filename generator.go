@@ -244,7 +244,7 @@ func (gen *Generator) Phrase(pattern string) (string, error) {
 				}
 				phrase.WriteRune(c)
 				escaped = false
-			case '2', '3', 'N', 'c', 'f', 'g', 'i', 'l', 'p', 's', 't', 'u', '_':
+			case '2', '3', 'N', 'c', 'f', 'g', 'i', 'l', 'o', 'p', 's', 't', 'u', '_':
 				if i == len(pattern)-1 {
 					return "", symbols.ErrSpecStrTerm
 				}
@@ -377,6 +377,10 @@ func (gen *Generator) TransformWord(word Word, wc WordClass, mods Mod) (string, 
 		// If no mods other than case transformation
 		// or indefinite are requested, w remains empty
 		w = word.word
+	}
+
+	if mods.Enabled(MOD_POSSESSIVE) {
+		w = possessive(w, mods.Enabled(MOD_PLURAL))
 	}
 
 	if mods.Enabled(MOD_INDEF) {

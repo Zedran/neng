@@ -85,6 +85,7 @@ Symbols are used to request transformations for words within a phrase. Constants
 | `i`    | adjective, adverb, noun* | `MOD_INDEF`           | Indefinite adjective (a, an) |
 | `_`    | noun                     | `MOD_INDEF_SILENT`    | Silent indefinite**          |
 | `l`    | any                      | `MOD_CASE_LOWER`      | lower case                   |
+| `o`    | noun                     | `MOD_POSSESSIVE`      | Possessive form (owner)      |
 | `p`    | noun, verb***            | `MOD_PLURAL`          | Plural form                  |
 | `s`    | adjective, adverb        | `MOD_SUPERLATIVE`     | Superlative (best)           |
 | `t`    | any                      | `MOD_CASE_TITLE`      | Title Case                   |

@@ -26,5 +26,8 @@
     "%ltun %utn":     "snowfall Snowfall",
     "%%s":            "%s",
     "%in":            "a snowfall",
-    "%fia %_n":       "A big snowfall"
+    "%fia %_n":       "A big snowfall",
+    "%on":            "snowfall's",
+    "%opn":           "snowfalls'",
+    "%ion":           "a snowfall's"
 }
