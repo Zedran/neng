@@ -361,6 +361,13 @@ func (gen *Generator) TransformWord(word Word, wc WordClass, mods Mod) (string, 
 		if mods.Enabled(MOD_PLURAL) {
 			w = plural(word)
 		}
+		if mods.Enabled(MOD_POSSESSIVE) {
+			if !mods.Enabled(MOD_PLURAL) {
+				w = possessive(word.word, mods.Enabled(MOD_PLURAL))
+				break
+			}
+			w = possessive(w, mods.Enabled(MOD_PLURAL))
+		}
 	case WC_VERB:
 		if mods.Enabled(MOD_PAST_SIMPLE) {
 			w = pastSimple(word, mods.Enabled(MOD_PLURAL))
@@ -377,10 +384,6 @@ func (gen *Generator) TransformWord(word Word, wc WordClass, mods Mod) (string, 
 		// If no mods other than case transformation
 		// or indefinite are requested, w remains empty
 		w = word.word
-	}
-
-	if mods.Enabled(MOD_POSSESSIVE) {
-		w = possessive(w, mods.Enabled(MOD_PLURAL))
 	}
 
 	if mods.Enabled(MOD_INDEF) {
