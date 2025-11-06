@@ -146,6 +146,34 @@ func BenchmarkTransformAll_Noun_Indef(b *testing.B) {
 	}
 }
 
+func BenchmarkTransformAll_Noun_Plural_Possessive(b *testing.B) {
+	b.StopTimer()
+
+	gen, _ := DefaultGenerator(nil)
+	nouns, _ := gen.Words(WC_NOUN)
+
+	b.StartTimer()
+	for range b.N {
+		for w := range nouns {
+			gen.TransformWord(w, WC_NOUN, MOD_PLURAL|MOD_POSSESSIVE)
+		}
+	}
+}
+
+func BenchmarkTransformAll_Noun_Possessive(b *testing.B) {
+	b.StopTimer()
+
+	gen, _ := DefaultGenerator(nil)
+	nouns, _ := gen.Words(WC_NOUN)
+
+	b.StartTimer()
+	for range b.N {
+		for w := range nouns {
+			gen.TransformWord(w, WC_NOUN, MOD_POSSESSIVE)
+		}
+	}
+}
+
 func BenchmarkTransformAll_Verb(b *testing.B) {
 	b.StopTimer()
 
