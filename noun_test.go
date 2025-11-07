@@ -53,3 +53,25 @@ func TestPlural(t *testing.T) {
 		}
 	}
 }
+
+func TestPossessive(t *testing.T) {
+	type testCase struct {
+		Input    string `json:"input"`
+		Plural   bool   `json:"plural"`
+		Expected string `json:"expected"`
+	}
+
+	var cases []testCase
+
+	if err := tests.ReadData("TestPossessive.json", &cases); err != nil {
+		t.Fatalf("Failed loading test data: %v", err)
+	}
+
+	for _, c := range cases {
+		output := possessive(c.Input, c.Plural)
+
+		if output != c.Expected {
+			t.Errorf("Failed for '%s' (plural = %v): expected '%s', got '%s'", c.Input, c.Plural, c.Expected, output)
+		}
+	}
+}

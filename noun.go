@@ -88,3 +88,11 @@ func plural(word Word) string {
 
 	return noun + "s"
 }
+
+// possessive returns possessive form of a noun.
+func possessive(word string, plural bool) string {
+	if plural && strings.HasSuffix(word, "s") {
+		return word + "'"
+	}
+	return word + "'s"
+}

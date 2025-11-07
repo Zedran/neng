@@ -46,6 +46,9 @@ const (
 	// Transform an adjective or an adverb into superlative (good -> best).
 	MOD_SUPERLATIVE
 
+	// Transform a noun into its possessive form (car -> car's).
+	MOD_POSSESSIVE
+
 	// Insert an indefinite article before an adjective, adverb or a noun.
 	MOD_INDEF
 
@@ -105,6 +108,8 @@ func specToMod(spec rune) Mod {
 		return MOD_INDEF
 	case 'l':
 		return MOD_CASE_LOWER
+	case 'o':
+		return MOD_POSSESSIVE
 	case 's':
 		return MOD_SUPERLATIVE
 	case 't':

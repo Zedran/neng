@@ -79,6 +79,18 @@ func buildGroup(w neng.Word, gen *neng.Generator, wc neng.WordClass, mods neng.M
 		}
 		s.WriteString(tw + "\n")
 	}
+
+	if wc == neng.WC_NOUN {
+		tw, err := gen.TransformWord(w, wc, neng.MOD_PLURAL|neng.MOD_POSSESSIVE)
+		if err != nil {
+			if !errors.Is(err, symbols.ErrUncountable) {
+				return "", err
+			}
+			tw = "unc"
+		}
+		s.WriteString(tw + "\n")
+	}
+
 	return s.String(), nil
 }
 
@@ -138,7 +150,7 @@ func setMods(wc neng.WordClass) (neng.Mod, error) {
 	case neng.WC_ADJECTIVE, neng.WC_ADVERB:
 		return neng.MOD_COMPARATIVE | neng.MOD_SUPERLATIVE, nil
 	case neng.WC_NOUN:
-		return neng.MOD_PLURAL, nil
+		return neng.MOD_PLURAL | neng.MOD_POSSESSIVE, nil
 	case neng.WC_VERB:
 		return neng.MOD_PAST_SIMPLE | neng.MOD_PAST_PARTICIPLE | neng.MOD_PRESENT_SIMPLE | neng.MOD_GERUND, nil
 	default:
